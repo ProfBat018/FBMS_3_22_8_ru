@@ -103,6 +103,9 @@ print(type(first_num))
 print(type(second_num))
 
 print(first_num + second_num)
+print(first_num * second_num)
+print(first_num / second_num)
+
 
 # </editor-fold>
 
