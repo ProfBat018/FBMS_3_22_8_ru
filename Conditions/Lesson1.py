@@ -1,4 +1,5 @@
 #  If Conditions
+import time
 
 # <editor-fold desc="Conditions">
 
@@ -73,3 +74,12 @@
 #     print(first_num / second_num)
 # else:
 #     print("invalid input")
+
+num1 = 1
+num2 = 6
+
+if num1 > 0 and num2 < 10:
+    print("Yes")
+
+if num1 > 0 or num2 < 10:
+    print("Yes")
