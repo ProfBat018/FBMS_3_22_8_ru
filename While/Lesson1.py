@@ -39,12 +39,24 @@
 
 # <editor-fold desc="">
 
-num = 10
-
-while True:
-    print("Hello")
-    num -= 1
+# num = 10
+#
+# while True:
+#     print("Hello")
+#     num -= 1
 
 
 # </editor-fold>
 
+
+start = int(input("Enter start: "))
+end = int(input("Enter end: "))
+
+if start > end:
+    tmp = start
+    start = end
+    end = tmp
+
+while start < end:
+    print(start)
+    start += 1
