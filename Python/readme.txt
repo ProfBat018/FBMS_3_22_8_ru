@@ -7,6 +7,9 @@ https://www.python.org/downloads/ - ссылка на интерпретатор
 Грокаем алгоритмы.
 https://itstepaz.sharepoint.com/:b:/s/FBMS_3_22_8_ru/EQj-gD9yyvhNuh-7EjcKow0BQArIgkQgWJIaSNguVXFppg?e=Sg83vm
 
+Python string methods:
+https://www.w3schools.com/python/python_strings_methods.asp
+
 Список пройденных тем: 
 1. Введение в пайтон.
 2. Переменные и типы даныых.
