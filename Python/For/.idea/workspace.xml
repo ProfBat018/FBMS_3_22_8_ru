@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="6c8f8990-a2d1-4176-b1cb-5b9ae75456d9" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Main.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../PasswordGenerator/Generator.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../While/Lesson3.py" afterDir="false" />
-    </list>
+    <list default="true" id="6c8f8990-a2d1-4176-b1cb-5b9ae75456d9" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -34,7 +30,8 @@
   "keyToString": {
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false"
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "C:/Work/FBAS_3_22_11_ru"
   }
 }]]></component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
@@ -46,6 +43,7 @@
       <option name="presentableId" value="Default" />
       <updated>1671695094305</updated>
       <workItem from="1671695095547" duration="580000" />
+      <workItem from="1671707377043" duration="15000" />
     </task>
     <servers />
   </component>
