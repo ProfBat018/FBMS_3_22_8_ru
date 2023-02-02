@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module type="PYTHON_MODULE" version="4">
   <component name="NewModuleRootManager">
+<<<<<<< HEAD
     <content url="file://$MODULE_DIR$" />
+=======
+    <content url="file://$MODULE_DIR$">
+      <excludeFolder url="file://$MODULE_DIR$/venv" />
+    </content>
+>>>>>>> 8d72bff4bc1ff8ecd6bb00a19e9a0d53d83a1a68
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
