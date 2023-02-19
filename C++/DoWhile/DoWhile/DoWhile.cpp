@@ -4,15 +4,17 @@ using namespace std;
 
 int main()
 {
-	int i = 0;
+	//int i = 0;
 
 // Делает, потом думает
 #pragma region Do
 	
+	/*
 	do
 	{
 		cout << i++;
 	} while (i == 10);
+	*/
 
 
 #pragma endregion
