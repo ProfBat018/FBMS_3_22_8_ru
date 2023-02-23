@@ -1,3 +1,0 @@
-﻿  First.cpp
-C:\Work\FBMS_3_22_8_ru\C++\Repeat\First\First.cpp(39,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-  First.vcxproj -> C:\Work\FBMS_3_22_8_ru\C++\Repeat\Debug\First.exe

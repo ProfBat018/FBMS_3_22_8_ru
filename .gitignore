@@ -5,7 +5,13 @@
 
 
 #User-defined files
+CmakeLists.txt
+cmake-build-debug
+.idea
 .vcxproj
+
+*.idea
+*.vcxproj
 
 
 # User-specific files
