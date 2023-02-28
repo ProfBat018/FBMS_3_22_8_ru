@@ -1,8 +1,11 @@
 ﻿#include <iostream>
+
 using namespace std;
 
-int main()
-{
+int main() {
+
+# pragma region Part1
+    /*
 	// Аллоцируется 4 байта в Stack
 	int num = 5;
 
@@ -21,7 +24,27 @@ int main()
 	cout << ptrNum + 1 << '\t' << *(ptrNum + 1) << endl;
 	cout << ptrNum + 2 << '\t' << *(ptrNum + 2) << endl;
 	cout << ptrNum + 3 << '\t' << *(ptrNum + 3) << endl;
+*/
+
+# pragma endregion
+
+#pragma region Part2
+/*
+int number = 5;
+int* ptrNumber = &number;
+
+cout << &number << endl;
+cout << ptrNumber << endl;
+cout << *ptrNumber;
+*/
+#pragma endregion
+
+// new - оператор, который создает место в Heap, при этом new - это фишка С++
+
+    int *number = new int(5);
 
 
-	return 0;
+
+    return 0;
 }
+
