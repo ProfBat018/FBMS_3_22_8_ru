@@ -5,6 +5,33 @@
 
 int main()
 {
+       #pragma region Part1
+
+    /*
+     int arr[2][3]
+     {
+      {1, 3, 5},
+      {2, 4, 6}
+     }
+
+     cout << arr[0][5];
+     */
+
+
+//    int** arr = new int*[2];
+//
+//    arr[0] = new int[3]{1, 3, 5};
+//    arr[1] = new int[3]{2, 4, 6};
+//
+//    cout << *(*(arr + 0) + 0) << endl;
+//    cout << *(*(arr + 0) + 1) << endl;
+//    cout << *(*(arr + 0) + 2) << endl;
+
+//    cout << *(*(arr + 1) + 0) << endl;
+//    cout << *(*(arr + 1) + 1) << endl;
+//    cout << *(*(arr + 1) + 2) << endl;
+
+#pragma endregion
     std::cout << "Hello World!\n";
 }
 
