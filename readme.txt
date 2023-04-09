@@ -1,3 +1,9 @@
+Статьи:
+
+https://dev.to/ruppysuppy/beautify-your-github-profile-like-a-pro-5093
+https://medium.com/codex/making-your-github-profile-look-awesome-869d6d130dbb
+https://github.com/drknzz/GitHub-Achievements 
+
 Про гит
 
 Перед тем как начать работать с гитом, нужно установить его на компьютер.
