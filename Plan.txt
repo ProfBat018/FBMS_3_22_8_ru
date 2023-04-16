@@ -8,3 +8,8 @@
 8. ADO.NET and Entity Framework(C#) (2-3 weeks)
 9. System Programming(C#) (2-3 weeks)
 10. Network Programming(C#) (2-3 weeks)
+11. HTML & CSS(SASS) (3 weeks)
+12. Javascript(Vanilla + AJAX + ES6) (5 weeks)
+13. ASP.NET(Full Back-end) (9 weeks)
+14. React JS (5 weeks)
+15. Azure (5 weeks)
