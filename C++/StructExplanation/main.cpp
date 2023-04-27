@@ -79,21 +79,23 @@ struct Showroom {
 
     void createCar() {
         if (carsCount < capacity) {
-            Car *car = new Car{};
+
+            Car *temp = new Car[carsCount]{};
 
             getchar();
 
             cout << "Enter car make: ";
-            cin.getline(car->make, 30); // BMW
+            cin.getline(temp->make, 30); // BMW
 
             cout << "Enter car model: ";
-            cin.getline(car->model, 30); // X5
+            cin.getline(temp->model, 30); // X5
 
             cout << "Enter car price: ";
-            cin >> car->price; // 100000
+            cin >> temp->price; // 100000
 
-            cars[carsCount] = *car; // Указываю на адрес машины, которую я создал
+            cars[carsCount] = *temp;
             carsCount++;
+
         } else {
             cout << "Showroom is full" << endl;
         }
@@ -124,7 +126,7 @@ void createShowRoom(Showroom *&showRoom) {
     cin >> showRoom->capacity; // 100
     getchar();
 
-    showRoom->cars = new Car[showRoom->capacity]{};
+    showRoom->cars = new Car[showRoom->capacity]{};  //Создаем массив машин
 }
 
 int main() {
