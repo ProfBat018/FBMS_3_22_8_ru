@@ -11,16 +11,13 @@
 
 
 class Transport:
-    # Constructor
-    # self = this
-    
     def __init__(self, name, speed):
-        self._name = name
+        self.name = name
         self.speed = speed
 
-    # Method
     def move(self):
-        print(self._name + " is moving with speed " + str(self.speed))
+        print(self.name + " is moving with speed " + str(self.speed))
+
 
 class Car(Transport):
     def __init__(self, name, speed, color):
@@ -31,8 +28,13 @@ class Car(Transport):
         print(self.name + " is moving with speed " + str(self.speed) + " and color " + self.color)
 
 
-a = Transport("Car", 100)
 
-print(a._name)
+a = Transport("Car", 100)
+b = Car("Car", 100, "red")
+
+a.move()
+b.move()
+
+
 
 
