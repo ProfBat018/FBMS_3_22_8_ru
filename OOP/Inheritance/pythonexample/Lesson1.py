@@ -27,13 +27,18 @@ class Car(Transport):
     def move(self):
         print(self.name + " is moving with speed " + str(self.speed) + " and color " + self.color)
 
+    def __str__(self):
+        return self.name + '\t' + str(self.speed) + '\t' + self.color
 
 
-a = Transport("Car", 100)
+
 b = Car("Car", 100, "red")
+print(b)
 
-a.move()
-b.move()
+num = 5
+print(num.__str__())
+
+
 
 
 
