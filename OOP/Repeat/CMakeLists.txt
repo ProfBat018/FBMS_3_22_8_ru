@@ -4,4 +4,4 @@ project(Repeat)
 set(CMAKE_CXX_STANDARD 14)
 
 add_executable(Repeat
-        main.cpp)
+        main.cpp Car.h Transport.h Car.cpp Transport.cpp)

@@ -87,21 +87,6 @@ int main() {
 
 using namespace std;
 
-class Transport {
-public:
-    Transport() = default;
-
-    Transport(const string &make, const string &model) : make(make), model(model) {}
-
-    virtual void print() {
-        cout << "Make: " << make << endl;
-        cout << "Model: " << model << endl;
-    }
-
-protected:
-    string make;
-    string model;
-};
 
 
 class Car : public Transport {
@@ -121,12 +106,6 @@ private:
 };
 
 int main() {
-
-    Car c1("Ford", "Mustang", "Red");
-//    c1.print();
-
-    Transport* t = &c1;
-    t->print();
 
 
     return 0;
