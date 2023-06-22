@@ -22,7 +22,12 @@ public:
 
     MyList() = default; // конструктор по умолчанию
 
-    MyList(initializer_list<T> list)
+    
+    /// конструктор инициализации
+    // {1, 2, 3, 4, 5}
+    // 1 - begin()
+    // 5 - end() - 1
+    MyList(initializer_list<T> list) 
     {
         for (const T *it = list.begin(); it < list.end(); ++it)
         {
@@ -72,7 +77,10 @@ int main()
 {
     MyList<int> list{1, 2, 3, 4, 5};
 
-    list.getData();
+
+    // MyList<int> list;
+
+    // list.push_back(1);
 
     return 0;
 }

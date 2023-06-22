@@ -1,18 +1,20 @@
 #include <iostream>
-#include "Vector.h"
+#include <string>
 
 using namespace std;
 
-class A {
+class Car {
+    string make {};
+    string model {};
 
-    void foo() {
-
-    }
+    public:
+        Car(string, string);
 };
 
 
 int main() {
 
-cout << "Hello World: " << endl;
+    Car a{};
+
     return 0;
 }
