@@ -4,11 +4,9 @@
 
 using namespace std;
 
-
-
 int main() {
-    MyList<string> list({"Hello", "World", "!"}); // список инициализации
-    cout << list << endl;
+
+MyList<string> *list = new MyList<string> {"Hello", "World", "!"};
 
 
 //MyList<int> list2;

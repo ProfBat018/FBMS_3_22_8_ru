@@ -18,11 +18,29 @@ public:
         }
     };
     MyList() = default;
+    MyList(T data)
+    {
+        this->head = new Node(data);
+    }
+    MyList(initializer_list<T> data)
+    {
+        for (const T *i = data.begin(); i < data.end(); ++i) {
+            this->pushBack(*i);
+        }
+    }
 
-    MyList(T data);
-    MyList(initializer_list<T> data);
-
-    void pushBack(T data);
+    void pushBack(T data)
+    {
+        if (this->head == nullptr) {
+            this->head = new Node(data);
+            return;
+        }
+        Node *current = this->head;
+        while (current->next != nullptr) {
+            current = current->next;
+        }
+        current->next = new Node(data);
+    }
 
     friend ostream &operator<<(ostream &os, const MyList &list) {
         Node *current = list.head;
