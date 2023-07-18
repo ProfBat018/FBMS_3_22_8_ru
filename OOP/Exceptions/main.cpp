@@ -8,6 +8,8 @@ class A {
 
     }
 };
+
+
 class ArithmeticException : public exception {
 public:
     ArithmeticException(const char* message, int code=0) {

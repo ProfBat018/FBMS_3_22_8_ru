@@ -52,7 +52,6 @@ t->print();
 
 */
 #pragma endregion
-
 #pragma region Part2
 
 /*
@@ -78,10 +77,8 @@ int main() {
 }
 */
 #pragma endregion
-
-
 #pragma region Part3
-
+/*
 #include <iostream>
 #include <string>
 
@@ -110,3 +107,63 @@ int main() {
 
     return 0;
 }
+
+
+ */
+
+#pragma endregion
+
+#pragma region Part4
+
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+class Transport {
+public:
+    string make;
+    string model;
+
+    Transport() = default;
+
+    Transport(string make, string model) : make(make), model(model) {}
+
+    virtual void print() = 0;
+
+    virtual void foo() {
+        cout << "Hello" << endl;
+    }
+};
+
+class Car : public Transport {
+public:
+    string color;
+
+    Car() = default;
+
+    Car(string make, string model, string color) : Transport(make, model), color(color) {}
+
+    void foo() override {
+        cout << "Hello World" << endl;
+    }
+
+    void print() override {
+        cout << "Make: " << make << endl;
+        cout << "Model: " << this->model << endl;
+        cout << "Color: " << color << endl;
+    }
+};
+
+int main() {
+
+//    Transport *t = new Transport();
+
+    Transport *t1 = new Car();
+    t1->print();
+
+    return 0;
+}
+
+#pragma endregion
+
