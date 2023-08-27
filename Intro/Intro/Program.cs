@@ -81,3 +81,69 @@ Console.WriteLine(res);
 //int[,] arr2 = new int[,] { { 1, 2}, { 3, 4 } }; // multi array
 
 #endregion
+
+internal class Program
+{
+    public static Inventory inventory = new();
+
+    static void Main(string[] args)
+    {
+        BasicStatus();
+        inventory.ShowInventory();
+    }
+
+    static void BasicStatus()
+    {
+
+        Item weap1 = new Item("Old Sword", "ATK", 2, "Common");
+        Item armo1 = new Item("Iron Armor", "DEF", 5, "Uncommon");
+
+        inventory.GetItem(weap1);
+        inventory.GetItem(armo1);
+    }
+
+
+}
+
+public class Item
+{
+    public string Name { get; set; }
+    public string Type { get; set; }
+    public int Effect { get; set; }
+    public string Info { get; set; }
+
+    public Item(string name, string type, int effect, string info)
+    {
+        Name = name;
+        Type = type;
+        Effect = effect;
+        Info = info;
+    }
+}
+
+public class Inventory
+{
+    public List<Item> items;
+
+    public Inventory()
+    {
+        items = new List<Item>();
+    }
+
+    public void GetItem(Item item)
+    {
+        items.Add(item);
+    }
+
+    public void ShowInventory()
+    {
+        Console.Clear();
+
+        Console.WriteLine("[ITEM LIST]");
+
+        foreach (var Item in items)
+        {
+            Console.WriteLine($"- {Item.Name} | {Item.Type} +{Item.Effect} | {Item.Info}");
+        }
+    }
+}
