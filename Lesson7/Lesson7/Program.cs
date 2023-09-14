@@ -141,9 +141,6 @@ catch (Exception e)
 #endregion
 #endregion
 
-
-
-
 #region Deserialization
 
 #region BinaryDeserialization 
@@ -184,7 +181,7 @@ if (formatter.Deserialize(fs) is Classroom newClassroom)
 #endregion
 
 #region JsonDeserialization
-
+/*
 using FileStream fs = new("classroom.json", FileMode.OpenOrCreate);
 using StreamReader sr = new(fs);
 
@@ -197,6 +194,12 @@ if (newClassroom != null)
     Console.WriteLine(newClassroom);
 }
 
+*/
+
 #endregion
 
 #endregion
+
+
+
+

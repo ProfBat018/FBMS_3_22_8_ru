@@ -14,7 +14,7 @@ class Classroom
 
     public UInt16 MaxStudentsCount { get; private set; }
     
-    public List<Student> Students { get; private set; }
+    public List<Student> Students { get; set; }
     
     public void IncreaseMaxStudentsCount(UInt16 value)
     {

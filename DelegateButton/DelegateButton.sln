@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DelegateButton", "DelegateButton\DelegateButton.csproj", "{C716514A-679B-4AEF-BB3F-71DC74C4903B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyButtonCommand", "MyButtonCommand\MyButtonCommand.csproj", "{DBFBE4C6-FF77-4688-92E8-4644CD490153}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C716514A-679B-4AEF-BB3F-71DC74C4903B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C716514A-679B-4AEF-BB3F-71DC74C4903B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C716514A-679B-4AEF-BB3F-71DC74C4903B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C716514A-679B-4AEF-BB3F-71DC74C4903B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DBFBE4C6-FF77-4688-92E8-4644CD490153}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DBFBE4C6-FF77-4688-92E8-4644CD490153}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DBFBE4C6-FF77-4688-92E8-4644CD490153}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DBFBE4C6-FF77-4688-92E8-4644CD490153}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
