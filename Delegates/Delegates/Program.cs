@@ -32,6 +32,3 @@ Console.WriteLine($"Netto salary: {salary - totalTax:C}");
 
 
 
-
-
-

@@ -2,13 +2,48 @@
 using System.Windows;
 using System.Windows.Input;
 using GalaSoft.MvvmLight;
-using MyButtonCommand;
 
 namespace DelegateButton;
 
-public class MainWindowViewModel : ViewModelBase
+public class MyCommand : ICommand
 {
-    public MyCommand ClickCommand { get => new(() => MessageBox.Show("Hello World"));}
-    public MyCommand SecondClickCommand { get => new(() => MessageBox.Show("Salam Dunya!"));}
+    public bool CanExecute(object? parameter)
+    {
+        return true;
+    }
+
+    public void Execute(object? parameter)
+    {
+        MessageBox.Show("Hello World");
+    }
+
+    public event EventHandler? CanExecuteChanged; // не обращаем внимания
 }
 
+public class MyCommand2 : ICommand
+{
+    public bool CanExecute(object? parameter)
+    {
+        return true;
+    }
+
+    public void Execute(object? parameter)
+    {
+        MessageBox.Show("Salam Dunya");
+    }
+
+    public event EventHandler? CanExecuteChanged; // не обращаем внимания
+}
+
+public class MainWindowViewModel : ViewModelBase
+{
+    public MyCommand ClickCommand
+    {
+        get => new();
+    }
+
+    public MyCommand2 SecondClickCommand
+    {
+        get => new();
+    }
+}
