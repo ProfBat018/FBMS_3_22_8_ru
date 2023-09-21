@@ -53,4 +53,16 @@
 // }
 //
 
+void foo(ref int a)
+{
+    Console.WriteLine("Hello, World!");
+}
+
+A aDel = foo;
+
+public delegate void A(ref int a);
+
+
+
+
 
