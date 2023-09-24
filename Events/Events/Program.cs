@@ -1,20 +1,25 @@
 ﻿using Events;
 
-var salaryService = new SalaryService(3000);
 
-void tax1(decimal salary, ref decimal total)
+
+TaxiPark taxiPark = new();
+void Add(Car car)
 {
-    total += salary * 0.15m;
+    taxiPark.Cars.Add(car);
 }
 
-void tax2(decimal salary, ref decimal total)
+void Remove(Car car)
 {
-    total += salary * 0.10m;
+    taxiPark.Cars.Remove(car);
 }
 
-salaryService.TaxService.AddTax(tax1);
-salaryService.TaxService.AddTax(tax2);
+
+taxiPark.CarManager += Add;
+
+taxiPark.AddCar(new Car("BMW", "X5", DateTime.Parse("2023/1/1")));
 
 
-Console.WriteLine($"Netto Salary = {salaryService.Salary:C}");
+
+
+
 
