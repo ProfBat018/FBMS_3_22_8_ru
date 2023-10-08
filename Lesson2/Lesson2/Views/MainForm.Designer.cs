@@ -1,4 +1,4 @@
-﻿namespace Part2
+﻿namespace Lesson2.Views
 {
     partial class MainForm
     {
@@ -28,30 +28,37 @@
         /// </summary>
         private void InitializeComponent()
         {
+            carPictureBox = new PictureBox();
             mainPanel = new Panel();
             rightUpPanel = new Panel();
-            personPictureBox = new PictureBox();
             rightDownpanel = new Panel();
-            peopleListBox = new ListBox();
+            carsListBox = new ListBox();
             leftPanel = new TableLayoutPanel();
-            browseButton = new Button();
             imageLabel = new Label();
-            nameLabel = new Label();
-            surnameLabel = new Label();
-            nameTextBox = new TextBox();
-            surnameTextBox = new TextBox();
+            makeLabel = new Label();
+            modelLabel = new Label();
+            makeTextBox = new TextBox();
+            modelTextBox = new TextBox();
             addButton = new Button();
             deleteButton = new Button();
-            birthLabel = new Label();
-            birthDatePicker = new DateTimePicker();
-
+            productionLabel = new Label();
+            productionPicker = new DateTimePicker();
+            ((System.ComponentModel.ISupportInitialize)carPictureBox).BeginInit();
             mainPanel.SuspendLayout();
             rightUpPanel.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)personPictureBox).BeginInit();
             rightDownpanel.SuspendLayout();
             leftPanel.SuspendLayout();
-        
             SuspendLayout();
+            // 
+            // carPictureBox
+            // 
+            carPictureBox.Dock = DockStyle.Fill;
+            carPictureBox.Location = new Point(0, 0);
+            carPictureBox.Name = "carPictureBox";
+            carPictureBox.Size = new Size(421, 218);
+            carPictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
+            carPictureBox.TabIndex = 0;
+            carPictureBox.TabStop = false;
             // 
             // mainPanel
             // 
@@ -62,62 +69,51 @@
             mainPanel.Location = new Point(0, 0);
             mainPanel.Name = "mainPanel";
             mainPanel.Size = new Size(800, 450);
-            mainPanel.TabIndex = 0;
+            mainPanel.TabIndex = 1;
             // 
             // rightUpPanel
             // 
-            rightUpPanel.Controls.Add(personPictureBox);
+            rightUpPanel.Controls.Add(carPictureBox);
             rightUpPanel.Dock = DockStyle.Top;
             rightUpPanel.Location = new Point(379, 0);
             rightUpPanel.Name = "rightUpPanel";
             rightUpPanel.Size = new Size(421, 218);
             rightUpPanel.TabIndex = 2;
             // 
-            // personPictureBox
-            // 
-            personPictureBox.Dock = DockStyle.Fill;
-            personPictureBox.Location = new Point(0, 0);
-            personPictureBox.Name = "personPictureBox";
-            personPictureBox.Size = new Size(421, 218);
-            personPictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
-            personPictureBox.TabIndex = 0;
-            personPictureBox.TabStop = false;
-            // 
             // rightDownpanel
             // 
-            rightDownpanel.Controls.Add(peopleListBox);
+            rightDownpanel.Controls.Add(carsListBox);
             rightDownpanel.Dock = DockStyle.Bottom;
             rightDownpanel.Location = new Point(379, 215);
             rightDownpanel.Name = "rightDownpanel";
             rightDownpanel.Size = new Size(421, 235);
             rightDownpanel.TabIndex = 1;
             // 
-            // peopleListBox
+            // carsListBox
             // 
-            peopleListBox.Dock = DockStyle.Fill;
-            peopleListBox.FormattingEnabled = true;
-            peopleListBox.ItemHeight = 20;
-            peopleListBox.Location = new Point(0, 0);
-            peopleListBox.Name = "peopleListBox";
-            peopleListBox.Size = new Size(421, 235);
-            peopleListBox.TabIndex = 0;
-            peopleListBox.SelectedIndexChanged += peopleListBox_SelectedIndexChanged;
+            carsListBox.Dock = DockStyle.Fill;
+            carsListBox.FormattingEnabled = true;
+            carsListBox.ItemHeight = 20;
+            carsListBox.Location = new Point(0, 0);
+            carsListBox.Name = "carsListBox";
+            carsListBox.Size = new Size(421, 235);
+            carsListBox.TabIndex = 0;
+            carsListBox.SelectedIndexChanged += carsListBox_SelectedIndexChanged;
             // 
             // leftPanel
             // 
             leftPanel.ColumnCount = 2;
             leftPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 192F));
             leftPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 8F));
-            leftPanel.Controls.Add(browseButton, 1, 3);
             leftPanel.Controls.Add(imageLabel, 0, 3);
-            leftPanel.Controls.Add(nameLabel, 0, 0);
-            leftPanel.Controls.Add(surnameLabel, 0, 1);
-            leftPanel.Controls.Add(nameTextBox, 1, 0);
-            leftPanel.Controls.Add(surnameTextBox, 1, 1);
+            leftPanel.Controls.Add(makeLabel, 0, 0);
+            leftPanel.Controls.Add(modelLabel, 0, 1);
+            leftPanel.Controls.Add(makeTextBox, 1, 0);
+            leftPanel.Controls.Add(modelTextBox, 1, 1);
             leftPanel.Controls.Add(addButton, 0, 4);
             leftPanel.Controls.Add(deleteButton, 1, 4);
-            leftPanel.Controls.Add(birthLabel, 0, 2);
-            leftPanel.Controls.Add(birthDatePicker, 1, 2);
+            leftPanel.Controls.Add(productionLabel, 0, 2);
+            leftPanel.Controls.Add(productionPicker, 1, 2);
             leftPanel.Dock = DockStyle.Left;
             leftPanel.Location = new Point(0, 0);
             leftPanel.Name = "leftPanel";
@@ -130,17 +126,6 @@
             leftPanel.Size = new Size(379, 450);
             leftPanel.TabIndex = 0;
             // 
-            // browseButton
-            // 
-            browseButton.Dock = DockStyle.Top;
-            browseButton.Location = new Point(195, 193);
-            browseButton.Name = "browseButton";
-            browseButton.Size = new Size(181, 44);
-            browseButton.TabIndex = 11;
-            browseButton.Text = "Browse";
-            browseButton.UseVisualStyleBackColor = true;
-            browseButton.Click += browseButton_Click;
-            // 
             // imageLabel
             // 
             imageLabel.Anchor = AnchorStyles.None;
@@ -152,45 +137,45 @@
             imageLabel.TabIndex = 10;
             imageLabel.Text = "Image";
             // 
-            // nameLabel
+            // makeLabel
             // 
-            nameLabel.Anchor = AnchorStyles.None;
-            nameLabel.AutoSize = true;
-            nameLabel.Font = new Font("Segoe UI", 18F, FontStyle.Regular, GraphicsUnit.Point);
-            nameLabel.Location = new Point(47, 15);
-            nameLabel.Name = "nameLabel";
-            nameLabel.Size = new Size(97, 41);
-            nameLabel.TabIndex = 0;
-            nameLabel.Text = "Name";
+            makeLabel.Anchor = AnchorStyles.None;
+            makeLabel.AutoSize = true;
+            makeLabel.Font = new Font("Segoe UI", 18F, FontStyle.Regular, GraphicsUnit.Point);
+            makeLabel.Location = new Point(50, 15);
+            makeLabel.Name = "makeLabel";
+            makeLabel.Size = new Size(91, 41);
+            makeLabel.TabIndex = 0;
+            makeLabel.Text = "Make";
             // 
-            // surnameLabel
+            // modelLabel
             // 
-            surnameLabel.Anchor = AnchorStyles.None;
-            surnameLabel.AutoSize = true;
-            surnameLabel.Font = new Font("Segoe UI", 18F, FontStyle.Regular, GraphicsUnit.Point);
-            surnameLabel.Location = new Point(28, 78);
-            surnameLabel.Name = "surnameLabel";
-            surnameLabel.Size = new Size(135, 41);
-            surnameLabel.TabIndex = 1;
-            surnameLabel.Text = "Surname";
+            modelLabel.Anchor = AnchorStyles.None;
+            modelLabel.AutoSize = true;
+            modelLabel.Font = new Font("Segoe UI", 18F, FontStyle.Regular, GraphicsUnit.Point);
+            modelLabel.Location = new Point(44, 78);
+            modelLabel.Name = "modelLabel";
+            modelLabel.Size = new Size(104, 41);
+            modelLabel.TabIndex = 1;
+            modelLabel.Text = "Model";
             // 
-            // nameTextBox
+            // makeTextBox
             // 
-            nameTextBox.Anchor = AnchorStyles.Left | AnchorStyles.Right;
-            nameTextBox.Font = new Font("Segoe UI", 16F, FontStyle.Regular, GraphicsUnit.Point);
-            nameTextBox.Location = new Point(195, 14);
-            nameTextBox.Name = "nameTextBox";
-            nameTextBox.Size = new Size(181, 43);
-            nameTextBox.TabIndex = 4;
+            makeTextBox.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            makeTextBox.Font = new Font("Segoe UI", 16F, FontStyle.Regular, GraphicsUnit.Point);
+            makeTextBox.Location = new Point(195, 14);
+            makeTextBox.Name = "makeTextBox";
+            makeTextBox.Size = new Size(181, 43);
+            makeTextBox.TabIndex = 4;
             // 
-            // surnameTextBox
+            // modelTextBox
             // 
-            surnameTextBox.Anchor = AnchorStyles.Left | AnchorStyles.Right;
-            surnameTextBox.Font = new Font("Segoe UI", 16F, FontStyle.Regular, GraphicsUnit.Point);
-            surnameTextBox.Location = new Point(195, 77);
-            surnameTextBox.Name = "surnameTextBox";
-            surnameTextBox.Size = new Size(181, 43);
-            surnameTextBox.TabIndex = 5;
+            modelTextBox.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            modelTextBox.Font = new Font("Segoe UI", 16F, FontStyle.Regular, GraphicsUnit.Point);
+            modelTextBox.Location = new Point(195, 77);
+            modelTextBox.Name = "modelTextBox";
+            modelTextBox.Size = new Size(181, 43);
+            modelTextBox.TabIndex = 5;
             // 
             // addButton
             // 
@@ -214,27 +199,27 @@
             deleteButton.UseVisualStyleBackColor = true;
             deleteButton.Click += deleteButton_Click;
             // 
-            // birthLabel
+            // productionLabel
             // 
-            birthLabel.Anchor = AnchorStyles.None;
-            birthLabel.AutoSize = true;
-            birthLabel.Font = new Font("Segoe UI", 18F, FontStyle.Regular, GraphicsUnit.Point);
-            birthLabel.Location = new Point(25, 137);
-            birthLabel.Name = "birthLabel";
-            birthLabel.Size = new Size(141, 41);
-            birthLabel.TabIndex = 3;
-            birthLabel.Text = "BirthDate";
+            productionLabel.Anchor = AnchorStyles.None;
+            productionLabel.AutoSize = true;
+            productionLabel.Font = new Font("Segoe UI", 18F, FontStyle.Regular, GraphicsUnit.Point);
+            productionLabel.Location = new Point(56, 137);
+            productionLabel.Name = "productionLabel";
+            productionLabel.Size = new Size(80, 41);
+            productionLabel.TabIndex = 3;
+            productionLabel.Text = "Date";
             // 
-            // birthDatePicker
+            // productionPicker
             // 
-            birthDatePicker.Anchor = AnchorStyles.None;
-            birthDatePicker.CustomFormat = "dd/mm/yyyy";
-            birthDatePicker.Font = new Font("Segoe UI", 16F, FontStyle.Regular, GraphicsUnit.Point);
-            birthDatePicker.Format = DateTimePickerFormat.Short;
-            birthDatePicker.Location = new Point(195, 136);
-            birthDatePicker.Name = "birthDatePicker";
-            birthDatePicker.Size = new Size(181, 43);
-            birthDatePicker.TabIndex = 9;
+            productionPicker.Anchor = AnchorStyles.None;
+            productionPicker.CustomFormat = "dd/mm/yyyy";
+            productionPicker.Font = new Font("Segoe UI", 16F, FontStyle.Regular, GraphicsUnit.Point);
+            productionPicker.Format = DateTimePickerFormat.Short;
+            productionPicker.Location = new Point(195, 136);
+            productionPicker.Name = "productionPicker";
+            productionPicker.Size = new Size(181, 43);
+            productionPicker.TabIndex = 9;
             // 
             // MainForm
             // 
@@ -244,9 +229,9 @@
             Controls.Add(mainPanel);
             Name = "MainForm";
             Text = "MainForm";
+            ((System.ComponentModel.ISupportInitialize)carPictureBox).EndInit();
             mainPanel.ResumeLayout(false);
             rightUpPanel.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)personPictureBox).EndInit();
             rightDownpanel.ResumeLayout(false);
             leftPanel.ResumeLayout(false);
             leftPanel.PerformLayout();
@@ -255,21 +240,20 @@
 
         #endregion
 
+        private PictureBox carPictureBox;
         private Panel mainPanel;
         private Panel rightUpPanel;
         private Panel rightDownpanel;
-        private Label nameLabel;
-        private Label surnameLabel;
-        private Label birthLabel;
-        private TextBox nameTextBox;
-        private TextBox surnameTextBox;
+        private ListBox carsListBox;
         private TableLayoutPanel leftPanel;
+        private Label imageLabel;
+        private Label makeLabel;
+        private Label modelLabel;
+        private TextBox makeTextBox;
+        private TextBox modelTextBox;
         private Button addButton;
         private Button deleteButton;
-        private DateTimePicker birthDatePicker;
-        private Label imageLabel;
-        private PictureBox personPictureBox;
-        private Button browseButton;
-        private ListBox peopleListBox;
+        private Label productionLabel;
+        private DateTimePicker productionPicker;
     }
 }
