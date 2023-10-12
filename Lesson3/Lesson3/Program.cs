@@ -1,30 +1,19 @@
-using Lesson3.Models;
+﻿using Lesson3.Models;
 using Lesson3.Presenters;
 using Lesson3.Views;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using static Lesson3.ToDoVpContext;
 
 namespace Lesson3
 {
     internal static class Program
     {
-
-        public static BindingList<ToDoItem> ToDos { get; set; } = new();
-        public static MainForm MainView { get; set; } = new();
-        public static AddForm AddView { get; set; } = new();
-        public static EditForm EditView { get; set; } = new();
-
-
-        public static MainFormPresenter MainPresenter { get; set; } = new();
-        public static AddFormPresenter AddPresenter { get; set; } = new();
-        public static EditFormPresenter EditPresenter { get; set; } = new();
-
-
         [STAThread]
         static void Main()
         {
-            ApplicationConfiguration.Initialize();
-            Application.Run(MainView);
+            ApplicationConfiguration.Initialize(); // инициализация конфигурации. Берет все по умолчанию
+            Application.Run(MainView); // Создает главное окно и запускает его
         }
     }
 }

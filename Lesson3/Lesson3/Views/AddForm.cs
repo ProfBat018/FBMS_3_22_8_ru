@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static Lesson3.Program;
+using static Lesson3.ToDoVpContext;
 
 namespace Lesson3.Views
 {

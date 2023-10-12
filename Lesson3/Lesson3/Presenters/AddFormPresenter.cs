@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static Lesson3.Program;
+using static Lesson3.ToDoVpContext;
 
 namespace Lesson3.Presenters
 {

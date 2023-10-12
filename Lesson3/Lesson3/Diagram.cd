@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Lesson3.Program">
+    <Position X="8" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAQAAgAAAAAAAAAAEAAAAAAIAACDAAABAA=</HashCode>
+      <FileName>Program.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lesson3.Presenters.AddFormPresenter">
+    <Position X="4.5" Y="0.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Presenters\AddFormPresenter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lesson3.Presenters.EditFormPresenter">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Presenters\EditFormPresenter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lesson3.Presenters.MainFormPresenter">
+    <Position X="0.5" Y="1.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Presenters\MainFormPresenter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lesson3.Views.AddForm">
+    <Position X="0.5" Y="2.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>EAAgJAAAACAAAAAAAACAAAACAAAAIAAAgAAhACAAAAA=</HashCode>
+      <FileName>Views\AddForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lesson3.Views.EditForm">
+    <Position X="2.5" Y="2.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>EAgkJAIEACAAABAAAACAAAACAAAAIAAAAAABACEBAAA=</HashCode>
+      <FileName>Views\EditForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lesson3.Views.MainForm">
+    <Position X="4.5" Y="3" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAABACAAARAAAACAAAACAAAAAAAAgAAgAAAAACA=</HashCode>
+      <FileName>Views\MainForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lesson3.Models.ToDoItem">
+    <Position X="8" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAAAAAAAAAEAAAAAIQgAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\ToDoItem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
