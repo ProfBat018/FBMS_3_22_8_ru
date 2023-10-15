@@ -24,5 +24,27 @@ namespace Lesson1
         {
             InitializeComponent();
         }
+
+        private void minimizeBtn_Click(object sender, RoutedEventArgs e)
+        {
+            this.WindowState = WindowState.Minimized;
+        }
+
+        private void maximizeBtn_Click(object sender, RoutedEventArgs e)
+        {
+            if (WindowState == WindowState.Normal)
+            {
+                WindowState = WindowState.Maximized;
+            }
+            else if (WindowState == WindowState.Maximized)
+            {
+                WindowState = WindowState.Normal;
+            }   
+        }
+
+        private void closeBtn_Click(object sender, RoutedEventArgs e)
+        {
+            App.Current.Shutdown();
+        }
     }
 }
