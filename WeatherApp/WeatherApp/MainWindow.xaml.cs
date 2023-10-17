@@ -38,31 +38,25 @@ namespace WeatherApp
 
         private void searchButton_Click(object sender, RoutedEventArgs e)
         {
-            Process.Start(new ProcessStartInfo
+            try
             {
-                FileName = "https://www.google.com",
-                UseShellExecute = true
-            });
+                Forecast res = WeatherService.GetWeatherByCity(searchBox.Text);
 
-            //try
-            //{
-            //    Forecast res = WeatherService.GetWeatherByCity(searchBox.Text);
+                tempLbl.Content = $"{res.Main.Temp}°C";
+                weatherImg.Source = new BitmapImage(new Uri($"http://openweathermap.org/img/w/{res.Weather[0].Icon}.png"));
 
-            //    tempLbl.Content = $"{res.Main.Temp}°C";
-            //    weatherImg.Source = new BitmapImage(new Uri($"http://openweathermap.org/img/w/{res.Weather[0].Icon}.png"));
-
-            //    feelsLikeLbl.Content = $"Feels like {res.Main.FeelsLike}°C";
-            //    pressureLbl.Content = $"Pressure: {res.Main.Pressure}";
+                feelsLikeLbl.Content = $"Feels like {res.Main.FeelsLike}°C";
+                pressureLbl.Content = $"Pressure: {res.Main.Pressure}";
 
 
-            //    sunsetLbl.Content = GetDateByUnixSeconds(res.Sys.Sunset).AddSeconds(res.Timezone).ToString("HH:mm:ss");
-            //    sunriseLbl.Content = GetDateByUnixSeconds(res.Sys.Sunrise).AddSeconds(res.Timezone).ToString("HH:mm:ss");
+                sunsetLbl.Content = GetDateByUnixSeconds(res.Sys.Sunset).AddSeconds(res.Timezone).ToString("HH:mm:ss");
+                sunriseLbl.Content = GetDateByUnixSeconds(res.Sys.Sunrise).AddSeconds(res.Timezone).ToString("HH:mm:ss");
 
-            //}
-            //catch (Exception ex)
-            //{
-            //    MessageBox.Show(ex.Message);
-            //}
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
     }
 }
