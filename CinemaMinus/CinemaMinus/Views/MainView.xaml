@@ -1,0 +1,57 @@
+﻿<Window x:Class="CinemaMinus.Views.MainView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:local="clr-namespace:CinemaMinus.Views"
+        mc:Ignorable="d"
+        MinHeight="450"
+        MinWidth="450"
+        Title="MainView" Height="450" Width="800" WindowStyle="None">
+
+    <Grid>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.1*"/>
+            <RowDefinition Height="0.2*"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <StackPanel
+            Margin="2" 
+            Orientation="Horizontal"
+            HorizontalAlignment="Right"
+            Width="150">
+
+            <Button 
+                Click="Minimize_Click"
+                Name="Minimize"
+                Style="{DynamicResource MaterialDesignFlatButton}">
+                <md:PackIcon Kind="Minimize"/>
+            </Button>
+
+            <Button 
+                Click="Maximize_Click"
+                Name="Maximize"
+                Style="{DynamicResource MaterialDesignFlatButton}">
+                <md:PackIcon Kind="Maximize"/>
+            </Button>
+
+            <Button 
+                Click="Close_Click"
+                Name="Close"
+                Style="{DynamicResource MaterialDesignFlatButton}">
+                <md:PackIcon Kind="Close"/>
+            </Button>
+        </StackPanel>
+
+        <StackPanel Grid.Row="1"
+            Orientation="Horizontal">
+            <Button Command="{Binding First}">1</Button>
+            <Button Command="{Binding Second}">2</Button>
+            <Button Command="{Binding Third}">3</Button>
+        </StackPanel>
+        <ContentControl Grid.Row="2" Content="{Binding CurrentView, UpdateSourceTrigger=PropertyChanged}" />
+    </Grid>
+</Window>

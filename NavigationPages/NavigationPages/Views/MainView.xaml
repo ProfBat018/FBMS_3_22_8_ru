@@ -12,4 +12,5 @@
     <NavigationWindow.Content>
         <Frame Source="SearchView.xaml"/>
     </NavigationWindow.Content>
+    
 </NavigationWindow>
