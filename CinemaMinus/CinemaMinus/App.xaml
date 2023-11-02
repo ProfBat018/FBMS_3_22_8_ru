@@ -19,7 +19,11 @@
             <DataTemplate DataType="{x:Type ViewModel:OrderViewModel}">
                 <View:OrderView/>
             </DataTemplate>
-            
+
+            <DataTemplate DataType="{x:Type ViewModel:MainViewModel}">
+                <View:MainView/>
+            </DataTemplate>
+
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />

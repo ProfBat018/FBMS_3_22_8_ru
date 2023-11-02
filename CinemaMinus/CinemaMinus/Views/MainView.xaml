@@ -10,48 +10,46 @@
         MinWidth="450"
         Title="MainView" Height="450" Width="800" WindowStyle="None">
 
-    <Grid>
-
+    <Grid 
+        MouseDown="Grid_MouseDown">
         <Grid.RowDefinitions>
-            <RowDefinition Height="0.1*"/>
-            <RowDefinition Height="0.2*"/>
+            <RowDefinition Height="40"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
 
-        <StackPanel
-            Margin="2" 
-            Orientation="Horizontal"
-            HorizontalAlignment="Right"
-            Width="150">
+        <Grid>
+            <Border>
+                <Border.Background>
+                    <SolidColorBrush Color="{DynamicResource Primary900Foreground}"/>
+                </Border.Background>
+            </Border>
 
-            <Button 
+            <StackPanel
+                HorizontalAlignment="Right"
+                Orientation="Horizontal">
+                <Button 
                 Click="Minimize_Click"
                 Name="Minimize"
                 Style="{DynamicResource MaterialDesignFlatButton}">
-                <md:PackIcon Kind="Minimize"/>
-            </Button>
+                    <md:PackIcon Kind="Minimize"/>
+                </Button>
 
-            <Button 
+                <Button 
                 Click="Maximize_Click"
                 Name="Maximize"
                 Style="{DynamicResource MaterialDesignFlatButton}">
-                <md:PackIcon Kind="Maximize"/>
-            </Button>
+                    <md:PackIcon Kind="Maximize"/>
+                </Button>
 
-            <Button 
+                <Button 
                 Click="Close_Click"
                 Name="Close"
                 Style="{DynamicResource MaterialDesignFlatButton}">
-                <md:PackIcon Kind="Close"/>
-            </Button>
-        </StackPanel>
+                    <md:PackIcon Kind="Close"/>
+                </Button>
+            </StackPanel>
+        </Grid>
 
-        <StackPanel Grid.Row="1"
-            Orientation="Horizontal">
-            <Button Command="{Binding First}">1</Button>
-            <Button Command="{Binding Second}">2</Button>
-            <Button Command="{Binding Third}">3</Button>
-        </StackPanel>
-        <ContentControl Grid.Row="2" Content="{Binding CurrentView, UpdateSourceTrigger=PropertyChanged}" />
+        <ContentControl Grid.Row="1" Content="{Binding CurrentView, UpdateSourceTrigger=PropertyChanged}" />
     </Grid>
 </Window>

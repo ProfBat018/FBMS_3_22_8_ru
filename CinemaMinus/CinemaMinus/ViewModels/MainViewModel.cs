@@ -1,19 +1,18 @@
-﻿using CinemaMinus.Services.Classes;
+﻿using CinemaMinus.Messages;
+using CinemaMinus.Services.Classes;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows;
+using GalaSoft.MvvmLight.Messaging;
+using System.ComponentModel;
 
 namespace CinemaMinus.ViewModels;
+
 
 class MainViewModel : ViewModelBase
 {
     private ViewModelBase _currentView;
+
+    private readonly IMessenger _messenger;
     public ViewModelBase CurrentView
     {
         get => _currentView;
@@ -23,13 +22,16 @@ class MainViewModel : ViewModelBase
         }
     }
 
-    private readonly CinemaManagerService _cinemaManager;
 
-    public MainViewModel(CinemaManagerService cinemaManager)
+    public MainViewModel(IMessenger messenger)
     {
-        _cinemaManager = cinemaManager;
-        
-        CurrentView = App.Container.GetInstance<InfoViewModel>();
+        _messenger = messenger;
+        CurrentView = App.Container.GetInstance<SearchViewModel>();
+
+        _messenger.Register<NavigationMessage>(this, message =>
+        {
+            CurrentView = message.ViewModelType;
+        });
     }
 
     public RelayCommand First { get => new(() =>
