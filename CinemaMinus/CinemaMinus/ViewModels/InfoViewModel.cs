@@ -17,10 +17,12 @@ class InfoViewModel : ViewModelBase
 {
     private readonly IMessenger _messenger;
     private readonly INavigationService _navigationService;
+    private readonly IDataService _dataService;
+
 
     public Result Movie { get; set; }
 
-    public InfoViewModel(IMessenger messenger, INavigationService navigationService)
+    public InfoViewModel(IMessenger messenger, INavigationService navigationService, IDataService dataService)
     {
         _messenger = messenger;
 
@@ -29,6 +31,7 @@ class InfoViewModel : ViewModelBase
             Movie = message.Data as Result;
         });
         _navigationService = navigationService;
+        _dataService = dataService;
     }
 
     public ButtonCommand BackCommand
@@ -36,6 +39,15 @@ class InfoViewModel : ViewModelBase
         get => new(() =>
         {
             _navigationService.NavigateTo<SearchViewModel>();
+        });
+    }
+
+    public ButtonCommand OrderCommand
+    {
+        get => new(() =>
+        {
+            _dataService.SendData(Movie);
+            _navigationService.NavigateTo<OrderViewModel>();
         });
     }
 }
