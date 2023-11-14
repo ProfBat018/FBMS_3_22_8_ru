@@ -9,9 +9,7 @@
         WindowStyle="None"
         Title="MainWindow" Height="450" Width="800">
 
-
     <Window.Resources>
-
         <Style x:Key="MenuButton" TargetType="Button">
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="Background" Value="Transparent"/>
@@ -72,19 +70,22 @@
 
         <DockPanel LastChildFill="False" Grid.Row="0">
             <Button Click="ButtonMenu_Click" x:Name="ButtonMenu" Style="{DynamicResource OpenBtn}" Width="40" DockPanel.Dock="Left"/>
-            <Button Style="{DynamicResource MenuButton}" Width="40" DockPanel.Dock="Right">
+            
+            <Button Name="CloseBtn" Click="CloseBtn_Click" Style="{DynamicResource MenuButton}" Width="40" DockPanel.Dock="Right">
                 <md:PackIcon Kind="Close" />
             </Button>
-            <Button Style="{DynamicResource MenuButton}" Width="40" DockPanel.Dock="Right">
+            
+            <Button Name="MaximizeBtn" Click="MaximizeBtn_Click" Style="{DynamicResource MenuButton}" Width="40" DockPanel.Dock="Right">
                 <md:PackIcon Kind="Maximize" />
             </Button>
-            <Button Style="{DynamicResource MenuButton}" Width="40" DockPanel.Dock="Right">
+            
+            <Button Name="MinimizeBtn" Click="MinimizeBtn_Click"  Style="{DynamicResource MenuButton}" Width="40" DockPanel.Dock="Right">
                 <md:PackIcon Kind="Minimize" />
             </Button>
         </DockPanel>
 
 
-        <InkCanvas Grid.Row="1">
+        <InkCanvas Name="inkCanvas" Grid.Row="1">
 
         </InkCanvas>
 
@@ -138,7 +139,7 @@
                 <Button>
                     <md:PackIcon Kind="Toolbox" />
                 </Button>
-                <Button>
+                <Button Name="BrushBtn" Click="BrushBtn_Click">
                     <md:PackIcon Kind="Brush" />
                 </Button>
                 <Button>

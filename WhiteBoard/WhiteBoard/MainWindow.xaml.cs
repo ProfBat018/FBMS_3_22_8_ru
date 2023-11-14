@@ -49,5 +49,35 @@ namespace WhiteBoard
                 isMenuOpen = true;
             }
         }
+
+        private void CloseBtn_Click(object sender, RoutedEventArgs e)
+        {
+            App.Current.Shutdown();
+        }
+
+        private void MaximizeBtn_Click(object sender, RoutedEventArgs e)
+        {
+            if (WindowState == WindowState.Maximized)
+            {
+                WindowState = WindowState.Normal;
+            }
+            else
+            {
+                WindowState = WindowState.Maximized;
+            }
+        }
+
+        private void MinimizeBtn_Click(object sender, RoutedEventArgs e)
+        {
+            WindowState = WindowState.Minimized;
+        }
+
+        private void BrushBtn_Click(object sender, RoutedEventArgs e)
+        {
+            var colorPickerWindow = new ColorPickerWindow();
+            colorPickerWindow.ShowDialog();
+
+            inkCanvas.DefaultDrawingAttributes.Color = App.Color.Color;
+        }
     }
 }
