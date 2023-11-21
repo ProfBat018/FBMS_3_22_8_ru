@@ -14,9 +14,6 @@ using System.Windows;
 
 namespace CinemaMinus
 {
-    /// <summary>
-    /// Interaction logic for App.xaml
-    /// </summary>
     public partial class App : Application
     {
         public static Container Container { get; set; } = new();
