@@ -10,4 +10,5 @@ interface ITransport
 {
     public string Make { get; set; }
     public string Model { get; set; }
+    public IEntity TransportEntity { get; set; }
 }

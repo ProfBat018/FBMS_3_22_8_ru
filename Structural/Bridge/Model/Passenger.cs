@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Bridge.Model;
 
-interface IPassenger : ITransport
+class Passenger : IEntity
 {
     public int MaxPassengerCount { get; set; }
 }
