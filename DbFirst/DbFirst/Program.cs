@@ -22,8 +22,15 @@ DbContextOptions<AcademyContext> ConfigStartup(string connectionName)
 }
 
 using AcademyContext academyContext = new(ConfigStartup("Default"));
+//
+// var res = academyContext.People.Where(x => x.Id > 5);
+//
+// foreach (var item in res)
+// {
+//     Console.WriteLine(item.Name);   
+// }
 
-var res = academyContext.People.Where(x => x.Id > 5);
+var res = academyContext.People.Where(x => x.Name == "Sophia").ToList();
 
 foreach (var item in res)
 {
