@@ -26,7 +26,6 @@ container.Register<DataService>();
 
 container.Verify();
 
-
 var service = container.GetInstance<DataService>();
 
 service.GetAllProducts();
