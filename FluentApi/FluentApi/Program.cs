@@ -32,10 +32,3 @@ service.GetAllProducts();
 
 
 
-
-
-
-
-
-
-
