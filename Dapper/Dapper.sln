@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DapperIntro", "DapperIntro\DapperIntro.csproj", "{A953D5DD-4FB9-499F-B8B8-C51D47167A12}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inheritance", "Inheritance\Inheritance.csproj", "{16C9ED8B-D4EA-4B53-BA9F-9F59DC0BE442}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{A953D5DD-4FB9-499F-B8B8-C51D47167A12}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A953D5DD-4FB9-499F-B8B8-C51D47167A12}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A953D5DD-4FB9-499F-B8B8-C51D47167A12}.Release|Any CPU.Build.0 = Release|Any CPU
+		{16C9ED8B-D4EA-4B53-BA9F-9F59DC0BE442}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{16C9ED8B-D4EA-4B53-BA9F-9F59DC0BE442}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{16C9ED8B-D4EA-4B53-BA9F-9F59DC0BE442}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{16C9ED8B-D4EA-4B53-BA9F-9F59DC0BE442}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

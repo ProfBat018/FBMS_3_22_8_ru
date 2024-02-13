@@ -32,3 +32,78 @@ Dapper можно скачать через NuGet. Для этого нужно 
 Install-Package Dapper
 ```
 
+### Наследование в Dapper 
+
+В Dapper есть возможность использовать наследование.
+
+Это фишка нужна для того, 
+чтобы не писать один и тот же код для разных классов.
+
+Предположим у нас есть класс, описывающий транспортное средство:
+```csharp
+
+class Transport {
+    public int Id {get; set;}
+    public string Make {get; set;}
+    public string Model {get; set;}
+    public DateTime ProductionDate {get; set;}
+}
+
+```
+
+И у нас есть класс, описывающий автомобиль:
+```csharp
+class Car : Transport {
+    public int HorsePower {get; set;}
+    public string EngineType {get; set;}
+}
+```
+
+```csharp
+class Bicycle : Transport {
+    public int WheelDiameter {get; set;}
+    public string FrameMaterial {get; set;}
+}
+```
+
+Чтобы создать эти объекты в базе данных, нам нужно описать их полностью 
+
+```sql
+
+CREATE TABLE Transport (
+    Id INT PRIMARY KEY,
+    Make NVARCHAR(100),
+    Model NVARCHAR(100),
+    ProductionDate DATETIME
+);
+
+CREATE TABLE Car (
+    Id INT PRIMARY KEY,
+    Make NVARCHAR(100),
+    Model NVARCHAR(100),
+    ProductionDate DATETIME,
+    HorsePower INT,
+    EngineType NVARCHAR(100)
+);
+
+CREATE TABLE Bicycle (
+    Id INT PRIMARY KEY,
+    Make NVARCHAR(100),
+    Model NVARCHAR(100),
+    ProductionDate DATETIME,
+    WheelDiameter INT,
+    FrameMaterial NVARCHAR(100)
+);
+```
+
+И вот тут наследование в Dapper нам поможет.
+
+Мы можем использовать наследование в запросах к базе данных.
+
+```csharp
+
+var query = "SELECT * FROM Transport WHERE Id = @Id";
+
+
+
+```
