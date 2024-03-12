@@ -3,6 +3,8 @@ using System.Reflection;
 using System.Text;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
+using WebServer.Controllers;
+using WebServer.Middlewares.Classes;
 using WebServer.Services.Classes.Endpoints;
 using WebServer.Services.Interfaces;
 
@@ -10,6 +12,8 @@ namespace WebServer.Services.Classes.MainJobs;
 
 public class WebHost : IWebHost
 {
+    public static ServiceProvider Container;
+    private readonly MiddlewareBuilder _builder;
     private readonly HttpListener _listener;
     private ushort _port;
 
@@ -17,8 +21,24 @@ public class WebHost : IWebHost
     {
         _port = port;
         _listener = new();
+        _builder = new();
     }
 
+    private void ConfigureServices()
+    {
+        var collection = new ServiceCollection();
+
+        collection.AddTransient<LoggerMiddleware>();
+        collection.AddTransient<MiddlewareBuilder>();
+        collection.AddTransient<MvcMiddleware>();
+        collection.AddTransient<HomeController>();
+        
+        _builder.Use<LoggerMiddleware>();
+        _builder.Use<MvcMiddleware>();
+        
+        Container = collection.BuildServiceProvider();
+    }
+    
     public void Start()
     {
         _listener.Prefixes.Add($"http://localhost:{_port}/");
@@ -28,11 +48,22 @@ public class WebHost : IWebHost
 
         while (true)
         {
+            ConfigureServices();
             HttpListenerContext context = _listener.GetContext();
 
             HandleRequest(context);
         }
     }
+
+    public void HandleRequest(HttpListenerContext context)
+    {
+        var handler = _builder.Build();
+        handler.Invoke(context);
+    }
+    
+    #region OldHandleRequest
+
+    /*
 
     public void HandleRequest(HttpListenerContext context)
     {
@@ -70,4 +101,6 @@ public class WebHost : IWebHost
         
         context.Response.Close();
     }
+    */
+    #endregion
 }
