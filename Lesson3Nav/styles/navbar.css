@@ -1,0 +1,97 @@
+@charset "UTF-8";
+/* Добавление шрифта */
+@font-face {
+  font-family: Inter;
+  src: url("../assets/fonts/Inter-font.ttf");
+}
+
+@keyframes slide-out-left {
+  0% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(-100px);
+    opacity: 0;
+  }
+}
+
+html {
+  margin: 0px;
+}
+
+body {
+  margin: 0px;
+}
+
+.navbar {
+  height: 50px;
+  display: flex;
+  align-items: center;
+}
+
+.nav-menu {
+  background-color: #ffd500;
+  height: 100%;
+  width: 100%;
+  padding-left: 10px;
+  padding-right: 10px;
+  list-style-type: none;
+  display: flex;
+  justify-content: space-between;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+}
+
+.nav-item i {
+  transition: 0.5s;
+}
+
+.nav-item a {
+  color: black;
+  height: 100%;
+  display: flex;
+  font-family: Inter;
+  text-decoration: none;
+  text-wrap: nowrap;
+  align-items: center;
+}
+
+.nav-item a span {
+  display: inline-block;
+}
+
+.nav-item:hover span {
+  opacity: 0;
+  transform: translateX(-100px);
+  transition: 0.5s;
+}
+
+.nav-item:hover i {
+  transform: scale(2) translateX(15px);
+  transition: 0.5s;
+}
+
+.nav-item-text {
+  margin: 0px 5px 0 5px;
+}
+
+.nav-auth {
+  width: 30%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.nav-auth ul {
+  width: 50%;
+  list-style-type: none;
+  display: flex;
+}
+
+.nav-auth ul a {
+  width: 35px;
+}
