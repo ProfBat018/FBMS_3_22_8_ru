@@ -1,0 +1,56 @@
+@import "global-style";
+
+.navbar {
+    height: 75px;
+    @include flex(space-between, flex-start);
+
+    .nav-logo {
+        position: relative;
+        display: inline-block;
+        height: 100%;
+        width: 15%;
+
+        a {
+            svg {
+                height: 100%;
+                position: absolute;
+                top: 0;
+                left: 0;
+            }
+        }
+
+
+    }
+
+    .nav-main {
+        height: 100%;
+        width: 70%;
+        @include flex(flex-start, center);
+
+        .nav-items {
+            height: 100%;
+            width: 100%;
+            @include flex(space-evenly, center);
+            @include reset-list();
+
+            .nav-item {
+                height: 100%;
+
+                a {
+                    height: 100%;
+                    color: black;
+                    text-decoration: none;
+                    font-family: 'Product Sans';
+                    @include flex(center, center)
+                }
+            }
+        }
+    }
+
+
+    .nav-auth {
+        width: 30%;
+        @include flex(flex-end, center);
+    }
+
+}

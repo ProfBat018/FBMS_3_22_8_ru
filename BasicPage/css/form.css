@@ -1,0 +1,84 @@
+@font-face {
+  font-family: 'Product Sans Bold Italic';
+  src: url(../assets/fonts/ProductSansBoldItalic.ttf);
+}
+
+@font-face {
+  font-family: 'Product Sans Bold';
+  src: url(../assets/fonts/ProductSansBold.ttf);
+}
+
+@font-face {
+  font-family: 'Product Sans Italic';
+  src: url(../assets/fonts/ProductSansItalic.ttf);
+}
+
+@font-face {
+  font-family: 'Product Sans';
+  src: url(../assets/fonts/ProductSansRegular.ttf);
+}
+
+.calculator {
+  padding: 100px;
+  width: 400px;
+}
+
+.calculator .calc-form {
+  outline: solid;
+  outline-offset: 10px;
+  font-size: 24px;
+  font-family: "Product Sans";
+  display: flex;
+  flex-direction: column;
+}
+
+.calculator .calc-form select {
+  background: #fff none repeat scroll 0 0;
+  border: 1px solid #e5e5e5;
+  font-size: 15px;
+  font-family: 'Product Sans';
+  height: 46px;
+  line-height: 30px;
+  padding: 0 15px;
+}
+
+.calculator .calc-form input {
+  background: #fff none repeat scroll 0 0;
+  border: 1px solid #e5e5e5;
+  font-size: 15px;
+  font-family: 'Product Sans';
+  height: 46px;
+  line-height: 30px;
+  padding: 0 15px;
+}
+
+.calculator .calc-form .form-row-1 .car-type {
+  float: left;
+}
+
+.calculator .calc-form .form-row-1 .engine-type {
+  float: right;
+}
+
+.calculator .calc-form .form-row-2 .col-1 {
+  float: left;
+}
+
+.calculator .calc-form .form-row-2 .col-2 {
+  float: right;
+}
+
+.calculator .calc-form .form-row-2 .form-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.calculator .calc-form .form-row-2 .form-col div {
+  padding-top: 10px;
+}
+
+.calculator .calc-form .form-row-3 {
+  padding-top: 10px;
+  display: flex;
+  flex-direction: column;
+}
