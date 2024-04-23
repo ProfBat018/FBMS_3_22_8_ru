@@ -13,15 +13,18 @@
 .calculator {
     padding: 100px;
     width: 400px;
-
+    z-index: 100;
 
     .calc-form {
-        background: rgb(97, 191, 130);
-        background: linear-gradient(90deg, rgba(97, 191, 130, 1) 0%, rgba(12, 165, 121, 1) 53%, rgba(193, 193, 193, 1) 100%);
+        // background: rgb(97, 191, 130);
+        // background: linear-gradient(90deg, rgba(97, 191, 130, 1) 0%, rgba(12, 165, 121, 1) 53%, rgba(193, 193, 193, 1) 100%);
         font-size: 24px;
         font-family: "Product Sans";
         display: flex;
         flex-direction: column;
+        border-radius: 10px;
+        box-shadow: 1px 1px 50px black;
+        z-index: -1;
 
 
         .calc-items {

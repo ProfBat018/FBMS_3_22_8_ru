@@ -21,15 +21,17 @@
 .calculator {
   padding: 100px;
   width: 400px;
+  z-index: 100;
 }
 
 .calculator .calc-form {
-  background: #61bf82;
-  background: linear-gradient(90deg, #61bf82 0%, #0ca579 53%, #c1c1c1 100%);
   font-size: 24px;
   font-family: "Product Sans";
   display: flex;
   flex-direction: column;
+  border-radius: 10px;
+  box-shadow: 1px 1px 50px black;
+  z-index: -1;
 }
 
 .calculator .calc-form .calc-items {
