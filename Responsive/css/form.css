@@ -21,7 +21,7 @@
 .calculator {
   padding: 100px;
   width: 400px;
-  z-index: 100;
+  z-index: 1;
 }
 
 .calculator .calc-form {
