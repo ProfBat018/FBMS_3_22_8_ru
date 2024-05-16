@@ -84,3 +84,57 @@ async function fetchData() {
 
 fetchData();
 ```
+
+## Garbage Collection in JS
+
+В JS есть механизм сборки мусора. Он автоматически удаляет объекты, которые больше не используются. Это позволяет избежать утечек памяти.
+Интересный момент заключается в том, что работает этот механизм почти так же как и в C#. В JS есть `Mark-and-sweep` алгоритм. Он работает следующим образом:
+
+1. **Mark** - алгоритм помечает все объекты, на которые есть ссылки.
+2. **Sweep** - алгоритм удаляет все объекты, на которые нет ссылок.
+
+Вот пример утечки памяти:
+
+```js
+let element = document.getElementById("element");
+
+function doSomething() {
+  let element = document.getElementById("element");
+  // do something
+}
+
+setInterval(() => {
+  doSomething();
+}, 1000);
+```
+
+В этом примере функция `doSomething
+` создает новую переменную `element` каждый раз, когда вызывается. Это приводит к утечке памяти, так как старые объекты не удаляются.
+
+## Interlinked objects
+
+```javascript
+function marry(man, woman) {
+  woman.husband = man;
+  man.wife = woman;
+
+  return {
+    father: man,
+    mother: woman,
+  };
+}
+
+let john = { name: "John" };
+let ann = { name: "Ann" };
+
+let family = marry(john, ann);
+
+```
+
+![Interlinked objects](./assets/Screenshot%202024-05-16%20at%2009.22.11.png)
+
+![Interlinked objects](./assets/Screenshot%202024-05-16%20at%2009.26.26.png)
+
+![Interlinked objects](./assets/Screenshot%202024-05-16%20at%2009.27.27.png)
+
+
