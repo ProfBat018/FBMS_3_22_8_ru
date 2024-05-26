@@ -1,8 +1,3 @@
-let a = `5`;
-let b = 5;
-
-if (a == b) {
-    console.log('equals');
-}
-
-
+var message = 'Hello World';
+console.log(typeof message); // string
+var messageLength = message.length;
