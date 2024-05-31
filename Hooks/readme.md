@@ -1,23 +1,23 @@
-# Hooks 
+# Hooks
 
-`Hooks` - это функции, которые позволяют вам использовать состояние и другие возможности React без написания классов. 
+`Hooks` - это функции, которые позволяют вам использовать состояние и другие возможности React без написания классов.
 
 Для начала хотелось бы показать вам как происходит отслеживание сотсояния объектов с использованием классовых компонентов на примере обычного счетчика.
 
 ```jsx
-import React, { Component } from 'react';
+import React, { Component } from "react";
 
 class Counter extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      count: 0
+      count: 0,
     };
   }
 
   increment() {
     this.setState({
-      count: this.state.count + 1
+      count: this.state.count + 1,
     });
   }
 
@@ -33,3 +33,17 @@ class Counter extends Component {
 
 export default Counter;
 ```
+
+## useState
+
+`useState` - это Hook, который позволяет вам добавлять состояние React в функциональные компоненты.
+
+Пример можете посмотреть в компоненте `Counter`:
+
+## useEffect
+
+`useEffect` - это Hook, который позволяет вам выполнять побочные эффекты в функциональных компонентах.
+
+То есть `useEffect` - это аналогично `componentDidMount`, `componentDidUpdate` и `componentWillUnmount` в классовых компонентах.
+
+с помощью него мы можем задавать элементы при рендеринге компонента, а также выполнять какие-то действия при изменении состояния.

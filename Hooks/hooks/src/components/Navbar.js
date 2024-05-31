@@ -2,29 +2,28 @@ import React, { useState } from "react";
 import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
 
 const Navbar = () => {
-  // State to manage the navbar's visibility
   const [nav, setNav] = useState(false);
 
-  // Toggle function to handle the navbar's display
   const handleNav = () => {
     setNav(!nav);
   };
 
-  // Array containing navigation items
+  
   const navItems = [
     { id: 1, text: "Home" },
     { id: 2, text: "Company" },
     { id: 3, text: "Resources" },
     { id: 4, text: "About" },
     { id: 5, text: "Contact" },
+    { id: 6, text: "Blog" },
   ];
 
   return (
-    <div className="bg-black flex justify-between items-center h-24 max-w-[1240px] mx-auto px-4 text-white">
-      {/* Logo */}
-      <h1 className="w-full text-3xl font-bold text-[#00df9a]">REACT.</h1>
+    <div className="bg-black flex justify-between items-center h-24  max-w-[full] text-white">
+      <h1 className="w-full p-4 text-left text-3xl font-bold text-[#00df9a]">
+        REACT.
+      </h1>
 
-      {/* Desktop Navigation */}
       <ul className="hidden md:flex">
         {navItems.map((item) => (
           <li
@@ -36,12 +35,10 @@ const Navbar = () => {
         ))}
       </ul>
 
-      {/* Mobile Navigation Icon */}
       <div onClick={handleNav} className="block md:hidden">
         {nav ? <AiOutlineClose size={20} /> : <AiOutlineMenu size={20} />}
       </div>
 
-      {/* Mobile Navigation Menu */}
       <ul
         className={
           nav
@@ -49,10 +46,8 @@ const Navbar = () => {
             : "ease-in-out w-[60%] duration-500 fixed top-0 bottom-0 left-[-100%]"
         }
       >
-        {/* Mobile Logo */}
         <h1 className="w-full text-3xl font-bold text-[#00df9a] m-4">REACT.</h1>
 
-        {/* Mobile Navigation Items */}
         {navItems.map((item) => (
           <li
             key={item.id}
