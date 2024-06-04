@@ -6,7 +6,7 @@ namespace ToDoApi.Models.Contexts;
 
 public class TodoContext : IdentityDbContext
 {
-    public DbSet<Task> Tasks { get; set; }
+    public DbSet<UserTask> Tasks { get; set; }
 
     public TodoContext(DbContextOptions<TodoContext> options) : base(options)
     {
@@ -14,12 +14,11 @@ public class TodoContext : IdentityDbContext
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
-        var toDoEntity = builder.Entity<Task>();
+        var toDoEntity = builder.Entity<UserTask>();
         var userEntity = builder.Entity<IdentityUser>();
         
         userEntity.Property(x => x.UserName).IsRequired();
         userEntity.Property(x => x.Email).IsRequired();
-        
         
         toDoEntity.HasKey(t => t.Id);
         base.OnModelCreating(builder);
