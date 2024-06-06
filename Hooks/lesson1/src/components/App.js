@@ -4,11 +4,11 @@ import Navbar from "./Navbar";
 import NewCounter from "./NewCounter";
 import { useState } from "react";
 import { useEffect } from "react";
-import Card from "../components/Card";
+import Card from "./Card";
 import StyledComponent from "./StyledComponent";
 import UseEffectClass from "./UseEffectClass";
 import UseEffectMethod from "./UseEffectMethod";
-  
+
 // function App() {
 //   const [cars, setCars] = useState([]);
 

@@ -5,7 +5,7 @@ function UseEffectMethod() {
 
   useEffect(() => {
     console.log(`You clicked ${count} times`);
-  });
+  }, [count]);
 
   return (
     <div>
