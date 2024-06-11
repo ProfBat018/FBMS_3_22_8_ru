@@ -8,6 +8,8 @@ import Card from "./Card";
 import StyledComponent from "./StyledComponent";
 import UseEffectClass from "./UseEffectClass";
 import UseEffectMethod from "./UseEffectMethod";
+import { withoutMemo } from "./withoutMemo";
+import MemoExample2 from "./MemoExample2";
 
 // function App() {
 //   const [cars, setCars] = useState([]);
@@ -59,14 +61,30 @@ import UseEffectMethod from "./UseEffectMethod";
 // export default App;
 
 function App() {
+  let cars = [
+    { make: "Ford", model: "Fusion", price: 45000 },
+    { make: "Chevy", model: "Bolt", price: 40000 },
+    { make: "Tesla", model: "Model 3", price: 60000 },
+  ];
+
   return (
     <div className="App">
-      <header>
-        <Navbar />
-      </header>
+      {/* <StateExample /> */}
+      {/* <RefExample /> */}
 
-      {/* <UseEffectClass /> */}
-      <UseEffectMethod />
+      {/* <StateExample2 /> */}
+      {/* <RefExample2 /> */}
+
+      {/* <ContextProblem /> */}
+
+      {/* <ThemeContext.Provider value="dark">
+        <ContextSolution />
+      </ThemeContext.Provider> */}
+
+      {/* <withoutMemo data={cars} /> */}
+      {/* <MemoExample data={cars} /> */}
+
+      <MemoExample2 />
     </div>
   );
 }
