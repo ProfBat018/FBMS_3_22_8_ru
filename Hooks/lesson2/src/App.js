@@ -6,8 +6,8 @@ import StateExample2 from "./StateExample2";
 import ContextProblem from "./ContextProblem";
 import ContextSolution from "./ContextSolution";
 import { createContext } from "react";
-import { MemoExample } from "./";
-import { withoutMemo } from "./withoutMemo";
+import CallbackExample from "./CallbackExample";
+import ReducerExample from "./ReducerExample";
 
 export const ThemeContext = createContext();
 
@@ -32,8 +32,12 @@ function App() {
         <ContextSolution />
       </ThemeContext.Provider> */}
 
-      <withoutMemo data={cars} />
+      {/* <withoutMemo data={cars} /> */}
       {/* <MemoExample data={cars} /> */}
+
+      {/* <CallbackExample /> */}
+
+      <ReducerExample />
     </div>
   );
 }
