@@ -36,7 +36,7 @@ namespace AuthDemo.Api.Controllers
             if (await _authService.Login(user))
             {
                 var tokenString = _authService.GenerateTokenString(user);
-                return Ok(tokenString);
+                return Ok(new { Token = tokenString });
             }
             return BadRequest();
         }

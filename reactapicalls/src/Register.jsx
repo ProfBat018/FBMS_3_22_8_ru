@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate, useHistory  } from "react-router-dom";
+import { useNavigate  } from "react-router-dom";
 import { useState, useRef, useEffect } from "react";
 
 export default function Register() {
@@ -7,7 +7,8 @@ export default function Register() {
   const emailRef = useRef();
   const passwordRef = useRef();
   const confirmRef = useRef();
-  const history = useHistory();
+  const navigate = useNavigate();
+
   
   const registerByFetchApi = async (e) => {
     e.preventDefault();
@@ -23,7 +24,7 @@ export default function Register() {
       return;
     }
     try {
-      const response = await fetch("https://localhost:7266/api/Auth/Register", {
+      const response = await fetch("http://localhost:7266/api/Auth/Register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -38,10 +39,9 @@ export default function Register() {
       } else {
         console.log(data);
 
-        history.push({
-            pathname: "/login",
-            state: {login: userName}
-        });
+
+
+       navigate("../login", {state: {userName: userName}});
       }
     } catch (error) {
       console.log(error);
@@ -143,7 +143,7 @@ export default function Register() {
         <p className="mt-10 text-center text-sm text-gray-500">
           Already a member?
           <a
-            onClick={() => history.push("/home/login")}
+            onClick={() => navigate("/login")}
             style={{ cursor: "pointer" }}
             className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
           >

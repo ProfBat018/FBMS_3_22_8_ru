@@ -3,11 +3,39 @@ import { useNavigate , useLocation } from "react-router-dom";
 
 export default function Login() {
   const navigate = useNavigate();
-    const {userData} = useLocation();
+    const userData = useLocation();
 
     const emailRef = useRef();
     const passwordRef = useRef();
 
+    
+  const loginByFetchApi = async (e) => {
+    e.preventDefault();
+    
+    const userName = emailRef.current.value;
+    const password = passwordRef.current.value;
+
+    try {
+      const response = await fetch("http://localhost:7266/api/Auth/Login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ userName, password }),
+      });
+
+      const data = await response.json();
+
+      if (data.error) {
+        console.log(data.error);
+      } else {
+        console.log(data);
+        navigate("../", {state: {isSignedIn: true}});
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
 
   const navigateTo = (path) => {
@@ -15,8 +43,8 @@ export default function Login() {
   };
 
   useEffect(() => {
-    if (userData !== null) {
-        emailRef.current.value = userData.state.login;
+    if (userData.state !== null) {
+        emailRef.current.value = userData.state.userName;
     }
   });
 
@@ -34,7 +62,7 @@ export default function Login() {
       </div>
 
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-        <form className="space-y-6" action="#" method="POST">
+        <form className="space-y-6" onSubmit={loginByFetchApi} method="POST">
           <div>
             <label
               htmlFor="email"

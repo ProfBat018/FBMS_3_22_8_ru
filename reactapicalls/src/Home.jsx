@@ -1,18 +1,25 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "./Navbar";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 
 export default function Home() {
+  const location = useLocation();
+  const [isSignedIn, setIsSignedIn] = useState(false);
+
+  useEffect(() => {
+    if (location.state != null) {
+      setIsSignedIn(location.state.isSignedIn);
+    }
+  });
+
   return (
     <div>
       <header>
-        <Navbar />
+        <Navbar isSignedIn={isSignedIn} />
       </header>
       <main>
         <Outlet />
-        {/* Этот тег нужен для привязывания дочерних 
-        элементов. Работает точно как ContentControl в WPF.
-         */}
+        {/* Outlet is used to render nested routes */}
       </main>
       <footer>
         <div className="bg-black text-white text-center p-4">
