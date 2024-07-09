@@ -1,6 +1,7 @@
 import "./Navbar.css";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Link from "react-router-dom";
 
 export default function Navbar(props) {
   const navigate = useNavigate();
@@ -8,7 +9,7 @@ export default function Navbar(props) {
     { id: 1, text: "About" },
     { id: 2, text: "Contact" },
     { id: 3, text: "Login" },
-    { id: 4, text: "Register" }
+    { id: 4, text: "Register" },
   ]);
   const isSignedIn = props.isSignedIn;
 
@@ -24,7 +25,9 @@ export default function Navbar(props) {
         { id: 1, text: "About" },
         { id: 2, text: "Contact" },
         { id: 3, text: "Login" },
-        { id: 4, text: "Register" }
+        { id: 4, text: "Register" },
+        { id: 5, text: "Movies" }
+
       ]);
     }
   }, [isSignedIn]);

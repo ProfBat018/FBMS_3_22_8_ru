@@ -1,70 +1,84 @@
-# Getting Started with Create React App
+# Взоможности API запросов в React 
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+В общем у нас есть несколько вариантов того, как мы можем делать запросы к серверу в React.
+- Fetch API
+- Axios
+- react-query
+- SWR
 
-## Available Scripts
+## Fetch API
 
-In the project directory, you can run:
+Этот способ мы рассматривали уже много раз. В нем нет ничего сложного. Просто делаем запрос к серверу и получаем данные. 
 
-### `npm start`
+## Axios
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Axios - это библиотека для работы с запросами. Она позволяет делать запросы к серверу и получать данные. По факту я воспринимаю Axios как улучшенный Fetch API.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## react-query
 
-### `npm test`
+`react-query` - это тоже библиотека для работы с запросами. 
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Для начала установим ее в наш проект:
 
-### `npm run build`
+```bash
+npm install react-query
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Импортируем ее в наш проект:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```js
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+import { QueryClient, QueryClientProvider, useQuery } from 'react-query'
 
-### `npm run eject`
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+Чтобы работать с запросами, нам нужно создать `QueryClient`:
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```js
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+const queryClient = new QueryClient()
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+```
 
-## Learn More
+И обернуть наше приложение в `QueryClientProvider`:
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+```js
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+<QueryClientProvider client={queryClient}>
+  <App />
 
-### Code Splitting
+</QueryClientProvider>
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+```
 
-### Analyzing the Bundle Size
+Суть этой библиотеки в том, что он работает вместе с `fetch` и `axios`. 
+Он по факту позволяет проще забирать данные с сервера и обновлять их.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
 
-### Making a Progressive Web App
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
 
-### Advanced Configuration
+# Вопрос Рустама 
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+В чем разница между имортированием через фигурные скобки и без них?
 
-### Deployment
+```js
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+import { QueryClient, QueryClientProvider, useQuery } from 'react-query'
 
-### `npm run build` fails to minify
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+```js
+
+import QueryClient, QueryClientProvider, useQuery from 'react-query'
+
+```
+
+# Ответ
+
+Когда мы импортируем через фигурные скобки, мы импортируем конкретный элемент из библиотеки.
+Когда мы импортируем без фигурных скобок, мы импортируем default элемент из библиотеки.
+
+Разница в export и export default.
+
+
+

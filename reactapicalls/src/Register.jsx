@@ -1,6 +1,8 @@
 import React from "react";
-import { useNavigate  } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useState, useRef, useEffect } from "react";
+
+import axios from "axios";
 
 export default function Register() {
 
@@ -9,10 +11,10 @@ export default function Register() {
   const confirmRef = useRef();
   const navigate = useNavigate();
 
-  
+
   const registerByFetchApi = async (e) => {
     e.preventDefault();
-    
+
     const userName = emailRef.current.value;
     const password = passwordRef.current.value;
     const confirm = confirmRef.current.value;
@@ -41,14 +43,53 @@ export default function Register() {
 
 
 
-       navigate("../login", {state: {userName: userName}});
+        navigate("../login", { state: { userName: userName } });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const registerByAxios = async () => {
+    const userName = emailRef.current.value;
+    const password = passwordRef.current.value;
+    const confirm = confirmRef.current.value;
+
+    console.log(userName, password, confirm);
+
+    if (password !== confirm) {
+      console.log("Passwords do not match");
+      return;
+    }
+
+    try {
+      const response = await axios.post(
+        "https://localhost:7266/api/Auth/Register",
+        {
+          userName,
+          password,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      const data = response.data;
+
+      if (data.error) {
+        console.log(data.error);
+      } else {
+        console.log(data);
       }
     } catch (error) {
       console.log(error);
     }
   };
 
-  
+
+
+
   return (
     <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
