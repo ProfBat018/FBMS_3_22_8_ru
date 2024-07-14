@@ -4,6 +4,8 @@ import Contact from "./Contact";
 import Login from "./Login";
 import Register from "./Register";
 import Movies from "./Movies";
+import Rating from "./Rating";
+import MovieList from "./MovieList";
 
 
 const homeChildren = [
@@ -26,6 +28,10 @@ const homeChildren = [
   {
     path: "movies",
     element: <Movies />,
+  },
+  {
+    path: "rating",
+    element: <Rating />,
   }
 ];
 
@@ -40,6 +46,10 @@ const routes = [
     element: <Home />,
     children: homeChildren,
   },
+  {
+    path: "/movielist",
+    element: <MovieList />,
+  }
 ];
 
 export default routes;

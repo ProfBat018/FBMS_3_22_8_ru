@@ -2,33 +2,23 @@ import "./Navbar.css";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Link from "react-router-dom";
+import NavItems from "./Routes";
+
 
 export default function Navbar(props) {
   const navigate = useNavigate();
-  const [listItems, setListItems] = useState([
-    { id: 1, text: "About" },
-    { id: 2, text: "Contact" },
-    { id: 3, text: "Login" },
-    { id: 4, text: "Register" },
-  ]);
+
+  const [listItems, setListItems] = useState(NavItems[0].children);
+
   const isSignedIn = props.isSignedIn;
 
   useEffect(() => {
     if (isSignedIn) {
-      setListItems([
-        { id: 1, text: "About" },
-        { id: 2, text: "Contact" },
-        { id: 3, text: "Log Out" } // Change "Login" to "Log Out" when signed in
-      ]);
+      const filteredItems = listItems.filter((item) => item.path !== "login" && item.path !== "register");
+      filteredItems.push({ path: "logout", element: <div>Logout</div> });
+      setListItems(filteredItems);
     } else {
-      setListItems([
-        { id: 1, text: "About" },
-        { id: 2, text: "Contact" },
-        { id: 3, text: "Login" },
-        { id: 4, text: "Register" },
-        { id: 5, text: "Movies" }
-
-      ]);
+      setListItems(NavItems[0].children);
     }
   }, [isSignedIn]);
 
@@ -71,13 +61,14 @@ export default function Navbar(props) {
         >
           <ul className="list-style-none me-auto flex flex-col ps-0 lg:mt-1 lg:flex-row" data-twe-navbar-nav-ref>
             {listItems.map((item) => (
-              <li key={item.id} className="nav-item mb-4 ps-2 lg:mb-0 lg:pe-1 lg:ps-0" data-twe-nav-link-ref>
+              <li key={Math.random()} className="nav-item mb-4 ps-2 lg:mb-0 lg:pe-1 lg:ps-0" data-twe-nav-link-ref>
                 <a
+                  style={{textTransform: "capitalize"}}
                   className="p-0 text-black/60 transition duration-200 hover:text-black/80 hover:ease-in-out focus:text-black/80 active:text-black/80 motion-reduce:transition-none dark:text-white/60 dark:hover:text-white/80 dark:focus:text-white/80 dark:active:text-white/80 lg:px-2"
-                  onClick={() => navigateTo(`/home/${item.text.toLowerCase()}`)}
+                  onClick={() => navigateTo(`/home/${item.path}`)}
                   data-twe-nav-link-ref
                 >
-                  {item.text}
+                  {item.path}
                 </a>
               </li>
             ))}
