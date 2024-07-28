@@ -1,5 +1,6 @@
 ﻿using ApiFirst.Data.Contexts;
 using ApiFirst.Data.Models;
+using ApiFirst.Exceptions;
 using ApiFirst.Services.Classes;
 using ApiFirst.Services.Interfaces;
 using ApiFirst.Validators;
@@ -15,15 +16,13 @@ public class AuthController : ControllerBase
     private readonly LoginUserValidator loginValidator;
     private readonly RegisterUserValidator registerValidator;
     private readonly IAuthService authService;
-    private readonly ITokenService tokenService;
 
 
-    public AuthController(LoginUserValidator loginValidator, RegisterUserValidator registerValidator, IAuthService authService, ITokenService tokenService)
+    public AuthController(LoginUserValidator loginValidator, RegisterUserValidator registerValidator, IAuthService authService)
     {
         this.loginValidator = loginValidator;
         this.registerValidator = registerValidator;
         this.authService = authService;
-        this.tokenService = tokenService;
     }
 
     [HttpPost("Login")]
@@ -38,23 +37,14 @@ public class AuthController : ControllerBase
 
         try
         {
-
             var res = await authService.LoginUserAsync(user);
 
-            var tokenData = new TokenData()
-            {
-                AccessToken = await tokenService.GenerateTokenAsync(res),
-                RefreshToken = await tokenService.GenerateRefreshTokenAsync(),
-                RefreshTokenExpireTime = DateTime.Now.AddMinutes(35),
-            };
-
-            return Ok(tokenData);
+            return Ok(res);
         }
-        catch (Exception ex)
+        catch (MyAuthException ex)
         {
-            return BadRequest(ex.Message);
+            return BadRequest($"{ex.Message}\n{ex.AuthErrorType}");
         }
-
     }
 
     [HttpPost("Register")]
@@ -70,10 +60,29 @@ public class AuthController : ControllerBase
             var res = await authService.RegisterUserAsync(user);
             return Ok(res);
         }
-        catch (Exception ex)
+        catch (MyAuthException ex)
         {
-
-            throw;
+            return BadRequest($"{ex.Message}\n{ex.AuthErrorType}");
         }
+    }
+
+
+    [HttpPost("Refresh")]
+    public async Task<IActionResult> RefreshTokenAsync(RefreshUser refresh)
+    {
+        try
+        {
+            var newToken = await authService.RefreshTokenAsync(refresh);
+
+            if (newToken is null)
+                return BadRequest("Invalid token");
+
+            return Ok(newToken);
+        }
+        catch (MyAuthException ex)
+        {
+            return BadRequest($"{ex.Message}\n{ex.AuthErrorType}");
+        }
+
     }
 }

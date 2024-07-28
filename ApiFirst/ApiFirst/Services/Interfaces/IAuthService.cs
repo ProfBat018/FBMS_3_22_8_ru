@@ -4,6 +4,7 @@ namespace ApiFirst.Services.Interfaces;
 
 public interface IAuthService
 {
-    public Task<User> LoginUserAsync(LoginUser user);
+    public Task<TokenData> LoginUserAsync(LoginUser user);
     public Task<User> RegisterUserAsync(RegisterUser user);
+    public Task<TokenData> RefreshTokenAsync(RefreshUser userAccessData);
 }
