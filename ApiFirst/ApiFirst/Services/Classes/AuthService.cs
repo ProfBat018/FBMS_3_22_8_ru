@@ -12,10 +12,12 @@ public class AuthService : IAuthService
 {
     private readonly AuthContext context;
     private readonly ITokenService tokenService;
-    public AuthService(AuthContext context, ITokenService tokenService)
+    private readonly IBlackListService blackListService;
+    public AuthService(AuthContext context, ITokenService tokenService, IBlackListService blackListService)
     {
         this.context = context;
         this.tokenService = tokenService;
+        this.blackListService = blackListService;
     }
 
     public async Task<TokenData> LoginUserAsync(LoginUser user)
@@ -54,7 +56,27 @@ public class AuthService : IAuthService
         }
     }
 
-    public async Task<TokenData> RefreshTokenAsync(RefreshUser userAccessData)
+    public async Task LogOutAsync(UserTokenInfo userTokenInfo)
+    {
+        if (userTokenInfo is null)
+            throw new MyAuthException(AuthErrorTypes.InvalidRequest, "Invalid client request");
+
+        var principal = tokenService.GetPrincipalFromExpiredToken(userTokenInfo.AccessToken);
+
+        var username = principal.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+
+        var user = context.Users.FirstOrDefault(u => u.Username == username);
+
+        user.RefreshToken = null;
+        user.RefreshTokenExpiryTime = DateTime.Now;
+
+        blackListService.AddTokenToBlackList(userTokenInfo.AccessToken);
+
+        await context.SaveChangesAsync();
+        
+    }
+
+    public async Task<TokenData> RefreshTokenAsync(UserTokenInfo userAccessData)
     {
         if (userAccessData is null)
             throw new MyAuthException(AuthErrorTypes.InvalidRequest, "Invalid client request");

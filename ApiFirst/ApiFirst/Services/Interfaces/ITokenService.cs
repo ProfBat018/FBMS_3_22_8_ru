@@ -8,4 +8,5 @@ public interface ITokenService
     public Task<string> GenerateTokenAsync(User user);
     public Task<string> GenerateRefreshTokenAsync();
     ClaimsPrincipal GetPrincipalFromExpiredToken(string token);
+
 }

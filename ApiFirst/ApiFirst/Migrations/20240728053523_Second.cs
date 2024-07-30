@@ -15,14 +15,14 @@ namespace ApiFirst.Migrations
                 name: "RefreshToken",
                 table: "Users",
                 type: "nvarchar(max)",
-                nullable: false,
+                nullable: true,
                 defaultValue: "");
 
             migrationBuilder.AddColumn<DateTime>(
                 name: "RefreshTokenExpiryTime",
                 table: "Users",
                 type: "datetime2",
-                nullable: false,
+                nullable: true,
                 defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
         }
 

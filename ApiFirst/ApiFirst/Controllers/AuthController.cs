@@ -4,6 +4,7 @@ using ApiFirst.Exceptions;
 using ApiFirst.Services.Classes;
 using ApiFirst.Services.Interfaces;
 using ApiFirst.Validators;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ApiFirst.Controllers;
@@ -68,7 +69,7 @@ public class AuthController : ControllerBase
 
 
     [HttpPost("Refresh")]
-    public async Task<IActionResult> RefreshTokenAsync(RefreshUser refresh)
+    public async Task<IActionResult> RefreshTokenAsync(UserTokenInfo refresh)
     {
         try
         {
@@ -84,5 +85,21 @@ public class AuthController : ControllerBase
             return BadRequest($"{ex.Message}\n{ex.AuthErrorType}");
         }
 
+    }
+
+
+    [Authorize]
+    [HttpPost("Logout")]
+    public async Task<IActionResult> LogoutAsync(UserTokenInfo logout)
+    {
+        try
+        {
+            await authService.LogOutAsync(logout);
+            return Ok("Logged out successfully");
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
     }
 }

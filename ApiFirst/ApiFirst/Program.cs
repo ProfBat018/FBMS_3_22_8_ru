@@ -1,4 +1,5 @@
 using ApiFirst.Data.Contexts;
+using ApiFirst.Middlewares;
 using ApiFirst.Services.Classes;
 using ApiFirst.Services.Interfaces;
 using ApiFirst.Validators;
@@ -9,6 +10,16 @@ using Microsoft.OpenApi.Models;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(builder =>
+    {
+        builder.AllowAnyOrigin()
+        .AllowAnyMethod()
+        .AllowAnyHeader();
+    });
+});
 
 builder.Services.AddAuthentication(options =>
 {
@@ -66,6 +77,8 @@ builder.Services.AddScoped<LoginUserValidator>();
 builder.Services.AddScoped<RegisterUserValidator>();
 builder.Services.AddTransient<ITokenService, TokenService>();
 builder.Services.AddTransient<IAuthService, AuthService>();
+builder.Services.AddSingleton<IBlackListService, BlackListService>();
+builder.Services.AddSingleton<JwtSessionMiddleware>();
 
 builder.Services.AddDbContext<AuthContext>(options =>
 {
@@ -74,10 +87,13 @@ builder.Services.AddDbContext<AuthContext>(options =>
 
 var app = builder.Build();
 
+app.UseCors();
+
 app.UseSwagger();
 app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
+app.UseMiddleware<JwtSessionMiddleware>();
 
 app.UseAuthentication();
 app.UseAuthorization();
