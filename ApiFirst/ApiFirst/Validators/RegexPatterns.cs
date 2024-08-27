@@ -5,5 +5,5 @@ namespace ApiFirst.Validators;
 public class RegexPatterns
 {
     public const string usernamePattern = @"(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[_*&%$#@]).{5,}";
-    public const string passwordPattern = @"(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[_*&%$#@]).{8,}";
+    public const string passwordPattern = @"(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[_*&%$#@!]).{8,}";
 }

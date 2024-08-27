@@ -1,5 +1,5 @@
 ﻿using ApiFirst.Data.Contexts;
-using ApiFirst.Data.Models;
+using ApiFirst.Data.Models.Requests;
 using ApiFirst.Exceptions;
 using ApiFirst.Services.Classes;
 using ApiFirst.Services.Interfaces;
@@ -27,7 +27,7 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("Login")]
-    public async Task<IActionResult> LoginAsync([FromBody] LoginUser user)
+    public async Task<IActionResult> LoginAsync([FromBody] LoginDTO user)
     {
         var validationResult = loginValidator.Validate(user);
 
@@ -49,7 +49,7 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("Register")]
-    public async Task<IActionResult> RegisterAsync([FromBody] RegisterUser user)
+    public async Task<IActionResult> RegisterAsync([FromBody] RegisterDTO user)
     {
         try
         {
@@ -69,7 +69,7 @@ public class AuthController : ControllerBase
 
 
     [HttpPost("Refresh")]
-    public async Task<IActionResult> RefreshTokenAsync(UserTokenInfo refresh)
+    public async Task<IActionResult> RefreshTokenAsync(TokenDTO refresh)
     {
         try
         {
@@ -90,7 +90,7 @@ public class AuthController : ControllerBase
 
     [Authorize]
     [HttpPost("Logout")]
-    public async Task<IActionResult> LogoutAsync(UserTokenInfo logout)
+    public async Task<IActionResult> LogoutAsync(TokenDTO logout)
     {
         try
         {
@@ -102,4 +102,7 @@ public class AuthController : ControllerBase
             return BadRequest(ex.Message);
         }
     }
+
+
+   
 }

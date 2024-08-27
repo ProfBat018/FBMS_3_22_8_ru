@@ -6,5 +6,8 @@ public enum AuthErrorTypes
     InvalidRefreshToken,
     InvalidCredentials,
     UserNotFound,
-    InvalidRequest
+    InvalidRequest,
+    PasswordMismatch,
+    EmailNotConfirmed,
+    EmailAlreadyConfirmed
 }

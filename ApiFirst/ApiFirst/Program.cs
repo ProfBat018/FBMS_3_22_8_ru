@@ -1,9 +1,11 @@
 using ApiFirst.Data.Contexts;
+using ApiFirst.Data.Models;
 using ApiFirst.Middlewares;
 using ApiFirst.Services.Classes;
 using ApiFirst.Services.Interfaces;
 using ApiFirst.Validators;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -72,18 +74,23 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
+builder.Services.AddDbContext<AuthContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("MacConnection"));
+});
+
 
 builder.Services.AddScoped<LoginUserValidator>();
 builder.Services.AddScoped<RegisterUserValidator>();
+
 builder.Services.AddTransient<ITokenService, TokenService>();
 builder.Services.AddTransient<IAuthService, AuthService>();
-builder.Services.AddSingleton<IBlackListService, BlackListService>();
-builder.Services.AddSingleton<JwtSessionMiddleware>();
+builder.Services.AddTransient<IAccountService, AccountService>();
 
-builder.Services.AddDbContext<AuthContext>(options =>
-{
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
-});
+builder.Services.AddScoped<IBlackListService, BlackListService>();
+builder.Services.AddScoped<JwtSessionMiddleware>();
+builder.Services.AddSingleton<IEmailSender, EmailSender>();
+
 
 var app = builder.Build();
 

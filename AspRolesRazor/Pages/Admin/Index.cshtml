@@ -1,0 +1,42 @@
+@page
+
+@inject UserManager<AppUser> UserManager;
+@using AspRolesRazor.Areas.Identity.Data
+@using AspRolesRazor.Areas.Identity.Data.Models
+@using AspRolesRazor.Data
+@using Microsoft.AspNetCore.Identity
+@model AspRolesRazor.Pages.Admin.Index
+
+@{
+    Layout = "Shared/_AdminLayout";
+}
+
+<div class="container">
+    <h1>Admin Page</h1>
+
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        @foreach (var user in UserManager.Users)
+        {
+        <tr>
+            <td>@user.UserName</td>
+            <td>@user.Email</td>
+            <td>
+                <a asp-page-handler="Edit" asp-route-id="@user.Id" class="btn btn-primary">Edit</a>
+                <a asp-page-handler="Delete" asp-route-id="@user.Id" class="btn btn-danger">Delete</a>
+                <a class="btn btn-warning">Change rights</a>
+            </td>
+        </tr>
+        }
+        </tbody>
+    </table>
+</div>

@@ -1,9 +1,9 @@
-﻿using ApiFirst.Data.Models;
+﻿using ApiFirst.Data.Models.Requests;
 using FluentValidation;
 
 namespace ApiFirst.Validators;
 
-public class LoginUserValidator : AbstractValidator<LoginUser>
+public class LoginUserValidator : AbstractValidator<LoginDTO>
 {
     public LoginUserValidator()
     {

@@ -19,19 +19,19 @@ public class JwtSessionMiddleware : IMiddleware
    
     public async Task InvokeAsync(HttpContext context, RequestDelegate next)
     {
-        string token = context.Request.Headers["Authorization"];
-
-        token = token?.Replace("Bearer ", "");
+        string? token = context.Request.Headers["Authorization"];
 
         if (string.IsNullOrWhiteSpace(token))
         {
             await next(context);
             return;
         }
-
+        
+        token = token.Replace("Bearer ", "");
+        
         if (blackListService.IsTokenBlackListed(token))
         {
-            context.Response.StatusCode = 401;
+            context.Response.StatusCode = 403;
             await context.Response.WriteAsync("Unauthorized");
             return;
         }
