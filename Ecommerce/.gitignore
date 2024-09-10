@@ -1,0 +1,6 @@
+bin
+Debug 
+.node_modules
+
+*.vs
+.vs
