@@ -20,6 +20,12 @@ public class MappingConfiguration
                 .ForMember(
                     dest => dest.Email, 
                     x => x.MapFrom(u => u.Email));
+            
+            cfg.CreateMap<AppRole, RoleDTO>()
+                .ForMember(
+                    dest => dest.name, 
+                    x => x.MapFrom(u => u.Name)).ReverseMap();
+            
         });
 
         var mapper = new Mapper(mapperConfig);

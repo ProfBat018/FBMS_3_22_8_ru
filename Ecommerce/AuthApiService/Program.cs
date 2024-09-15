@@ -1,24 +1,30 @@
 using System.Text;
+using Asp.Versioning;
 using AuthData.Contexts;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.SwaggerGen;
 using UserService.Classes;
 using UserService.Interfaces;
 using UserService.Middlewares;
 using UserService.Validators;
 
+
 var builder = WebApplication.CreateBuilder(args);
 
+// Настройка сервисов
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(builder =>
     {
         builder.AllowAnyOrigin()
-        .AllowAnyMethod()
-        .AllowAnyHeader();
+            .AllowAnyMethod()
+            .AllowAnyHeader();
     });
 });
 
@@ -42,11 +48,24 @@ builder.Services.AddAuthentication(options =>
         IssuerSigningKey =
             new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration.GetSection("Jwt:Key").Value))
     };
-}
-);
+});
+
+builder.Services.AddAuthorization();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
+
+builder.Services.AddApiVersioning(options =>
+    {
+        options.ReportApiVersions = true;
+    }
+).AddApiExplorer(
+    options =>
+    {
+        options.GroupNameFormat = "'v'VVV";
+        options.SubstituteApiVersionInUrl = true;
+    });
+
 builder.Services.AddSwaggerGen(options =>
 {
     options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
@@ -78,6 +97,7 @@ builder.Services.AddDbContext<AuthContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultMacAuth"));
 });
 
+builder.Services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
 
 builder.Services.AddScoped<LoginUserValidator>();
 builder.Services.AddScoped<RegisterUserValidator>();
@@ -85,20 +105,30 @@ builder.Services.AddScoped<RegisterUserValidator>();
 builder.Services.AddTransient<ITokenService, TokenService>();
 builder.Services.AddTransient<IAuthService, AuthService>();
 builder.Services.AddTransient<IAccountService, AccountService>();
+builder.Services.AddTransient<IRoleService, RoleService>();
 
 builder.Services.AddScoped<IBlackListService, BlackListService>();
 builder.Services.AddScoped<JwtSessionMiddleware>();
+builder.Services.AddScoped<GlobalExceptionsMiddleware>();
 builder.Services.AddSingleton<IEmailSender, EmailSender>();
-
 
 var app = builder.Build();
 
 app.UseCors();
 
 app.UseSwagger();
-app.UseSwaggerUI();
+app.UseSwaggerUI(options =>
+{
+    var descriptions = app.DescribeApiVersions();
+    foreach (var description in descriptions)
+    {
+        options.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json",
+            description.GroupName.ToUpperInvariant());
+    }
+});
 
 app.UseHttpsRedirection();
+app.UseMiddleware<GlobalExceptionsMiddleware>();
 app.UseMiddleware<JwtSessionMiddleware>();
 
 app.UseAuthentication();

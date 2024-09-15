@@ -15,12 +15,12 @@ namespace UserService.Classes;
 public class TokenService : ITokenService
 {
     private readonly IConfiguration config;
-    private readonly AuthContext context;
+    private readonly AuthContext _context;
 
     public TokenService(IConfiguration config, AuthContext context)
     {
         this.config = config;
-        this.context = context;
+        this._context = context;
     }
 
     public async Task<string> GenerateEmailTokenAsync(string userId)
@@ -53,11 +53,15 @@ public class TokenService : ITokenService
 
     public async Task<string> GenerateTokenAsync(User user)
     {
+       var role =  await _context.UserRoles
+           .Include(r => r.AppRole)
+           .FirstOrDefaultAsync(r => r.UserId == user.Id);
+        
         var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.NameIdentifier, user.Username),
                 new Claim(ClaimTypes.Email,user.Email),
-                new Claim(ClaimTypes.Role, "appuser"),
+                new Claim(ClaimTypes.Role, role.AppRole.Name),
             };
 
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config.GetSection("Jwt:Key").Value));
@@ -120,7 +124,7 @@ public class TokenService : ITokenService
             
             var Id = principal.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
 
-            var user = await context.Users.FirstOrDefaultAsync(u => u.Id.ToString() == Id);
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id.ToString() == Id);
 
             if (user == null)
             {
@@ -139,7 +143,7 @@ public class TokenService : ITokenService
             
             user.IsEmailConfirmed = true;
 
-            await context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
         }
         catch 
         {

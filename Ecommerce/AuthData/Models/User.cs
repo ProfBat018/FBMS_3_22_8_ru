@@ -12,4 +12,6 @@ public class User
     public bool IsEmailConfirmed { get; set; } = false;
     public string? RefreshToken { get; set; }
     public DateTime RefreshTokenExpiryTime { get; set; }
+
+    public ICollection<UserRole> UserRoles { get; set; }
 }

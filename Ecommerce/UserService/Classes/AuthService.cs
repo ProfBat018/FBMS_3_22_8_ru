@@ -76,7 +76,6 @@ public class AuthService : IAuthService
         await context.SaveChangesAsync();
 
         blackListService.AddTokenToBlackList(userTokenInfo.AccessToken);
-              
     }
 
     public async Task<AccessInfoDTO> RefreshTokenAsync(TokenDTO userAccessData)
@@ -120,11 +119,21 @@ public class AuthService : IAuthService
                 Email = user.Email,
                 Password = HashPassword(user.Password)
             };
-
+            
             await context.Users.AddAsync(newUser);
-
             await context.SaveChangesAsync();
 
+            var role = await context.AppRoles.Where(x => x.Name == "AppUser").FirstOrDefaultAsync();
+
+            var roleToApply = new UserRole()
+            {
+                RoleId = role.Id,
+                UserId = newUser.Id
+            };
+
+            context.UserRoles.Add(roleToApply);
+            await context.SaveChangesAsync();
+            
             return newUser;
         }
         catch

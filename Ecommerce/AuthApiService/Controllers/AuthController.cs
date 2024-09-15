@@ -1,17 +1,17 @@
-﻿
+﻿using Asp.Versioning;
 using AuthData.DTO;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using UserService.Exceptions;
 using UserService.Interfaces;
 using UserService.Validators;
 
 namespace AuthApiService.Controllers;
 
-
-
+[ApiVersion("1.0")]
 [ApiController]
-[Route("api/v1/[controller]")]
+[Route("api/v{version:apiVersion}/[controller]")]
 public class AuthController : ControllerBase
 {
     private readonly LoginUserValidator loginValidator;
@@ -19,7 +19,8 @@ public class AuthController : ControllerBase
     private readonly IAuthService authService;
 
 
-    public AuthController(LoginUserValidator loginValidator, RegisterUserValidator registerValidator, IAuthService authService)
+    public AuthController(LoginUserValidator loginValidator, RegisterUserValidator registerValidator,
+        IAuthService authService)
     {
         this.loginValidator = loginValidator;
         this.registerValidator = registerValidator;
@@ -33,58 +34,38 @@ public class AuthController : ControllerBase
 
         if (!validationResult.IsValid)
         {
-            return BadRequest(validationResult.Errors);
+            throw new MyAuthException(AuthErrorTypes.InvalidCredentials,
+                JsonConvert.SerializeObject(validationResult.Errors, Formatting.Indented));
         }
 
-        try
-        {
-            var res = await authService.LoginUserAsync(user);
+        var res = await authService.LoginUserAsync(user);
 
-            return Ok(res);
-        }
-        catch (MyAuthException ex)
-        {
-            return BadRequest($"{ex.Message}\n{ex.AuthErrorType}");
-        }
+        return Ok(res);
     }
 
     [HttpPost("Register")]
     public async Task<IActionResult> RegisterAsync([FromBody] RegisterDTO user)
     {
-        try
+        var validationResult = registerValidator.Validate(user);
+        if (!validationResult.IsValid)
         {
-            var validationResult = registerValidator.Validate(user);
-            if (!validationResult.IsValid)
-            {
-                return BadRequest(validationResult.Errors);
-            }
-            var res = await authService.RegisterUserAsync(user);
-            return Ok(res);
+            return BadRequest(validationResult.Errors);
         }
-        catch (MyAuthException ex)
-        {
-            return BadRequest($"{ex.Message}\n{ex.AuthErrorType}");
-        }
+
+        var res = await authService.RegisterUserAsync(user);
+        return Ok(res);
     }
 
 
     [HttpPost("Refresh")]
     public async Task<IActionResult> RefreshTokenAsync(TokenDTO refresh)
     {
-        try
-        {
-            var newToken = await authService.RefreshTokenAsync(refresh);
+        var newToken = await authService.RefreshTokenAsync(refresh);
 
-            if (newToken is null)
-                return BadRequest("Invalid token");
+        if (newToken is null)
+            return BadRequest("Invalid token");
 
-            return Ok(newToken);
-        }
-        catch (MyAuthException ex)
-        {
-            return BadRequest($"{ex.Message}\n{ex.AuthErrorType}");
-        }
-
+        return Ok(newToken);
     }
 
 
@@ -92,17 +73,7 @@ public class AuthController : ControllerBase
     [HttpPost("Logout")]
     public async Task<IActionResult> LogoutAsync(TokenDTO logout)
     {
-        try
-        {
-            await authService.LogOutAsync(logout);
-            return Ok("Logged out successfully");
-        }
-        catch (Exception ex)
-        {
-            return BadRequest(ex.Message);
-        }
+        await authService.LogOutAsync(logout);
+        return Ok("Logged out successfully");
     }
-
-
-   
 }
