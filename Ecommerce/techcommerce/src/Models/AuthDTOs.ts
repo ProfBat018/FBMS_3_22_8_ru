@@ -16,3 +16,17 @@ export interface TokenDTO {
     refreshTokenExpireTime: Date
 }
 
+export enum UserRoles {
+    AppAdmin,
+    AppUser
+}
+
+export interface DecodedToken {
+    [key: string]: any; 
+
+}
+
+export interface UserData {
+    username: string,
+    role: string
+}

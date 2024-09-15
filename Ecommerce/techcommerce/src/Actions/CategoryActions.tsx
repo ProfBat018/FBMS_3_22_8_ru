@@ -6,8 +6,8 @@ import {CategoryDTO} from "../Models/CategoryDTOs";
 
 const fetcher = (url: string) => axios.get(url).then(res => res.data);
 
-const GetAllCategories = () => {
-    const { data, error, isLoading } = useSWR<CategoryDTO[]>('http://localhost:5040/Category/All', fetcher);
+const GetAllCategories = (isAuthenticated: boolean) => {
+    const { data, error, isLoading } = useSWR<CategoryDTO[]>(isAuthenticated ? 'http://localhost:5040/Category/All': null, fetcher);
 
     return {
         categories: data,

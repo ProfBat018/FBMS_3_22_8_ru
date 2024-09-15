@@ -6,21 +6,26 @@ import { Link, useNavigate } from 'react-router-dom';
 import { login, register } from '../Actions/AuthActions';
 import {CategoryDTO} from "../Models/CategoryDTOs";
 import {LoginDTO, RegisterDTO} from "../Models/AuthDTOs";
+import {useCategories} from "../Providers/CategoryContextProvider";
 
 
-const Navbar = ({ onLogin, categories }: { onLogin: (res: boolean) => void, categories: CategoryDTO[] }) => {
+interface NavbarProps {
+    onLogin: (res: boolean) => void;
+}
+
+const Navbar: React.FC<NavbarProps> = ({ onLogin }) => {
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
     const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
     const [darkTheme, setDarkTheme] = useState<boolean>(true);
     const [modalContent, setModalContent] = useState<'login' | 'register' | 'forgotPassword'>('login'); // Логин по умолчанию
-    const [errorLabel, setErrorLabel] = useState<string>('');
-  
-    // Используем useRef для хранения значения username и password
+    
     const usernameRef = useRef<HTMLInputElement>(null);
     const passwordRef = useRef<HTMLInputElement>(null);
     const confirmPasswordRef = useRef<HTMLInputElement>(null);
     const emailRef = useRef<HTMLInputElement>(null);
 
+    const categories = useCategories();
+    
     const navigateTo = useNavigate();
     
     useEffect(() => {
@@ -30,7 +35,10 @@ const Navbar = ({ onLogin, categories }: { onLogin: (res: boolean) => void, cate
         if (passwordRef.current) {
             passwordRef.current.value = '';
         }
-    }, [modalContent])
+
+        console.log(categories);
+        
+    }, [modalContent, categories])
     
     const toggleTheme = () => {
         setDarkTheme(!darkTheme);
@@ -40,10 +48,9 @@ const Navbar = ({ onLogin, categories }: { onLogin: (res: boolean) => void, cate
             document.documentElement.classList.add('dark');
         }
     };
+    
+    const handleLogin = () => {
 
-    // Обработчик для логина
-    const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
         const username = usernameRef.current?.value || '';
         const password = passwordRef.current?.value || '';
 
@@ -56,19 +63,17 @@ const Navbar = ({ onLogin, categories }: { onLogin: (res: boolean) => void, cate
         res.then(response => {
             localStorage.setItem('accessToken', response.accessToken);
             localStorage.setItem('refreshToken', response.refreshToken);
-            onLogin(true);
             
-            navigateTo('/home');
             setIsModalOpen(false);
-                
+            navigateTo('/home');
+            onLogin(true);
         }).catch(error => {
             onLogin(false);
-            setErrorLabel(error.response.data.error);
         });
     };
 
-    const handleRegister = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
+    const handleRegister = () => {
+
 
         const username = usernameRef.current?.value || '';
         const password = passwordRef.current?.value || '';
@@ -85,20 +90,17 @@ const Navbar = ({ onLogin, categories }: { onLogin: (res: boolean) => void, cate
         res.then(()=> {
             setModalContent('login');
         }).catch((error) => {
-            setErrorLabel(error.response.data.error);
         });
 
     }
     
-    // Функция для рендера содержимого модального окна
     const renderModalContent = () => {
         switch (modalContent) {
             case 'login':
                 return (
-                    
                     <>
                         <Dialog.Title className="text-xl font-bold mb-4">Log In</Dialog.Title>
-                        <form className="space-y-4" onSubmit={handleLogin}>
+                        <div className="space-y-4">
                             <div>
                                 <label htmlFor="username" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                                     Username
@@ -141,21 +143,19 @@ const Navbar = ({ onLogin, categories }: { onLogin: (res: boolean) => void, cate
                             </div>
 
                             <button
-                                type="submit"
+                                onClick={handleLogin}
                                 className="w-full bg-black-950 text-white px-4 py-2 rounded hover:bg-black-800"
                             >
                                 Log In
                             </button>
-                        </form>
-
-                       <p className="text-red-700">{errorLabel}</p>
+                        </div>
                     </>
                 );
             case 'register':
                 return (
                     <>
                         <Dialog.Title className="text-xl font-bold mb-4">Register</Dialog.Title>
-                        <form className="space-y-4" onSubmit={handleRegister}>
+                        <div className="space-y-4">
                             <div>
                                 <label htmlFor="username"
                                        className="block text-sm font-medium text-gray-700 dark:text-gray-300">
@@ -208,7 +208,7 @@ const Navbar = ({ onLogin, categories }: { onLogin: (res: boolean) => void, cate
                                 />
                             </div>
                             <button
-                                type="submit"
+                                onClick={handleRegister}
                                 className="w-full bg-black-950 text-white px-4 py-2 rounded hover:bg-black-800"
                             >
                                 Register
@@ -221,14 +221,14 @@ const Navbar = ({ onLogin, categories }: { onLogin: (res: boolean) => void, cate
                             >
                                 Already have an account? Log In
                             </button>
-                        </form>
+                        </div>
                     </>
                 );
             case 'forgotPassword':
                 return (
                     <>
                         <Dialog.Title className="text-xl font-bold mb-4">Forgot Password</Dialog.Title>
-                        <form className="space-y-4">
+                        <div className="space-y-4">
                             <div>
                                 <label htmlFor="email"
                                        className="block text-sm font-medium text-gray-700 dark:text-gray-300">
@@ -255,7 +255,7 @@ const Navbar = ({ onLogin, categories }: { onLogin: (res: boolean) => void, cate
                             >
                                 Back to Log In
                             </button>
-                        </form>
+                        </div>
                     </>
                 );
             default:
@@ -265,7 +265,6 @@ const Navbar = ({ onLogin, categories }: { onLogin: (res: boolean) => void, cate
 
     return (
         <nav className="flex relative items-center justify-between p-4 bg-black-950 text-white">
-            {/* Логотип и навигационные ссылки */}
             <div className="flex items-center space-x-4">
                 <a href="/" className="text-xl font-bold">TechCommerce</a>
                 <div className="hidden sm:flex space-x-4">
@@ -282,8 +281,7 @@ const Navbar = ({ onLogin, categories }: { onLogin: (res: boolean) => void, cate
                 </button>
                 
             </div>
-
-            {/* Кнопки логина и смены темы */}
+            
             <div className="flex items-center space-x-4">
                 <button
                     onClick={() => setIsModalOpen(true)}
@@ -299,8 +297,7 @@ const Navbar = ({ onLogin, categories }: { onLogin: (res: boolean) => void, cate
                     <FontAwesomeIcon icon={darkTheme ? faSun : faMoon} />
                 </button>
             </div>
-
-            {/* Mobile menu */}
+            
             {isMenuOpen && (
                 <div   className={`absolute top-16 left-0 right-0 bg-black p-4 transition-transform duration-300 ${
                     isMenuOpen ? 'translate-y-0' : '-translate-y-full'
@@ -314,8 +311,7 @@ const Navbar = ({ onLogin, categories }: { onLogin: (res: boolean) => void, cate
             <Dialog open={isModalOpen} onClose={() => setIsModalOpen(false)} className="fixed z-10 inset-0 overflow-y-auto">
                 <div className="flex items-center justify-center min-h-screen px-4">
                     <Dialog.Overlay className="fixed inset-0 bg-black opacity-30" />
-
-                    {/* Модальное окно */}
+                    
                     <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg max-w-md w-full z-20">
                         {renderModalContent()}
                     </div>

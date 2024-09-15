@@ -1,85 +1,58 @@
-import React, {useEffect, useState} from 'react';
-import Navbar from "./Navbar";
-import {Outlet} from "react-router-dom";
-import GetAllCategories from "../Actions/CategoryActions";
+import React, { useState, useEffect } from 'react';
+import Navbar from './Navbar'
+import { Outlet } from "react-router-dom";
 import Error from "./Error";
-import {CategoryDTO} from "../Models/CategoryDTOs";
-import {ErrorDTO, ErrorTypes} from "../Models/ErrorDTOs";
+import { ErrorDTO, ErrorTypes } from "../Models/ErrorDTOs";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { DecodedToken } from "../Models/AuthDTOs";
+import { jwtDecode } from "jwt-decode";
+import {CategoryProvider} from "../Providers/CategoryContextProvider";
 
+const ToastNotifier: React.FC<{ message: string; type: "success" | "error" }> = ({ message, type }) => {
+    useEffect(() => {
+        toast(message, {
+            position: "top-right",
+            autoClose: 5000,
+            type: type,
+        });
+    }, [message, type]);
 
+    return null;
+};
 
-const Layout = () => {
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
-    const [categories, setCategories] = useState<CategoryDTO[] | undefined>(undefined);
-    const [isLoading, setIsLoading] = useState<boolean>(false);
-    const [isError, setIsError] = useState<boolean>(false);
+const Layout: React.FC = () => {
+    const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+    const [toastMessage, setToastMessage] = useState<string | null>(null);
+    const [toastType, setToastType] = useState<"success" | "error" | null>(null);
 
-    // Fetch categories data using the custom hook
-    const {categories: fetchedCategories, isLoading: fetchLoading, isError: fetchError} = GetAllCategories();
+    const handleLogin = (result: boolean) => {
+        setIsAuthenticated(result);
 
-    const handleLogin = (result: boolean )=> {
-        setIsAuthenticated(result); // Update login status
-        
         if (result) {
-            toast(`Hello, !`, {
-                position: "top-right",
-                autoClose: 5000,
-                type: "success",
-            });
+            const token = localStorage.getItem('accessToken');
+            const decodedToken: DecodedToken | null = token ? jwtDecode<DecodedToken>(token) : null;
+
+            const decodedRole = decodedToken?.["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"] ?? 'Guest';
+            const decodedUsername = decodedToken?.["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"] ?? 'User';
+
+            setToastMessage(`Hello, ${decodedUsername}!`);
+            setToastType("success");
         } else {
-            toast(`Hello, !`, {
-                position: "top-right",
-                autoClose: 5000,
-                type: "error",
-            });
+            setToastMessage("Login failed!");
+            setToastType("error");
         }
     };
 
-    useEffect(() => {
-        if (isAuthenticated) {
-            setIsLoading(true);
-            // Update categories data when authenticated
-            if (fetchedCategories) {
-                setCategories(fetchedCategories);
-                setIsLoading(false);
-            }
-            if (fetchError) {
-                setIsError(true);
-                setIsLoading(false);
-            }
-        }
-    }, [isAuthenticated, fetchedCategories, fetchError]);
-
-    if (isLoading) {
-        return (
-            <div className="flex justify-center items-center min-h-screen">
-                {/* Loading spinner */}
-                <div className="w-16 h-16 border-4 border-blue-500 border-dotted rounded-full animate-spin"></div>
-                <h6>Loading...</h6>
-            </div>
-        );
-    }
-
-    if (isError) {
-        const error: ErrorDTO = {
-                errorType: ErrorTypes.InternalServerError,
-                errorCode: 500,
-                errorMessage: `Can't fetch categories`
-            };
-        return <Error errorData={error}></Error>
-    }
-
     return (
-        <>
-            <Navbar onLogin={handleLogin} categories={categories ?? []}/>
+        <CategoryProvider>
+            <Navbar onLogin={handleLogin} />
             <main>
-         
-                <Outlet/>
+                <Outlet />
             </main>
             <ToastContainer />
-        </>
+            {toastMessage && toastType && <ToastNotifier message={toastMessage} type={toastType} />}
+        </CategoryProvider>
     );
 };
 
