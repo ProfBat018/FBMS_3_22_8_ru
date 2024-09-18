@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Azure.Identity;
 using ProductData.Contexts;
 using ProductData.Models;
 using ProductRepo.Classes;
 using ProductRepo.Interfaces;
+using ProductsRepo.Classes;
 
 
 namespace ProductRepository.Classes;
@@ -21,6 +23,7 @@ public class UnitOfWork : IUnitOfWork
     public IOrderRepository OrderRepository { get; private set; }
     public IProductRepository ProductRepository { get; private set; }
     public IWarehouseRepository WarehouseRepository { get; private set; }
+    public IProductCategoryRepository ProductCategoryRepository { get; private set; }
 
     private ProductContext _context;
 
@@ -36,6 +39,7 @@ public class UnitOfWork : IUnitOfWork
         OrderRepository = new OrderRepository(_context);
         ProductRepository = new ProductRepository(_context);
         WarehouseRepository = new WarehouseRepository(_context);
+        ProductCategoryRepository = new ProductCategoryRepository(_context);
     }
 
     public void Save()

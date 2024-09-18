@@ -1,0 +1,3 @@
+const getAllProducts = (categoryName: string) => {
+    
+}

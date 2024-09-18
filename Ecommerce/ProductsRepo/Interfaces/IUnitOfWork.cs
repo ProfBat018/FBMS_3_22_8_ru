@@ -18,6 +18,7 @@ public interface IUnitOfWork
     public IOrderRepository OrderRepository { get; }
     public IProductRepository ProductRepository { get; }
     public IWarehouseRepository WarehouseRepository { get; }
+    public IProductCategoryRepository ProductCategoryRepository { get; }
     void Save();
     Task SaveAsync();
 }

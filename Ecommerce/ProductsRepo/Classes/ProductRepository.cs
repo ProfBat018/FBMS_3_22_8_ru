@@ -1,3 +1,4 @@
+using Azure.Identity;
 using ProductData.Contexts;
 using ProductData.Models;
 using ProductRepo.Interfaces;
@@ -22,5 +23,10 @@ public class ProductRepository : Repository<Product>, IProductRepository
     public Task<Product> FindByIdAsync(int id)
     {
         throw new NotImplementedException();
+    }
+
+    public IQueryable<Product> GetProductsByRange(int categoryId)
+    {
+        
     }
 }

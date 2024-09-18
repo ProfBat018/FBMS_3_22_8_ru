@@ -1,33 +1,59 @@
-import React, { useRef, useState, useEffect } from 'react';
-import { Dialog } from '@headlessui/react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import{ faSignInAlt, faSun, faMoon, faBars, faTimes } from '@fortawesome/free-solid-svg-icons';
-import { Link, useNavigate } from 'react-router-dom';
-import { login, register } from '../Actions/AuthActions';
+import React, {useRef, useState, useEffect} from 'react';
+import {Dialog} from '@headlessui/react';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faSignInAlt, faSun, faMoon, faBars, faTimes} from '@fortawesome/free-solid-svg-icons';
+import {Link, useNavigate} from 'react-router-dom';
+import {login, register} from '../Actions/AuthActions';
 import {CategoryDTO} from "../Models/CategoryDTOs";
 import {LoginDTO, RegisterDTO} from "../Models/AuthDTOs";
 import {useCategories} from "../Providers/CategoryContextProvider";
+import {transformCategories} from "../Actions/CategoryActions";
 
 
 interface NavbarProps {
     onLogin: (res: boolean) => void;
 }
 
-const Navbar: React.FC<NavbarProps> = ({ onLogin }) => {
+
+// тут должен был быть Store, но мне лень 
+const Navbar: React.FC<NavbarProps> = ({onLogin}) => {
+    const categories = useCategories();
+
+    const [activeCategory, setActiveCategory] = useState<string | null>(null);
+    const [activeSubCategory, setActiveSubCategory] = useState<string | null>(null);
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
     const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
     const [darkTheme, setDarkTheme] = useState<boolean>(true);
     const [modalContent, setModalContent] = useState<'login' | 'register' | 'forgotPassword'>('login'); // Логин по умолчанию
-    
+
     const usernameRef = useRef<HTMLInputElement>(null);
     const passwordRef = useRef<HTMLInputElement>(null);
     const confirmPasswordRef = useRef<HTMLInputElement>(null);
     const emailRef = useRef<HTMLInputElement>(null);
 
-    const categories = useCategories();
-    
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const hierarchicalCategories = transformCategories(categories);
+
+    const toggleDropdown = () => setIsDropdownOpen(prev => !prev);
+
+
     const navigateTo = useNavigate();
-    
+
+
+    const handleMouseEnterCategory = (categoryName: string) => {
+        setActiveCategory(categoryName);
+        setActiveSubCategory(null); // Сброс активной подкатегории
+    };
+
+    const handleMouseEnterSubCategory = (subCategoryName: string) => {
+        setActiveSubCategory(subCategoryName);
+    };
+
+    const handleMouseLeave = () => {
+        setActiveCategory(null);
+        setActiveSubCategory(null);
+    };
+
     useEffect(() => {
         if (usernameRef.current) {
             usernameRef.current.value = '';
@@ -37,9 +63,9 @@ const Navbar: React.FC<NavbarProps> = ({ onLogin }) => {
         }
 
         console.log(categories);
-        
+
     }, [modalContent, categories])
-    
+
     const toggleTheme = () => {
         setDarkTheme(!darkTheme);
         if (darkTheme) {
@@ -48,7 +74,7 @@ const Navbar: React.FC<NavbarProps> = ({ onLogin }) => {
             document.documentElement.classList.add('dark');
         }
     };
-    
+
     const handleLogin = () => {
 
         const username = usernameRef.current?.value || '';
@@ -59,11 +85,11 @@ const Navbar: React.FC<NavbarProps> = ({ onLogin }) => {
         };
 
         const res = login(user);
-        
+
         res.then(response => {
             localStorage.setItem('accessToken', response.accessToken);
             localStorage.setItem('refreshToken', response.refreshToken);
-            
+
             setIsModalOpen(false);
             navigateTo('/home');
             onLogin(true);
@@ -79,21 +105,21 @@ const Navbar: React.FC<NavbarProps> = ({ onLogin }) => {
         const password = passwordRef.current?.value || '';
         const email = emailRef.current?.value || '';
         const confirmPassword = confirmPasswordRef.current?.value || '';
-        
+
 
         const user: RegisterDTO = {
-            username, password, confirmPassword , email
+            username, password, confirmPassword, email
         };
         console.log(user);
         const res = register(user);
-        
-        res.then(()=> {
+
+        res.then(() => {
             setModalContent('login');
         }).catch((error) => {
         });
 
     }
-    
+
     const renderModalContent = () => {
         switch (modalContent) {
             case 'login':
@@ -102,7 +128,8 @@ const Navbar: React.FC<NavbarProps> = ({ onLogin }) => {
                         <Dialog.Title className="text-xl font-bold mb-4">Log In</Dialog.Title>
                         <div className="space-y-4">
                             <div>
-                                <label htmlFor="username" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                                <label htmlFor="username"
+                                       className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                                     Username
                                 </label>
                                 <input
@@ -114,7 +141,8 @@ const Navbar: React.FC<NavbarProps> = ({ onLogin }) => {
                             </div>
 
                             <div>
-                                <label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                                <label htmlFor="password"
+                                       className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                                     Password
                                 </label>
                                 <input
@@ -269,7 +297,68 @@ const Navbar: React.FC<NavbarProps> = ({ onLogin }) => {
                 <a href="/" className="text-xl font-bold">TechCommerce</a>
                 <div className="hidden sm:flex space-x-4">
                     <Link to="/" className="block py-2 text-white hover:text-gray-300">Home</Link>
-                    <a className="block py-2 text-white hover:text-gray-300">Categories</a>
+                    <div
+                        className="relative"
+                        onMouseLeave={handleMouseLeave}
+                    >
+                        <button
+                            onMouseEnter={() => setIsDropdownOpen(true)}
+                            className="block py-2 text-white hover:text-gray-300"
+                        >
+                            Categories
+                        </button>
+                        {(hierarchicalCategories.length > 0 && isDropdownOpen) && (
+                            <div onMouseLeave={() => setIsDropdownOpen(false)}  className="absolute left-0 mt-2 w-48 bg-black-950 text-white shadow-lg">
+                                {hierarchicalCategories.map((category) => (
+                                    <div
+                                        key={category.name}
+                                        className="relative"
+                                        onMouseEnter={() => handleMouseEnterCategory(category.name)}
+                                    >
+                                        <Link
+                                            to={`/category/${category.name}`}
+                                            className="block px-4 py-2 hover:bg-gray-700"
+                                        >
+                                            {category.name}
+                                        </Link>
+                                        {activeCategory === category.name && category.subcategories.length > 0 && (
+                                            <div
+                                                className="absolute left-full top-0 mt-2 w-48 bg-black-950 text-white shadow-lg">
+                                                {category.subcategories.map((subcat) => (
+                                                    <div
+                                                        key={subcat.name}
+                                                        className="relative"
+                                                        onMouseEnter={() => handleMouseEnterSubCategory(subcat.name)}
+                                                    >
+                                                        <Link
+                                                            to={`/category/${subcat.name}`}
+                                                            className="block px-4 py-2 hover:bg-black-1000"
+                                                        >
+                                                            {subcat.name}
+                                                        </Link>
+                                                        {activeSubCategory === subcat.name && subcat.subcategories.length > 0 && (
+                                                            <div
+                                                                className="absolute left-full top-0 mt-2 w-48 bg-black-950 text-white shadow-lg">
+                                                                {subcat.subcategories.map((subSubcat) => (
+                                                                    <Link
+                                                                        key={subSubcat.name}
+                                                                        to={`/category/${subSubcat.name}`}
+                                                                        className="block px-4 py-2 hover:bg-gray-700"
+                                                                    >
+                                                                        {subSubcat.name}
+                                                                    </Link>
+                                                                ))}
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        )}
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                    </div>
                     <Link to="/about" className="block py-2 text-white hover:text-gray-300">About Us</Link>
                 </div>
 
@@ -279,27 +368,27 @@ const Navbar: React.FC<NavbarProps> = ({ onLogin }) => {
                 >
                     <FontAwesomeIcon icon={isMenuOpen ? faTimes : faBars}/>
                 </button>
-                
+
             </div>
-            
+
             <div className="flex items-center space-x-4">
                 <button
                     onClick={() => setIsModalOpen(true)}
                     className="hover:text-gray-300"
                 >
-                <FontAwesomeIcon icon={faSignInAlt} />
+                    <FontAwesomeIcon icon={faSignInAlt}/>
                 </button>
 
                 <button
                     onClick={toggleTheme}
                     className="hover:text-gray-300"
                 >
-                    <FontAwesomeIcon icon={darkTheme ? faSun : faMoon} />
+                    <FontAwesomeIcon icon={darkTheme ? faSun : faMoon}/>
                 </button>
             </div>
-            
+
             {isMenuOpen && (
-                <div   className={`absolute top-16 left-0 right-0 bg-black p-4 transition-transform duration-300 ${
+                <div className={`absolute top-16 left-0 right-0 bg-black p-4 transition-transform duration-300 ${
                     isMenuOpen ? 'translate-y-0' : '-translate-y-full'
                 }`}>
                     <Link to="/" className="block py-2 text-white hover:text-gray-300">Home</Link>
@@ -308,10 +397,11 @@ const Navbar: React.FC<NavbarProps> = ({ onLogin }) => {
                 </div>
             )}
 
-            <Dialog open={isModalOpen} onClose={() => setIsModalOpen(false)} className="fixed z-10 inset-0 overflow-y-auto">
+            <Dialog open={isModalOpen} onClose={() => setIsModalOpen(false)}
+                    className="fixed z-10 inset-0 overflow-y-auto">
                 <div className="flex items-center justify-center min-h-screen px-4">
-                    <Dialog.Overlay className="fixed inset-0 bg-black opacity-30" />
-                    
+                    <Dialog.Overlay className="fixed inset-0 bg-black opacity-30"/>
+
                     <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg max-w-md w-full z-20">
                         {renderModalContent()}
                     </div>

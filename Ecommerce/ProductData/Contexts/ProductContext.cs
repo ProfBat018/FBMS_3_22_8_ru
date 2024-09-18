@@ -32,6 +32,8 @@ public partial class ProductContext : DbContext
 
     public virtual DbSet<Warehouse> Warehouses { get; set; }
     
+    public DbSet<ProductCategory> ProductCategories { get; set; }
+    
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<ProductAttribute>(entity =>

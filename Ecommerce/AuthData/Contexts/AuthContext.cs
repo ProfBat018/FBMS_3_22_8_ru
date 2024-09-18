@@ -8,15 +8,13 @@ public class AuthContext : DbContext
     public DbSet<User> Users { get; set; }
     public DbSet<AppRole> AppRoles { get; set; }
     public DbSet<UserRole> UserRoles { get; set; }
-    
+
     public AuthContext()
     {
-        
     }
 
-    public AuthContext(DbContextOptions<AuthContext> options): base(options)
+    public AuthContext(DbContextOptions<AuthContext> options) : base(options)
     {
-        
     }
 
 
@@ -44,23 +42,21 @@ public class AuthContext : DbContext
 
         appRoleEntity.HasKey(a => a.Id);
         appRoleEntity.Property(a => a.Name).IsRequired();
+        appRoleEntity.HasIndex(a => a.Name).IsUnique();
 
         userRoleEntity.HasKey(u => u.Id);
-     
+
         userRoleEntity
             .HasOne(ur => ur.AppRole)
-            .WithMany(ar => ar.UserRoles)  // Связь с коллекцией UserRoles в AppRole
-            .HasForeignKey(ur => ur.RoleId)  // Связь по RoleId
-            .OnDelete(DeleteBehavior.Cascade);  // Поведение при удалении
+            .WithMany(ar => ar.UserRoles) // Связь с коллекцией UserRoles в AppRole
+            .HasForeignKey(ur => ur.RoleId) // Связь по RoleId
+            .OnDelete(DeleteBehavior.Cascade); // Поведение при удалении
 
         // Настройка внешнего ключа на User (UserId)
         userRoleEntity
             .HasOne(ur => ur.User)
-            .WithMany(u => u.UserRoles)  // Связь с коллекцией UserRoles в User
-            .HasForeignKey(ur => ur.UserId)  // Связь по UserId
-            .OnDelete(DeleteBehavior.Cascade);  // Поведение при удалении
-
-        
-
+            .WithMany(u => u.UserRoles) // Связь с коллекцией UserRoles в User
+            .HasForeignKey(ur => ur.UserId) // Связь по UserId
+            .OnDelete(DeleteBehavior.Cascade); // Поведение при удалении
     }
 }

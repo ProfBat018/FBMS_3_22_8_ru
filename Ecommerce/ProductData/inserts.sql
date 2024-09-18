@@ -188,3 +188,30 @@ SELECT ProductID, @subcategoryTablets FROM Products WHERE Name IN (N'Планш�
 INSERT INTO ProductCategories (ProductID, CategoryID)
 SELECT ProductID, @subcategorySmartphoneAccessories FROM Products WHERE Name IN (N'Чехол для iPhone 13', N'Защитное стекло для Samsung Galaxy S21', N'Беспроводная зарядка Xiaomi Mi');
 
+-- Получение ID категории "Смартфоны"
+DECLARE @subcategorySmartphones INT = (SELECT CategoryID FROM Categories WHERE Name = N'Смартфоны');
+
+DECLARE @subcategorySamsung INT = (SELECT CategoryID FROM Categories WHERE Name = N'Самсунг');
+-- Добавление подкатегории "Самсунг"
+INSERT INTO Categories (ParentCategoryID, Name, Description)
+VALUES
+    (@subcategorySmartphones, N'Самсунг', N'Смартфоны от компании Samsung');
+
+
+
+-- Вставка товаров в подкатегорию "Самсунг"
+INSERT INTO Products (Name, Description, Price)
+VALUES
+    (N'Смартфон Samsung Galaxy S21', N'Флагманский смартфон с AMOLED дисплеем', 79999.99),
+    (N'Смартфон Samsung Galaxy S21 Ultra', N'Смартфон с поддержкой 5G и камерой на 108 Мп', 119999.99),
+    (N'Смартфон Samsung Galaxy A52', N'Смартфон среднего класса с дисплеем 90 Гц', 34999.99),
+    (N'Смартфон Samsung Galaxy Z Fold 3', N'Складной смартфон с гибким дисплеем', 149999.99);
+
+
+-- Привязка товаров к подкатегории "Самсунг"
+INSERT INTO ProductCategories (ProductID, CategoryID)
+SELECT ProductID, @subcategorySamsung
+FROM Products
+WHERE Name IN (N'Смартфон Samsung Galaxy S21', N'Смартфон Samsung Galaxy S21 Ultra', N'Смартфон Samsung Galaxy A52', N'Смартфон Samsung Galaxy Z Fold 3');
+
+

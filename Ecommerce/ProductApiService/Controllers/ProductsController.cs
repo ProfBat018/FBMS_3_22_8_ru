@@ -26,4 +26,9 @@ public class ProductsController : ControllerBase
         return Ok(await _unitOfWork.ProductRepository.GetAllPaginatedAsync(page, pagesize));
     }
     
+    [HttpGet("Products/{categoryName}/{page}/{pagesize}")]
+    public async Task<IActionResult> GetAllPaginatedProductsAsync(int page,int pagesize, string categoryName)
+    {
+        return Ok(await _unitOfWork.ProductRepository.GetAllPaginatedAsync(page, pagesize));
+    }
 }
