@@ -1,9 +1,11 @@
 export interface CategoryDTO {
+    id: number,
     name: string, 
-    parentCategory: CategoryDTO
+    parentCategoryId: number
 }
 
 export interface HierarchicalCategory {
+    id: number,
     name: string;
     subcategories: HierarchicalCategory[];
 }

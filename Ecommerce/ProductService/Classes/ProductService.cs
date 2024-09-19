@@ -24,10 +24,8 @@ public class ProductService : IProductService
         return await _unitOfWork.ProductRepository.GetAllAsync();
     }
 
-    public async Task<IEnumerable<ProductDTO>> GetAllProductsByCategoryAsync(string category)
+    public async Task<IEnumerable<ProductDTO>> GetAllProductsByCategoryAsync(int categoryId)
     {
-        var categoryId = (await _unitOfWork.CategoryRepository.FindByNameAsync(category)).CategoryId;
-
         var productsCategories =
             await _unitOfWork.ProductCategoryRepository.GetAllAsync(c => c.CategoryId == categoryId);
 
@@ -40,12 +38,16 @@ public class ProductService : IProductService
         return res;
     }
 
-    public async Task<PaginatedList<Product>> GetAllPaginatedProductsAsync(int page, int pagesize)
+    public async Task<PaginatedList<ProductDTO>> GetAllPaginatedProductsAsync(int page, int pagesize)
     {
-        return await _unitOfWork.ProductRepository.GetAllPaginatedAsync(page, pagesize);
+        var res =  await _unitOfWork.ProductRepository.GetAllPaginatedAsync(page, pagesize);
+
+        var items = _mapper.Map<IEnumerable<ProductDTO>>(res.Items);
+
+        return new PaginatedList<ProductDTO>(items, res.PageNumber, res.PageSize, res.TotalCount);
     }
 
-    public Task<PaginatedList<Product>> GetAllPaginatedProductsByCategoryAsync(int page, int pagesize, string category)
+    public Task<PaginatedList<ProductDTO>> GetAllPaginatedProductsByCategoryAsync(int page, int pagesize, int categoryId)
     {
         throw new NotImplementedException();
     }

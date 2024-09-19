@@ -15,17 +15,17 @@ const GetAllCategories = (isAuthenticated: boolean) => {
         isError: error,
     };
 };
-
 export function transformCategories(categories: CategoryDTO[] | undefined): HierarchicalCategory[] {
     if (!categories) {
         return [];
     }
 
-    const categoryMap = new Map<string, HierarchicalCategory>();
+    const categoryMap = new Map<number, HierarchicalCategory>();
 
-    // Создаем пустые категории в карте
+    // Создаем пустые категории в карте, используя id
     categories.forEach((category) => {
-        categoryMap.set(category.name, {
+        categoryMap.set(category.id, {
+            id: category.id,
             name: category.name,
             subcategories: []
         });
@@ -33,9 +33,9 @@ export function transformCategories(categories: CategoryDTO[] | undefined): Hier
 
     // Заполняем иерархию подкатегорий
     categories.forEach((category) => {
-        const cat = categoryMap.get(category.name);
-        if (category.parentCategory) {
-            const parentCat = categoryMap.get(category.parentCategory.name);
+        const cat = categoryMap.get(category.id);
+        if (category.parentCategoryId) {
+            const parentCat = categoryMap.get(category.parentCategoryId);
             if (parentCat && cat) {
                 parentCat.subcategories.push(cat);
             }

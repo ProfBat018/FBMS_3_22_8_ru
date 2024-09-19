@@ -78,7 +78,7 @@ public class Repository<T> : IRepository<T> where T: class
             .Take(pageSize)
             .ToListAsync();
         
-        return new PaginatedList<T>(items, count, pageNumber, pageSize);
+        return new PaginatedList<T>(items, pageNumber, pageSize, count);
     }
 
     public async Task<T> GetFirstOrDefaultAsync(Expression<Func<T, bool>> filter, string? includeProperties = null,

@@ -26,8 +26,8 @@ public class CategoryController : ControllerBase
     {
         var res = await _unitOfWork.CategoryRepository.GetAllAsync();
 
-        var mappingRes = _mapper.Map<IEnumerable<Category>, IEnumerable<CategoryDTO>>(res);
-        
+        var mappingRes = _mapper.Map<IEnumerable<CategoryDTO>>(res);
+
         return Ok(mappingRes);
     }
 }

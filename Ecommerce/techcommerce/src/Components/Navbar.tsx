@@ -8,6 +8,7 @@ import {CategoryDTO} from "../Models/CategoryDTOs";
 import {LoginDTO, RegisterDTO} from "../Models/AuthDTOs";
 import {useCategories} from "../Providers/CategoryContextProvider";
 import {transformCategories} from "../Actions/CategoryActions";
+import { log } from 'console';
 
 
 interface NavbarProps {
@@ -36,7 +37,6 @@ const Navbar: React.FC<NavbarProps> = ({onLogin}) => {
 
     const toggleDropdown = () => setIsDropdownOpen(prev => !prev);
 
-
     const navigateTo = useNavigate();
 
 
@@ -61,8 +61,6 @@ const Navbar: React.FC<NavbarProps> = ({onLogin}) => {
         if (passwordRef.current) {
             passwordRef.current.value = '';
         }
-
-        console.log(categories);
 
     }, [modalContent, categories])
 

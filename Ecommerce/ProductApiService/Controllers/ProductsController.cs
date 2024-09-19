@@ -14,16 +14,16 @@ public class ProductsController : ControllerBase
         _productService = productService;
     }
 
-    [HttpGet("Products/All")]
-    public async Task<IActionResult> GetAllProductsAsync()
+    [HttpGet("Products/All/{page}/{pagesize}")]
+    public async Task<IActionResult> GetAllProductsAsync(int page, int pagesize)
     {
-        return Ok(await _productService.GetAllProductsAsync());
+        return Ok(await _productService.GetAllPaginatedProductsAsync(page, pagesize));
     }
 
-    [HttpGet("Products/All/{category}")]
-    public async Task<IActionResult> GetAllProductsAsync(string category)
+    [HttpGet("Products/All/{categoryId}")]
+    public async Task<IActionResult> GetAllProductsAsync(int categoryId)
     {
-        return Ok(await _productService.GetAllProductsByCategoryAsync(category));
+        return Ok(await _productService.GetAllProductsByCategoryAsync(categoryId));
     }
 
 
@@ -33,10 +33,10 @@ public class ProductsController : ControllerBase
         return Ok(await _productService.GetAllPaginatedProductsAsync(page, pagesize));
     }
     
-    [HttpGet("Products/{categoryName}/{page}/{pagesize}")]
-    public async Task<IActionResult> GetAllPaginatedProductsAsync(int page,int pagesize, string categoryName)
+    [HttpGet("Products/{categoryId}/{page}/{pagesize}")]
+    public async Task<IActionResult> GetAllPaginatedProductsAsync(int page,int pagesize, int categoryId)
     {
 
-        return Ok(_productService.GetAllPaginatedProductsByCategoryAsync(page, pagesize, categoryName));
+        return Ok(_productService.GetAllPaginatedProductsByCategoryAsync(page, pagesize, categoryId));
     }
 }

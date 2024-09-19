@@ -1,3 +1,3 @@
 namespace ProductData.DTO;
 
-public record CategoryDTO( string name, CategoryDTO parentCategory);
+public record CategoryDTO(int id, string name, int? parentCategoryId);
