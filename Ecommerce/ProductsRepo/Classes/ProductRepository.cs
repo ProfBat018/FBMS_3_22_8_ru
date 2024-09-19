@@ -25,8 +25,4 @@ public class ProductRepository : Repository<Product>, IProductRepository
         throw new NotImplementedException();
     }
 
-    public IQueryable<Product> GetProductsByRange(int categoryId)
-    {
-        
-    }
 }

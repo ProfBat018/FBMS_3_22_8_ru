@@ -5,8 +5,8 @@ namespace ProductService.İnterfaces;
 
 public interface IProductService
 {
-    public Task<IEnumerable<Product>> GetAllProducts();
-    public Task<IEnumerable<Product>> GetAllProductsByCategory(string category);
-    public Task<IEnumerable<Product>> GetAllPaginatedProducts(int page, int pagesize);
-    public Task<IEnumerable<Product>> GetAllPaginatedProductsByCategory(int page, int pagesize, string category);
+    public Task<IEnumerable<Product>> GetAllProductsAsync();
+    public Task<IEnumerable<Product>> GetAllProductsByCategoryAsync(string category);
+    public Task<PaginatedList<Product>> GetAllPaginatedProductsAsync(int page, int pagesize);
+    public Task<PaginatedList<Product>> GetAllPaginatedProductsByCategoryAsync(int page, int pagesize, string category);
 }

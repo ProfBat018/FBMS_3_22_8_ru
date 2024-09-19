@@ -1,7 +1,9 @@
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using ProductData.Contexts;
 using ProductRepo.Interfaces;
 using ProductRepository.Classes;
+using ProductService.Classes;
+using ProductService.İnterfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,9 +25,10 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
 
 builder.Services.AddDbContext<ProductContext>(ops => 
-    ops.UseSqlServer(builder.Configuration.GetConnectionString("DefaultMacEcommerce")));
+    ops.UseSqlServer(builder.Configuration.GetConnectionString("StepEcommerce16")));
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<IProductService, ProductService.Classes.ProductService>();
 
 var app = builder.Build();
 

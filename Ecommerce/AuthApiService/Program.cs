@@ -94,7 +94,7 @@ builder.Services.AddSwaggerGen(options =>
 
 builder.Services.AddDbContext<AuthContext>(options =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultMacAuth"));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("StepAuth16"));
 });
 
 builder.Services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();

@@ -14,6 +14,7 @@ public partial class Category
     public string? Description { get; set; }
 
     public virtual ICollection<Category> InverseParentCategory { get; set; } = new List<Category>();
+    public virtual ICollection<ProductCategory> ProductCategories { get; set; } = new List<ProductCategory>();
 
     public virtual Category? ParentCategory { get; set; }
 

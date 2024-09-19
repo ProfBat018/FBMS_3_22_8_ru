@@ -13,6 +13,8 @@ public partial class Product
 
     public decimal Price { get; set; }
 
+
+    public virtual ICollection<ProductCategory> ProductCategories { get; set; } = new List<ProductCategory>();
     public virtual ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
 
     public virtual ICollection<Warehouse> Warehouses { get; set; } = new List<Warehouse>();

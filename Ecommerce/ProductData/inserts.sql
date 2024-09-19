@@ -1,4 +1,4 @@
-use Ecommerce_8;
+use azimove_Ecommerce;
 
 
 -- Создание категорий
@@ -215,3 +215,32 @@ FROM Products
 WHERE Name IN (N'Смартфон Samsung Galaxy S21', N'Смартфон Samsung Galaxy S21 Ultra', N'Смартфон Samsung Galaxy A52', N'Смартфон Samsung Galaxy Z Fold 3');
 
 
+DECLARE @subcategoryIphones INT = (SELECT CategoryID FROM Categories WHERE Name = N'Смартфоны');
+
+-- *********************************************
+
+DECLARE @subcategorySmartphones INT = (SELECT CategoryID FROM Categories WHERE Name = N'Смартфоны');
+
+
+INSERT INTO Categories (ParentCategoryID, Name, Description)
+VALUES
+    (@subcategoryIphones, N'iPhone', N'Смартфоны от компании Apple');
+
+DECLARE @subcategoryApple INT = (SELECT CategoryID FROM Categories WHERE Name = N'iPhone');
+
+-- Вставка товаров в подкатегорию "iPhone"
+INSERT INTO Products (Name, Description, Price)
+VALUES
+    (N'iPhone 13', N'Флагманский смартфон с A15 Bionic чипом', 79999.99),
+    (N'iPhone 13 Pro', N'Смартфон с тройной камерой и ProMotion дисплеем', 109999.99),
+    (N'iPhone 12', N'Смартфон с отличной производительностью и камерами', 59999.99),
+    (N'iPhone SE', N'Компактный смартфон с A13 Bionic чипом', 39999.99);
+
+    
+DECLARE @subcategoryApple INT = (SELECT CategoryID FROM Categories WHERE Name = N'iPhone');
+
+-- Привязка товаров к подкатегории "iPhone"
+INSERT INTO ProductsCategories (ProductID, CategoryID)
+SELECT ProductID, @subcategoryApple
+FROM Products
+WHERE Name IN (N'iPhone 13', N'iPhone 13 Pro', N'iPhone 12', N'iPhone SE');

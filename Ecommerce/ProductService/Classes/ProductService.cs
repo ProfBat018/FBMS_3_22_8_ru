@@ -15,28 +15,32 @@ public class ProductService : IProductService
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<IEnumerable<Product>> GetAllProducts()
+    public async Task<IEnumerable<Product>> GetAllProductsAsync()
     {
         return await _unitOfWork.ProductRepository.GetAllAsync();
     }
 
-    public async Task<IEnumerable<Product>> GetAllProductsByCategory(string category)
+    public async Task<IEnumerable<Product>> GetAllProductsByCategoryAsync(string category)
     {
         var categoryId = (await _unitOfWork.CategoryRepository.FindByNameAsync(category)).CategoryId;
 
         var productsCategories = await _unitOfWork.ProductCategoryRepository.GetAllAsync(c => c.CategoryId == categoryId);
 
-        
-        
+        var productIds = productsCategories.Select(pc => pc.ProductId).Distinct().ToList();
+
+        var products = await _unitOfWork.ProductRepository.GetAllAsync(p => productIds.Contains(p.ProductId));
+
+        return products;
     }
 
-    public Task<IEnumerable<Product>> GetAllPaginatedProducts(int page, int pagesize)
+    public async Task<PaginatedList<Product>> GetAllPaginatedProductsAsync(int page, int pagesize)
     {
-        throw new NotImplementedException();
+        return await _unitOfWork.ProductRepository.GetAllPaginatedAsync(page, pagesize);
     }
 
-    public Task<IEnumerable<Product>> GetAllPaginatedProductsByCategory(int page, int pagesize, string category)
+    public Task<PaginatedList<Product>> GetAllPaginatedProductsByCategoryAsync(int page, int pagesize, string category)
     {
         throw new NotImplementedException();
+
     }
 }

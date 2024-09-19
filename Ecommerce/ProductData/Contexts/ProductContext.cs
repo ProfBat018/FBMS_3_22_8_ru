@@ -32,10 +32,23 @@ public partial class ProductContext : DbContext
 
     public virtual DbSet<Warehouse> Warehouses { get; set; }
     
-    public DbSet<ProductCategory> ProductCategories { get; set; }
-    
+    public DbSet<ProductCategory> ProductsCategories { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+   
+
+        modelBuilder.Entity<ProductCategory>()
+            .HasOne(pc => pc.Product)
+            .WithMany(p => p.ProductCategories)
+            .HasForeignKey(pc => pc.ProductId);
+
+        modelBuilder.Entity<ProductCategory>()
+            .HasOne(pc => pc.Category)
+            .WithMany(c => c.ProductCategories)
+            .HasForeignKey(pc => pc.CategoryId);
+
+
         modelBuilder.Entity<ProductAttribute>(entity =>
         {
             entity.HasKey(e => e.AttributeId).HasName("PK__Attribut__C189298A6FAD22B7");

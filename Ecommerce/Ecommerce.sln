@@ -1,24 +1,27 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34723.18
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{FB6EBB68-42D5-4C6F-AF71-73C4734FD2D1}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{43E36695-3AB3-4057-83BC-77669B0D8391}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{357BAA0B-970C-443B-8804-2B1839361C7B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthApiService", "AuthApiService\AuthApiService.csproj", "{E73DB730-8C53-4032-A53D-DE5125DF5A66}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuthApiService", "AuthApiService\AuthApiService.csproj", "{E73DB730-8C53-4032-A53D-DE5125DF5A66}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthData", "AuthData\AuthData.csproj", "{2A542852-8A52-4037-B08B-A7817F257360}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuthData", "AuthData\AuthData.csproj", "{2A542852-8A52-4037-B08B-A7817F257360}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserService", "UserService\UserService.csproj", "{5E800234-029A-4082-B313-94370CC8160F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserService", "UserService\UserService.csproj", "{5E800234-029A-4082-B313-94370CC8160F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductApiService", "ProductApiService\ProductApiService.csproj", "{8B608FF1-80FC-4E8C-9C49-580481B43BA5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProductApiService", "ProductApiService\ProductApiService.csproj", "{8B608FF1-80FC-4E8C-9C49-580481B43BA5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductData", "ProductData\ProductData.csproj", "{41C70A41-16E2-4FD7-9E21-6E8306334A8C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProductData", "ProductData\ProductData.csproj", "{41C70A41-16E2-4FD7-9E21-6E8306334A8C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductsRepo", "ProductsRepo\ProductsRepo.csproj", "{407B0A5F-6FDD-4DC3-94E3-A500E22605D7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProductsRepo", "ProductsRepo\ProductsRepo.csproj", "{407B0A5F-6FDD-4DC3-94E3-A500E22605D7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductService", "ProductService\ProductService.csproj", "{C90E6F39-7D31-4D83-84F7-E82A2843AAB3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProductService", "ProductService\ProductService.csproj", "{C90E6F39-7D31-4D83-84F7-E82A2843AAB3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -55,6 +58,9 @@ Global
 		{C90E6F39-7D31-4D83-84F7-E82A2843AAB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C90E6F39-7D31-4D83-84F7-E82A2843AAB3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{E73DB730-8C53-4032-A53D-DE5125DF5A66} = {357BAA0B-970C-443B-8804-2B1839361C7B}
 		{2A542852-8A52-4037-B08B-A7817F257360} = {FB6EBB68-42D5-4C6F-AF71-73C4734FD2D1}
@@ -63,5 +69,8 @@ Global
 		{41C70A41-16E2-4FD7-9E21-6E8306334A8C} = {FB6EBB68-42D5-4C6F-AF71-73C4734FD2D1}
 		{407B0A5F-6FDD-4DC3-94E3-A500E22605D7} = {357BAA0B-970C-443B-8804-2B1839361C7B}
 		{C90E6F39-7D31-4D83-84F7-E82A2843AAB3} = {357BAA0B-970C-443B-8804-2B1839361C7B}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7D002C3E-4D92-4945-93A4-16CDD1B43477}
 	EndGlobalSection
 EndGlobal
