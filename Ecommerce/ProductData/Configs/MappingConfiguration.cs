@@ -18,8 +18,18 @@ public class MappingConfiguration
                 .ForMember(
                     dest => dest.parentCategory, 
                     x => x.MapFrom(u => u.ParentCategory));
-            
-          
+
+            cfg.CreateMap<Product, ProductDTO>()
+                .ForMember(
+                    dest => dest.name,
+                    x => x.MapFrom(u => u.Name))
+                .ForMember(
+                    dest => dest.description,
+                    x => x.MapFrom(u => u.Description))
+                .ForMember(
+                    dest => dest.price,
+                    x => x.MapFrom(u => u.Price));
+
         });
 
         var mapper = new Mapper(mapperConfig);

@@ -74,7 +74,13 @@ const Navbar: React.FC<NavbarProps> = ({onLogin}) => {
             document.documentElement.classList.add('dark');
         }
     };
+    
+    
+    const handleCategoryClick = (categoryName: string) => {
 
+        navigateTo(`/Products`, { state: { categoryName: categoryName} });
+
+    }
     const handleLogin = () => {
 
         const username = usernameRef.current?.value || '';
@@ -302,25 +308,27 @@ const Navbar: React.FC<NavbarProps> = ({onLogin}) => {
                         onMouseLeave={handleMouseLeave}
                     >
                         <button
+                            onClick={() => handleCategoryClick('All')}
                             onMouseEnter={() => setIsDropdownOpen(true)}
                             className="block py-2 text-white hover:text-gray-300"
                         >
                             Categories
                         </button>
                         {(hierarchicalCategories.length > 0 && isDropdownOpen) && (
-                            <div onMouseLeave={() => setIsDropdownOpen(false)}  className="absolute left-0 mt-2 w-48 bg-black-950 text-white shadow-lg">
+                            <div onMouseLeave={() => setIsDropdownOpen(false)}
+                                 className="absolute left-0 mt-2 w-48 bg-black-950 text-white shadow-lg">
                                 {hierarchicalCategories.map((category) => (
                                     <div
                                         key={category.name}
                                         className="relative"
                                         onMouseEnter={() => handleMouseEnterCategory(category.name)}
                                     >
-                                        <Link
-                                            to={`/category/${category.name}`}
+                                        <button
+                                            onClick={() => {handleCategoryClick(category.name)}}
                                             className="block px-4 py-2 hover:bg-gray-700"
                                         >
                                             {category.name}
-                                        </Link>
+                                        </button>
                                         {activeCategory === category.name && category.subcategories.length > 0 && (
                                             <div
                                                 className="absolute left-full top-0 mt-2 w-48 bg-black-950 text-white shadow-lg">
@@ -330,23 +338,23 @@ const Navbar: React.FC<NavbarProps> = ({onLogin}) => {
                                                         className="relative"
                                                         onMouseEnter={() => handleMouseEnterSubCategory(subcat.name)}
                                                     >
-                                                        <Link
-                                                            to={`/category/${subcat.name}`}
+                                                        <button
+                                                           onClick={() => handleCategoryClick(subcat.name)}
                                                             className="block px-4 py-2 hover:bg-black-1000"
                                                         >
                                                             {subcat.name}
-                                                        </Link>
+                                                        </button>
                                                         {activeSubCategory === subcat.name && subcat.subcategories.length > 0 && (
                                                             <div
                                                                 className="absolute left-full top-0 mt-2 w-48 bg-black-950 text-white shadow-lg">
                                                                 {subcat.subcategories.map((subSubcat) => (
-                                                                    <Link
+                                                                    <button
                                                                         key={subSubcat.name}
-                                                                        to={`/category/${subSubcat.name}`}
+                                                                      onClick={() => handleCategoryClick(subSubcat.name)}
                                                                         className="block px-4 py-2 hover:bg-gray-700"
                                                                     >
                                                                         {subSubcat.name}
-                                                                    </Link>
+                                                                    </button>
                                                                 ))}
                                                             </div>
                                                         )}

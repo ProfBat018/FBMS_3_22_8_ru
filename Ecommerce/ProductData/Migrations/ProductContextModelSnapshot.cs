@@ -22,40 +22,34 @@ namespace ProductData.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("ProductAttribute", b =>
+            modelBuilder.Entity("AttributeValueProduct", b =>
                 {
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int")
-                        .HasColumnName("ProductID");
+                    b.Property<int>("AttributeValuesAttributeValueId")
+                        .HasColumnType("int");
 
-                    b.Property<int>("AttributeValueId")
-                        .HasColumnType("int")
-                        .HasColumnName("AttributeValueID");
+                    b.Property<int>("ProductsProductId")
+                        .HasColumnType("int");
 
-                    b.HasKey("ProductId", "AttributeValueId")
-                        .HasName("PK__ProductA__C73924C8796F1D3F");
+                    b.HasKey("AttributeValuesAttributeValueId", "ProductsProductId");
 
-                    b.HasIndex("AttributeValueId");
+                    b.HasIndex("ProductsProductId");
 
-                    b.ToTable("ProductAttributes", (string)null);
+                    b.ToTable("AttributeValueProduct");
                 });
 
-            modelBuilder.Entity("ProductCategory", b =>
+            modelBuilder.Entity("CategoryProduct", b =>
                 {
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int")
-                        .HasColumnName("ProductID");
+                    b.Property<int>("CategoriesCategoryId")
+                        .HasColumnType("int");
 
-                    b.Property<int>("CategoryId")
-                        .HasColumnType("int")
-                        .HasColumnName("CategoryID");
+                    b.Property<int>("ProductsProductId")
+                        .HasColumnType("int");
 
-                    b.HasKey("ProductId", "CategoryId")
-                        .HasName("PK__ProductC__159C554FB774ABEC");
+                    b.HasKey("CategoriesCategoryId", "ProductsProductId");
 
-                    b.HasIndex("CategoryId");
+                    b.HasIndex("ProductsProductId");
 
-                    b.ToTable("ProductCategories", (string)null);
+                    b.ToTable("CategoryProduct");
                 });
 
             modelBuilder.Entity("ProductData.Models.AttributeValue", b =>
@@ -307,38 +301,34 @@ namespace ProductData.Migrations
                     b.ToTable("Warehouse", (string)null);
                 });
 
-            modelBuilder.Entity("ProductAttribute", b =>
+            modelBuilder.Entity("AttributeValueProduct", b =>
                 {
                     b.HasOne("ProductData.Models.AttributeValue", null)
                         .WithMany()
-                        .HasForeignKey("AttributeValueId")
+                        .HasForeignKey("AttributeValuesAttributeValueId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("FK__ProductAt__Attri__4222D4EF");
+                        .IsRequired();
 
                     b.HasOne("ProductData.Models.Product", null)
                         .WithMany()
-                        .HasForeignKey("ProductId")
+                        .HasForeignKey("ProductsProductId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("FK__ProductAt__Produ__412EB0B6");
+                        .IsRequired();
                 });
 
-            modelBuilder.Entity("ProductCategory", b =>
+            modelBuilder.Entity("CategoryProduct", b =>
                 {
                     b.HasOne("ProductData.Models.Category", null)
                         .WithMany()
-                        .HasForeignKey("CategoryId")
+                        .HasForeignKey("CategoriesCategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("FK__ProductCa__Categ__49C3F6B7");
+                        .IsRequired();
 
                     b.HasOne("ProductData.Models.Product", null)
                         .WithMany()
-                        .HasForeignKey("ProductId")
+                        .HasForeignKey("ProductsProductId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("FK__ProductCa__Produ__48CFD27E");
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("ProductData.Models.AttributeValue", b =>

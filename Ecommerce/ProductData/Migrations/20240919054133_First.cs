@@ -113,17 +113,17 @@ namespace ProductData.Migrations
                         principalColumn: "StatusID");
                 });
 
-        
             migrationBuilder.CreateTable(
                 name: "ProductsCategories",
                 columns: table => new
                 {
-                   
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ProductId = table.Column<int>(type: "int", nullable: false),
                     CategoryId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
+                    table.PrimaryKey("PK_ProductsCategories", x => x.Id);
                     table.ForeignKey(
                         name: "FK_ProductsCategories_Categories_CategoryId",
                         column: x => x.CategoryId,
@@ -160,24 +160,24 @@ namespace ProductData.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ProductAttributes",
+                name: "AttributeValueProduct",
                 columns: table => new
                 {
-                    ProductID = table.Column<int>(type: "int", nullable: false),
-                    AttributeValueID = table.Column<int>(type: "int", nullable: false)
+                    AttributeValuesAttributeValueId = table.Column<int>(type: "int", nullable: false),
+                    ProductsProductId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK__ProductA__C73924C8796F1D3F", x => new { x.ProductID, x.AttributeValueID });
+                    table.PrimaryKey("PK_AttributeValueProduct", x => new { x.AttributeValuesAttributeValueId, x.ProductsProductId });
                     table.ForeignKey(
-                        name: "FK__ProductAt__Attri__4222D4EF",
-                        column: x => x.AttributeValueID,
+                        name: "FK_AttributeValueProduct_AttributeValues_AttributeValuesAttributeValueId",
+                        column: x => x.AttributeValuesAttributeValueId,
                         principalTable: "AttributeValues",
                         principalColumn: "AttributeValueID",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK__ProductAt__Produ__412EB0B6",
-                        column: x => x.ProductID,
+                        name: "FK_AttributeValueProduct_Products_ProductsProductId",
+                        column: x => x.ProductsProductId,
                         principalTable: "Products",
                         principalColumn: "ProductID",
                         onDelete: ReferentialAction.Cascade);
@@ -212,6 +212,11 @@ namespace ProductData.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_AttributeValueProduct_ProductsProductId",
+                table: "AttributeValueProduct",
+                column: "ProductsProductId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_AttributeValues_AttributeID",
                 table: "AttributeValues",
                 column: "AttributeID");
@@ -220,6 +225,8 @@ namespace ProductData.Migrations
                 name: "IX_Categories_ParentCategoryID",
                 table: "Categories",
                 column: "ParentCategoryID");
+
+     
 
             migrationBuilder.CreateIndex(
                 name: "IX_OrderItems_OrderID",
@@ -235,16 +242,6 @@ namespace ProductData.Migrations
                 name: "IX_Orders_StatusID",
                 table: "Orders",
                 column: "StatusID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ProductAttributes_AttributeValueID",
-                table: "ProductAttributes",
-                column: "AttributeValueID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ProductCategories_CategoryID",
-                table: "ProductCategories",
-                column: "CategoryID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ProductsCategories_CategoryId",
@@ -266,13 +263,11 @@ namespace ProductData.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "AttributeValueProduct");
+            
+
+            migrationBuilder.DropTable(
                 name: "OrderItems");
-
-            migrationBuilder.DropTable(
-                name: "ProductAttributes");
-
-            migrationBuilder.DropTable(
-                name: "ProductCategories");
 
             migrationBuilder.DropTable(
                 name: "ProductsCategories");
@@ -281,10 +276,10 @@ namespace ProductData.Migrations
                 name: "Warehouse");
 
             migrationBuilder.DropTable(
-                name: "Orders");
+                name: "AttributeValues");
 
             migrationBuilder.DropTable(
-                name: "AttributeValues");
+                name: "Orders");
 
             migrationBuilder.DropTable(
                 name: "Categories");
@@ -293,10 +288,10 @@ namespace ProductData.Migrations
                 name: "Products");
 
             migrationBuilder.DropTable(
-                name: "OrderStatuses");
+                name: "Attributes");
 
             migrationBuilder.DropTable(
-                name: "Attributes");
+                name: "OrderStatuses");
         }
     }
 }

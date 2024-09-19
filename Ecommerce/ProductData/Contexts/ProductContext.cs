@@ -19,7 +19,6 @@ public partial class ProductContext : DbContext
     public virtual DbSet<ProductAttribute> Attributes { get; set; }
 
     public virtual DbSet<AttributeValue> AttributeValues { get; set; }
-
     public virtual DbSet<Category> Categories { get; set; }
 
     public virtual DbSet<Order> Orders { get; set; }
@@ -36,8 +35,8 @@ public partial class ProductContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-   
-
+        modelBuilder.Entity<ProductCategory>().HasKey(pc => pc.Id);
+        
         modelBuilder.Entity<ProductCategory>()
             .HasOne(pc => pc.Product)
             .WithMany(p => p.ProductCategories)
@@ -142,40 +141,6 @@ public partial class ProductContext : DbContext
             entity.Property(e => e.ProductId).HasColumnName("ProductID");
             entity.Property(e => e.Name).HasMaxLength(100);
             entity.Property(e => e.Price).HasColumnType("decimal(10, 2)");
-
-            entity.HasMany(d => d.AttributeValues).WithMany(p => p.Products)
-                .UsingEntity<Dictionary<string, object>>(
-                    "ProductAttribute",
-                    r => r.HasOne<AttributeValue>().WithMany()
-                        .HasForeignKey("AttributeValueId")
-                        .HasConstraintName("FK__ProductAt__Attri__4222D4EF"),
-                    l => l.HasOne<Product>().WithMany()
-                        .HasForeignKey("ProductId")
-                        .HasConstraintName("FK__ProductAt__Produ__412EB0B6"),
-                    j =>
-                    {
-                        j.HasKey("ProductId", "AttributeValueId").HasName("PK__ProductA__C73924C8796F1D3F");
-                        j.ToTable("ProductAttributes");
-                        j.IndexerProperty<int>("ProductId").HasColumnName("ProductID");
-                        j.IndexerProperty<int>("AttributeValueId").HasColumnName("AttributeValueID");
-                    });
-
-            entity.HasMany(d => d.Categories).WithMany(p => p.Products)
-                .UsingEntity<Dictionary<string, object>>(
-                    "ProductCategory",
-                    r => r.HasOne<Category>().WithMany()
-                        .HasForeignKey("CategoryId")
-                        .HasConstraintName("FK__ProductCa__Categ__49C3F6B7"),
-                    l => l.HasOne<Product>().WithMany()
-                        .HasForeignKey("ProductId")
-                        .HasConstraintName("FK__ProductCa__Produ__48CFD27E"),
-                    j =>
-                    {
-                        j.HasKey("ProductId", "CategoryId").HasName("PK__ProductC__159C554FB774ABEC");
-                        j.ToTable("ProductCategories");
-                        j.IndexerProperty<int>("ProductId").HasColumnName("ProductID");
-                        j.IndexerProperty<int>("CategoryId").HasColumnName("CategoryID");
-                    });
         });
 
         modelBuilder.Entity<Warehouse>(entity =>
