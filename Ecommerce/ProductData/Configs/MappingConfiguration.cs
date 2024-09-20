@@ -24,19 +24,10 @@ public class MappingConfiguration
                     dest => dest.parentCategoryId,
                     x => x.MapFrom(u => u.ParentCategoryId));
 
+
             cfg.CreateMap<Product, ProductDTO>()
-                 .ForMember(
-                    dest => dest.id,
-                    x => x.MapFrom(u => u.ProductId))
-                .ForMember(
-                    dest => dest.name,
-                    x => x.MapFrom(u => u.Name))
-                .ForMember(
-                    dest => dest.description,
-                    x => x.MapFrom(u => u.Description))
-                .ForMember(
-                    dest => dest.price,
-                    x => x.MapFrom(u => u.Price)).ReverseMap();
+               .ConstructUsing(src => new ProductDTO(src.ProductId, src.Name, src.Description, src.Price));
+
 
         });
 

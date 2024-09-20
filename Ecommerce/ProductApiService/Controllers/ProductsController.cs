@@ -20,23 +20,10 @@ public class ProductsController : ControllerBase
         return Ok(await _productService.GetAllPaginatedProductsAsync(page, pagesize));
     }
 
-    [HttpGet("Products/All/{categoryId}")]
-    public async Task<IActionResult> GetAllProductsAsync(int categoryId)
-    {
-        return Ok(await _productService.GetAllProductsByCategoryAsync(categoryId));
-    }
-
-
-    [HttpGet("Products/{page}/{pagesize}")]
-    public async Task<IActionResult> GetAllPaginatedProductsAsync(int page,int pagesize)
-    {
-        return Ok(await _productService.GetAllPaginatedProductsAsync(page, pagesize));
-    }
-    
     [HttpGet("Products/{categoryId}/{page}/{pagesize}")]
     public async Task<IActionResult> GetAllPaginatedProductsAsync(int page,int pagesize, int categoryId)
     {
 
-        return Ok(_productService.GetAllPaginatedProductsByCategoryAsync(page, pagesize, categoryId));
+        return Ok(await _productService.GetAllPaginatedProductsByCategoryAsync(page, pagesize, categoryId));
     }
 }

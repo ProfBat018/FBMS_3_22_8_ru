@@ -32,13 +32,13 @@ public class Repository<T> : IRepository<T> where T: class
     // GetAllAsync(x => x.Color == "red", "Orders, Warehouse");
     public async Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>>? filter = null, string? includeProperties = null)
     {
-        IQueryable<T> query = contextSet; // select * from Products
+        IQueryable<T> query = contextSet; 
         
         if (filter != null)
         {
             query = query.Where(filter);
         }
-
+     
         if (includeProperties != null)
         {
             foreach (var includeProp in includeProperties.Split(new char[] { ',' },
@@ -78,7 +78,7 @@ public class Repository<T> : IRepository<T> where T: class
             .Take(pageSize)
             .ToListAsync();
         
-        return new PaginatedList<T>(items, pageNumber, pageSize, count);
+        return new PaginatedList<T>(items, count, pageNumber, pageSize);
     }
 
     public async Task<T> GetFirstOrDefaultAsync(Expression<Func<T, bool>> filter, string? includeProperties = null,
