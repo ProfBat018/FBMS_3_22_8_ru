@@ -4,11 +4,19 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faSignInAlt, faSun, faMoon, faBars, faTimes} from '@fortawesome/free-solid-svg-icons';
 import {Link, useNavigate} from 'react-router-dom';
 import {login, register} from '../Actions/AuthActions';
-import {CategoryDTO} from "../Models/CategoryDTOs";
-import {LoginDTO, RegisterDTO} from "../Models/AuthDTOs";
-import {useCategories} from "../Providers/CategoryContextProvider";
-import {transformCategories} from "../Actions/CategoryActions";
-import { log } from 'console';
+import {useDispatch, useSelector} from "react-redux";
+import {closeModal, openModal} from "../Store/ModalSlice";
+import {
+    loadCategories,
+    resetCategories,
+    setActiveCategory,
+    setActiveSubCategory,   
+} from "../Store/CategorySlice";
+import {toggleTheme} from "../Store/ThemeSlice";
+import {RootState} from "../Store/Store";
+import {loginUser, registerUser} from "../Store/AuthSlice";
+import {AppDispatch} from "../Store/Store";
+import {toggleMenu} from "../Store/MenuSlice";
 
 
 interface NavbarProps {
@@ -18,111 +26,50 @@ interface NavbarProps {
 
 // тут должен был быть Store, но мне лень 
 const Navbar: React.FC<NavbarProps> = ({onLogin}) => {
-    const categories = useCategories();
+    
+    const dispatch = useDispatch<AppDispatch>();
 
-    const [activeCategory, setActiveCategory] = useState<string | null>(null);
-    const [activeSubCategory, setActiveSubCategory] = useState<string | null>(null);
-    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-    const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
-    const [darkTheme, setDarkTheme] = useState<boolean>(true);
-    const [modalContent, setModalContent] = useState<'login' | 'register' | 'forgotPassword'>('login'); // Логин по умолчанию
+    const navigateTo = useNavigate();
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    
+    const { darkTheme } = useSelector((state: RootState) => state.theme);
+
+    const isMenuOpen = useSelector((state: RootState) => state.menu.isMenuOpen);
+    const { isModalOpen, modalContent } = useSelector((state: RootState) => state.modal);
+
+    
+    const { isAuthenticated } = useSelector((state: RootState) => state.auth);
 
     const usernameRef = useRef<HTMLInputElement>(null);
     const passwordRef = useRef<HTMLInputElement>(null);
     const confirmPasswordRef = useRef<HTMLInputElement>(null);
     const emailRef = useRef<HTMLInputElement>(null);
+  
+    const { categories, loading, error, activeCategory, activeSubCategory } = useSelector((state: RootState) => state.categories);
 
-    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-    const hierarchicalCategories = transformCategories(categories);
+    useEffect(() => {
+        dispatch(loadCategories());
 
-    const toggleDropdown = () => setIsDropdownOpen(prev => !prev);
-
-    const navigateTo = useNavigate();
-
+        console.log(categories);
+    }, [dispatch]);
+    
+    const handleCategoryClick = (categoryId: number) => {
+        navigateTo(`/Products`, { state: { categoryId } });
+    };
 
     const handleMouseEnterCategory = (categoryName: string) => {
-        setActiveCategory(categoryName);
-        setActiveSubCategory(null); // Сброс активной подкатегории
+        dispatch(setActiveCategory(categoryName));
     };
 
     const handleMouseEnterSubCategory = (subCategoryName: string) => {
-        setActiveSubCategory(subCategoryName);
+        dispatch(setActiveSubCategory(subCategoryName));
     };
-
-    const handleMouseLeave = () => {
-        setActiveCategory(null);
-        setActiveSubCategory(null);
+   const handleMouseLeave = () => {
+        dispatch(resetCategories())
     };
-
-    useEffect(() => {
-        if (usernameRef.current) {
-            usernameRef.current.value = '';
-        }
-        if (passwordRef.current) {
-            passwordRef.current.value = '';
-        }
-
-    }, [modalContent, categories])
-
-    const toggleTheme = () => {
-        setDarkTheme(!darkTheme);
-        if (darkTheme) {
-            document.documentElement.classList.remove('dark');
-        } else {
-            document.documentElement.classList.add('dark');
-        }
+    const toggleThemeHandler = () => {
+        dispatch(toggleTheme());
     };
-    
-    
-    const handleCategoryClick = (categoryName: string) => {
-
-        navigateTo(`/Products`, { state: { categoryName: categoryName} });
-
-    }
-    const handleLogin = () => {
-
-        const username = usernameRef.current?.value || '';
-        const password = passwordRef.current?.value || '';
-
-        const user: LoginDTO = {
-            username, password
-        };
-
-        const res = login(user);
-
-        res.then(response => {
-            localStorage.setItem('accessToken', response.accessToken);
-            localStorage.setItem('refreshToken', response.refreshToken);
-
-            setIsModalOpen(false);
-            navigateTo('/home');
-            onLogin(true);
-        }).catch(error => {
-            onLogin(false);
-        });
-    };
-
-    const handleRegister = () => {
-
-
-        const username = usernameRef.current?.value || '';
-        const password = passwordRef.current?.value || '';
-        const email = emailRef.current?.value || '';
-        const confirmPassword = confirmPasswordRef.current?.value || '';
-
-
-        const user: RegisterDTO = {
-            username, password, confirmPassword, email
-        };
-        console.log(user);
-        const res = register(user);
-
-        res.then(() => {
-            setModalContent('login');
-        }).catch((error) => {
-        });
-
-    }
 
     const renderModalContent = () => {
         switch (modalContent) {
@@ -161,21 +108,25 @@ const Navbar: React.FC<NavbarProps> = ({onLogin}) => {
                                 <button
                                     type="button"
                                     className="text-blue-500 hover:underline"
-                                    onClick={() => setModalContent('forgotPassword')}
+                                    onClick={() => dispatch(openModal('forgotPassword'))}
                                 >
                                     Forgot password?
                                 </button>
                                 <button
                                     type="button"
                                     className="text-blue-500 hover:underline"
-                                    onClick={() => setModalContent('register')}
+                                    onClick={() => dispatch(openModal('register'))}
                                 >
                                     Not registered yet?
                                 </button>
                             </div>
 
                             <button
-                                onClick={handleLogin}
+                                onClick={() => {
+                                    const username = usernameRef.current?.value || '';
+                                    const password = passwordRef.current?.value || '';
+                                    dispatch(loginUser({ username, password }));
+                                }}
                                 className="w-full bg-black-950 text-white px-4 py-2 rounded hover:bg-black-800"
                             >
                                 Log In
@@ -240,7 +191,13 @@ const Navbar: React.FC<NavbarProps> = ({onLogin}) => {
                                 />
                             </div>
                             <button
-                                onClick={handleRegister}
+                                onClick={() => {
+                                    const username = usernameRef.current?.value || '';
+                                    const password = passwordRef.current?.value || '';
+                                    const email = emailRef.current?.value || '';
+                                    const confirmPassword = confirmPasswordRef.current?.value || '';
+                                    dispatch(registerUser({ username, password, confirmPassword, email }));
+                                }}
                                 className="w-full bg-black-950 text-white px-4 py-2 rounded hover:bg-black-800"
                             >
                                 Register
@@ -249,7 +206,7 @@ const Navbar: React.FC<NavbarProps> = ({onLogin}) => {
                             <button
                                 type="button"
                                 className="mt-2 text-blue-500 hover:underline"
-                                onClick={() => setModalContent('login')}
+                                onClick={() => dispatch(openModal('login'))}
                             >
                                 Already have an account? Log In
                             </button>
@@ -283,7 +240,7 @@ const Navbar: React.FC<NavbarProps> = ({onLogin}) => {
                             <button
                                 type="button"
                                 className="mt-2 text-blue-500 hover:underline"
-                                onClick={() => setModalContent('login')}
+                                onClick={() => dispatch(openModal('login'))}
                             >
                                 Back to Log In
                             </button>
@@ -306,23 +263,23 @@ const Navbar: React.FC<NavbarProps> = ({onLogin}) => {
                         onMouseLeave={handleMouseLeave}
                     >
                         <button
-                            onClick={() => handleCategoryClick('All')}
+                            onClick={() => handleCategoryClick(0)}
                             onMouseEnter={() => setIsDropdownOpen(true)}
                             className="block py-2 text-white hover:text-gray-300"
                         >
                             Categories
                         </button>
-                        {(hierarchicalCategories.length > 0 && isDropdownOpen) && (
+                        {(categories.length > 0 && isDropdownOpen) && (
                             <div onMouseLeave={() => setIsDropdownOpen(false)}
                                  className="absolute left-0 mt-2 w-48 bg-black-950 text-white shadow-lg">
-                                {hierarchicalCategories.map((category) => (
+                                {categories.map((category) => (
                                     <div
                                         key={category.name}
                                         className="relative"
                                         onMouseEnter={() => handleMouseEnterCategory(category.name)}
                                     >
                                         <button
-                                            onClick={() => {handleCategoryClick(category.name)}}
+                                            onClick={() => {handleCategoryClick(category.id)}}
                                             className="block px-4 py-2 hover:bg-gray-700"
                                         >
                                             {category.name}
@@ -337,7 +294,7 @@ const Navbar: React.FC<NavbarProps> = ({onLogin}) => {
                                                         onMouseEnter={() => handleMouseEnterSubCategory(subcat.name)}
                                                     >
                                                         <button
-                                                           onClick={() => handleCategoryClick(subcat.name)}
+                                                           onClick={() => handleCategoryClick(subcat.id)}
                                                             className="block px-4 py-2 hover:bg-black-1000"
                                                         >
                                                             {subcat.name}
@@ -348,7 +305,7 @@ const Navbar: React.FC<NavbarProps> = ({onLogin}) => {
                                                                 {subcat.subcategories.map((subSubcat) => (
                                                                     <button
                                                                         key={subSubcat.name}
-                                                                      onClick={() => handleCategoryClick(subSubcat.name)}
+                                                                      onClick={() => handleCategoryClick(subSubcat.id)}
                                                                         className="block px-4 py-2 hover:bg-gray-700"
                                                                     >
                                                                         {subSubcat.name}
@@ -369,7 +326,7 @@ const Navbar: React.FC<NavbarProps> = ({onLogin}) => {
                 </div>
 
                 <button
-                    onClick={() => setIsMenuOpen(!isMenuOpen)}
+                    onClick={() => dispatch(toggleMenu())}
                     className="sm:hidden hover:text-gray-300"
                 >
                     <FontAwesomeIcon icon={isMenuOpen ? faTimes : faBars}/>
@@ -379,14 +336,14 @@ const Navbar: React.FC<NavbarProps> = ({onLogin}) => {
 
             <div className="flex items-center space-x-4">
                 <button
-                    onClick={() => setIsModalOpen(true)}
+                    onClick={() => dispatch(openModal('login'))}
                     className="hover:text-gray-300"
                 >
                     <FontAwesomeIcon icon={faSignInAlt}/>
                 </button>
 
                 <button
-                    onClick={toggleTheme}
+                    onClick={() => dispatch(toggleTheme())}
                     className="hover:text-gray-300"
                 >
                     <FontAwesomeIcon icon={darkTheme ? faSun : faMoon}/>
@@ -403,7 +360,7 @@ const Navbar: React.FC<NavbarProps> = ({onLogin}) => {
                 </div>
             )}
 
-            <Dialog open={isModalOpen} onClose={() => setIsModalOpen(false)}
+            <Dialog open={isModalOpen} onClose={() => dispatch(closeModal())}
                     className="fixed z-10 inset-0 overflow-y-auto">
                 <div className="flex items-center justify-center min-h-screen px-4">
                     <Dialog.Overlay className="fixed inset-0 bg-black opacity-30"/>

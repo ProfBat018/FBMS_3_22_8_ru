@@ -1,4 +1,3 @@
-
 import useSWR from "swr";
 import axios from "axios";
 import {CategoryDTO, HierarchicalCategory} from "../Models/CategoryDTOs";
@@ -6,15 +5,16 @@ import {CategoryDTO, HierarchicalCategory} from "../Models/CategoryDTOs";
 
 const fetcher = (url: string) => axios.get(url).then(res => res.data);
 
-const GetAllCategories = (isAuthenticated: boolean) => {
-    const { data, error, isLoading } = useSWR<CategoryDTO[]>(isAuthenticated ? 'http://localhost:5040/Category/All': null, fetcher);
-
-    return {
-        categories: data,
-        isLoading,
-        isError: error,
-    };
+export const GetAllCategories = async (): Promise<CategoryDTO[]> => {
+    const response = await fetch('http://localhost:5040/Category/All');
+    if (!response.ok) {
+        throw new Error('Failed to fetch categories');
+    }
+    const data: CategoryDTO[] = await response.json(); // Убедись, что данные соответствуют CategoryDTO[]
+    return data; // Верни данные напрямую
 };
+
+
 export function transformCategories(categories: CategoryDTO[] | undefined): HierarchicalCategory[] {
     if (!categories) {
         return [];

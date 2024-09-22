@@ -1,15 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import Navbar from './Navbar'
-import { Outlet } from "react-router-dom";
+import {Outlet} from "react-router-dom";
 import Error from "./Error";
-import { ErrorDTO, ErrorTypes } from "../Models/ErrorDTOs";
-import { ToastContainer, toast } from 'react-toastify';
+import {ErrorDTO, ErrorTypes} from "../Models/ErrorDTOs";
+import {ToastContainer, toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { DecodedToken } from "../Models/AuthDTOs";
-import { jwtDecode } from "jwt-decode";
-import {CategoryProvider} from "../Providers/CategoryContextProvider";
+import {DecodedToken} from "../Models/AuthDTOs";
+import {jwtDecode} from "jwt-decode";
 
-const ToastNotifier: React.FC<{ message: string; type: "success" | "error" }> = ({ message, type }) => {
+const ToastNotifier: React.FC<{ message: string; type: "success" | "error" }> = ({message, type}) => {
     useEffect(() => {
         toast(message, {
             position: "top-right",
@@ -45,14 +44,15 @@ const Layout: React.FC = () => {
     };
 
     return (
-        <CategoryProvider>
-            <Navbar onLogin={handleLogin} />
+        <>
+            <Navbar onLogin={handleLogin}/>
             <main>
-                <Outlet />
+                <Outlet/>
             </main>
-            <ToastContainer />
-            {toastMessage && toastType && <ToastNotifier message={toastMessage} type={toastType} />}
-        </CategoryProvider>
+            <ToastContainer/>
+            {toastMessage && toastType && <ToastNotifier message={toastMessage} type={toastType}/>}
+        </>
+
     );
 };
 

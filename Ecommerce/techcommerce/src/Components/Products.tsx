@@ -1,19 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { ProductDTO } from '../Models/ProductDTO';
 import { GetAllProducts } from '../Actions/ProductActions';
-import { useParams } from "react-router-dom";
+import {useLocation, useParams} from "react-router-dom";
 
 const Products = () => {
-    const { category } = useParams<{ category: string | undefined }>();
+    const location = useLocation();
+    const categoryId = location.state?.categoryId;
+    
     const [currentPage, setCurrentPage] = useState(1);
-    const [pageSize] = useState(10); // Fixed page size
-    let categoryId = category ? parseInt(category, 10) : 0;
-
+    const [pageSize] = useState(10); 
+    
     const { products: fetchedProducts, isLoading, isError } = GetAllProducts(categoryId, { page: currentPage, pageSize });
-
-    useEffect(() => {
-        console.log('Fetched Products:', fetchedProducts);
-    }, [fetchedProducts]);
+        
 
     if (isLoading) {
         return (
@@ -26,8 +24,7 @@ const Products = () => {
     if (isError) {
         return <div className="text-center text-red-500">Error fetching products</div>;
     }
-
-    // Check if fetchedProducts is valid
+    
     if (!fetchedProducts || !Array.isArray(fetchedProducts.items) || fetchedProducts.totalCount === 0) {
         return <div className="text-center text-gray-500">No products available</div>;
     }
