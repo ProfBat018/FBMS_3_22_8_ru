@@ -25,8 +25,12 @@ public class MappingConfiguration
                     x => x.MapFrom(u => u.ParentCategoryId));
 
 
+            cfg.CreateMap<Product, AddProductDTO>()
+               .ConstructUsing(src => new AddProductDTO(src.Name, src.ImageUrl, src.Description, src.Price)).ReverseMap();
+
+
             cfg.CreateMap<Product, ProductDTO>()
-               .ConstructUsing(src => new ProductDTO(src.ProductId, src.Name, src.Description, src.Price));
+               .ConstructUsing(src => new ProductDTO(src.ProductId, src.Name, src.ImageUrl, src.Description, src.Price));
 
 
         });

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ProductData.DTO;
 using ProductRepo.Interfaces;
 using ProductService.İnterfaces;
 
@@ -26,4 +27,21 @@ public class ProductsController : ControllerBase
 
         return Ok(await _productService.GetAllPaginatedProductsByCategoryAsync(page, pagesize, categoryId));
     }
+
+    [HttpPost("Product/Add")]
+    public async Task<IActionResult> AddNewProductAsync([FromBody] AddProductDTO productDto, CancellationToken cancellationToken)
+    {
+        var res = await _productService.AddNewProductAsync(productDto, cancellationToken);
+
+        return Ok(res);
+    }
+
+    [HttpPost("Image/Add")]
+    public async Task<IActionResult> UploadImageAsync([FromForm] IFormFile file, CancellationToken cancellationToken)
+    {
+        var res = await _productService.UploadImageAsync(file, cancellationToken);
+    
+        return Ok(res);
+    }
+
 }

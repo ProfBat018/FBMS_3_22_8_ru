@@ -45,6 +45,7 @@ const Products = () => {
                         key={product.id} // Use a unique identifier if available
                         className="bg-white shadow-md rounded-lg p-4 hover:shadow-lg transition-shadow duration-300"
                     >
+                        <img src={product.imageUrl}></img>
                         <h3 className="text-lg font-bold text-gray-800">{product.name}</h3>
                         <p className="text-gray-600 mt-2">{product.description}</p>
                         <p className="text-gray-900 font-semibold mt-4">${product.price.toFixed(2)}</p>

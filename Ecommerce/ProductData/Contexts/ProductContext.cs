@@ -141,6 +141,10 @@ public partial class ProductContext : DbContext
             entity.Property(e => e.ProductId).HasColumnName("ProductID");
             entity.Property(e => e.Name).HasMaxLength(100);
             entity.Property(e => e.Price).HasColumnType("decimal(10, 2)");
+
+            entity.Property(e => e.ImageUrl)
+            .IsRequired()
+            .HasDefaultValue("https://stepecommerce.blob.core.windows.net/ecommerceimages/213940751_w640_h320_obves-dlya-bmw.webp");
         });
 
         modelBuilder.Entity<Warehouse>(entity =>
