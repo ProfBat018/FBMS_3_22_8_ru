@@ -1,6 +1,6 @@
 import React from 'react';
 import Navbar from '../pages/Navbar';
-import { categories } from '../models/categories';
+import { categories } from '../models/categories.dto';
 import { Outlet } from 'react-router-dom';
 
 

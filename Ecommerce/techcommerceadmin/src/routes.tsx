@@ -1,11 +1,12 @@
 import Layout from './pages/Layout';
-import Home from './pages/Home';
-import React, { Children } from 'react';
 import Main from './pages/Main';
-import Products from './pages/Products';
-import Categories from './pages/Categories';
-import Users from './pages/Users';
-
+import ProductsAll from './pages/ProductsAll';
+import ProductsAdd from './pages/ProductsAdd';
+import CategoriesAll from './pages/CategoriesAll';
+import CategoriesAdd from './pages/CategoriesAdd';
+import UsersAll from './pages/UsersAll';
+import UsersAdd from './pages/UsersAdd';
+import React from "react";
 
 const routes = [
     {
@@ -14,19 +15,28 @@ const routes = [
         children: [
             {
                 path: "/index",
-                element: <Main/>,
+                element: <Main />,
                 children: [
                     {
-                        path: 'Products',
-                        element: <Products/>
+                        path: "Products",
+                        children: [
+                            { path: "All", element: <ProductsAll /> },
+                            { path: "Add", element: <ProductsAdd /> }
+                        ]
                     },
                     {
-                        path: 'Categories',
-                        element: <Categories/>
+                        path: "Categories",
+                        children: [
+                            { path: "All", element: <CategoriesAll /> },
+                            { path: "Add", element: <CategoriesAdd /> }
+                        ]
                     },
                     {
-                        path: 'Users',
-                        element: <Users/>
+                        path: "Users",
+                        children: [
+                            { path: "All", element: <UsersAll /> },
+                            { path: "Add", element: <UsersAdd /> }
+                        ]
                     }
                 ]
             }
