@@ -32,7 +32,6 @@ const Layout: React.FC = () => {
             const token = localStorage.getItem('accessToken');
             const decodedToken: DecodedToken | null = token ? jwtDecode<DecodedToken>(token) : null;
 
-            const decodedRole = decodedToken?.["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"] ?? 'Guest';
             const decodedUsername = decodedToken?.["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"] ?? 'User';
 
             setToastMessage(`Hello, ${decodedUsername}!`);

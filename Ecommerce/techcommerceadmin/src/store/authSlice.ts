@@ -1,6 +1,8 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import { login, register } from "../Actions/AuthActions";
-import { LoginDTO, RegisterDTO } from "../Models/AuthDTOs";
+import { LoginDTO, RegisterDTO } from "../models/auth.dto";
+import { login } from '../actions/authActions';
+import { log } from 'console';
+
 
 interface AuthState {
     isAuthenticated: boolean;
@@ -18,7 +20,6 @@ const initialState: AuthState = {
     isModalOpen: false,
 };
 
-// Thunk для логина
 export const loginUser = createAsyncThunk(
     'auth/loginUser',
     async (user: LoginDTO, { rejectWithValue, dispatch }) => {
@@ -26,9 +27,7 @@ export const loginUser = createAsyncThunk(
             const response = await login(user);
             localStorage.setItem('accessToken', response.accessToken);
             localStorage.setItem('refreshToken', response.refreshToken);
-            // Диспатчим действия для закрытия модального окна и навигации
-            dispatch(closeModal());
-
+           
             return response;
         } catch (error) {
             return rejectWithValue('Login failed');
@@ -36,19 +35,14 @@ export const loginUser = createAsyncThunk(
     }
 );
 
-export const registerUser = createAsyncThunk('auth/registerUser', async (user: RegisterDTO, { rejectWithValue }) => {
-    try {
-        await register(user);
-        return;
-    } catch (error) {
-        return rejectWithValue('Registration failed');
-    }
-});
 
 const authSlice = createSlice({
     name: 'auth',
     initialState,
     reducers: {
+        clearError(state) {
+            state.error = null;
+          },
         logout(state) {
             state.isAuthenticated = false;
             state.accessToken = null;
@@ -56,13 +50,6 @@ const authSlice = createSlice({
             state.error = null;
             localStorage.removeItem('accessToken');
             localStorage.removeItem('refreshToken');
-        },
-        openModal(state) {
-            state.isModalOpen = true;
-        },
-        closeModal(state) {
-            state.isModalOpen = false;
-            
         }
     },
     extraReducers: (builder) => {
@@ -77,14 +64,8 @@ const authSlice = createSlice({
                 state.isAuthenticated = false;
                 state.error = action.payload as string;
             })
-            .addCase(registerUser.fulfilled, (state) => {
-                state.error = null;
-            })
-            .addCase(registerUser.rejected, (state, action) => {
-                state.error = action.payload as string;
-            });
     }
 });
 
-export const { logout, openModal, closeModal } = authSlice.actions;
+export const { logout, clearError } = authSlice.actions;
 export default authSlice.reducer;

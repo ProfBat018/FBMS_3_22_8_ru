@@ -1,6 +1,7 @@
 
 import axios, {AxiosResponse} from 'axios';
 import {LoginDTO, RegisterDTO, TokenDTO} from "../Models/AuthDTOs";
+import { log } from 'console';
 
 export const login = async (user: LoginDTO) => {
 
@@ -8,6 +9,9 @@ export const login = async (user: LoginDTO) => {
     
     try {
         const response: AxiosResponse<TokenDTO> = await axios.post(url, user);
+
+        console.log(response.data);
+        
         return response.data;
     } catch (error) {
         console.error('Error during login:', error);

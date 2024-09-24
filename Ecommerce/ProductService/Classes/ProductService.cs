@@ -32,7 +32,6 @@ public class ProductService : IProductService
         _config = config;
 
 
-
         _blobServiceClient = new BlobServiceClient(_config["BlobConnection:ConnectionString"]);
         _containerClient = _blobServiceClient.GetBlobContainerClient(_config["BlobConnection:ContainerName"]);
     }
@@ -81,14 +80,10 @@ public class ProductService : IProductService
 
             var uploadTask = blobClient.UploadAsync(stream, ops, cancellationToken);
 
-            if (await Task.WhenAny(uploadTask, Task.Delay(TimeSpan.FromSeconds(10), cancellationToken)) == uploadTask)
-            {
+            if (await Task.WhenAny(uploadTask, Task.Delay(TimeSpan.FromSeconds(15), cancellationToken)) == uploadTask)
                 await uploadTask;
-            }
             else
-            {
                 return new PostResponse("Request timed out", 408);
-            }
 
             return new PostResponse(blobClient.Uri.ToString(), 200);
 
