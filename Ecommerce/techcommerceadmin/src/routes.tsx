@@ -11,37 +11,33 @@ import React from "react";
 const routes = [
     {
         path: "/",
-        element: <Layout />,
+        element: <Layout/>,
         children: [
             {
-                path: "/index",
-                element: <Main />,
+                path: "Products",
                 children: [
-                    {
-                        path: "Products",
-                        children: [
-                            { path: "All", element: <ProductsAll /> },
-                            { path: "Add", element: <ProductsAdd /> }
-                        ]
-                    },
-                    {
-                        path: "Categories",
-                        children: [
-                            { path: "All", element: <CategoriesAll /> },
-                            { path: "Add", element: <CategoriesAdd /> }
-                        ]
-                    },
-                    {
-                        path: "Users",
-                        children: [
-                            { path: "All", element: <UsersAll /> },
-                            { path: "Add", element: <UsersAdd /> }
-                        ]
-                    }
+                    {path: "All", element: <ProductsAll/>},
+                    {path: "Add", element: <ProductsAdd/>}
+                ]
+            },
+            {
+                path: "Categories",
+                children: [
+                    {path: "All", element: <CategoriesAll/>},
+                    {path: "Add", element: <CategoriesAdd/>}
+                ]
+            },
+            {
+                path: "Users",
+                children: [
+                    {path: "All", element: <UsersAll/>},
+                    {path: "Add", element: <UsersAdd/>}
                 ]
             }
         ]
     }
+
+
 ];
 
 export default routes;

@@ -18,7 +18,7 @@ const initialState: AuthState = {
     isModalOpen: false,
 };
 
-// Thunk для логина
+
 export const loginUser = createAsyncThunk(
     'auth/loginUser',
     async (user: LoginDTO, { rejectWithValue, dispatch }) => {

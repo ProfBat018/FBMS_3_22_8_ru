@@ -1,7 +1,23 @@
 
 import axios, {AxiosResponse} from 'axios';
 import {LoginDTO, RegisterDTO, TokenDTO} from "../models/auth.dto";
-import { log } from 'console';
+
+
+export interface JwtPayload {
+    iss?: string;
+    sub?: string;
+    aud?: string[] | string;
+    exp?: number;
+    nbf?: number;
+    iat?: number;
+    jti?: string;
+}
+export interface JwtDecodeOptions {
+    header?: boolean;
+}
+
+
+export declare function jwtDecode<T = JwtPayload>(token: string, options?: JwtDecodeOptions): T;
 
 export const login = async (user: LoginDTO) => {
 

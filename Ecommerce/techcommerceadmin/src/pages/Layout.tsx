@@ -6,7 +6,6 @@ const Layout = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const onLogin = () => {
-    console.log('Logged in user');
     setIsAuthenticated(true);
   };
 

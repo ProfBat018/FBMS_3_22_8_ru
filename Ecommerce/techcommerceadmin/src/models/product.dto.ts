@@ -21,3 +21,9 @@ export interface ProductsResponseDTO {
     hasPreviousPage: boolean;
     hasNextPage: boolean;
 }
+
+export interface FiltersState {
+    name: string;
+    description: string;
+    price: string;
+}

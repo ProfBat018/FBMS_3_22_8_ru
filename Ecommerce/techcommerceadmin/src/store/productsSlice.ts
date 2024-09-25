@@ -26,7 +26,7 @@ const initialState: ProductsState = {
     hasNextPage: false,
 };
 
-// Асинхронный thunk для загрузки продуктов
+
 export const fetchProducts = createAsyncThunk(
     'products/fetchProducts',
     async ({ page, pageSize }: ProductsRequestDTO) => {

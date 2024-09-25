@@ -27,6 +27,9 @@ export interface DecodedToken {
 }
 
 export interface UserData {
-    username: string,
-    role: string
+    username: string | null;
+    isAuthenticated: boolean;
+    accessToken: string | null;
+    refreshToken: string | null;
+    role: string;
 }

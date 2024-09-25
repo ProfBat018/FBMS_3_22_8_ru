@@ -1,36 +1,59 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import { LoginDTO, RegisterDTO } from "../models/auth.dto";
-import { login } from '../actions/authActions';
-import { log } from 'console';
+import {DecodedToken, LoginDTO, RegisterDTO, UserData} from "../models/auth.dto";
+import { login} from '../actions/authActions';
+import {jwtDecode} from "jwt-decode";
 
 
 interface AuthState {
-    isAuthenticated: boolean;
-    accessToken: string | null;
-    refreshToken: string | null;
-    error: string | null;
+    user: UserData | null;
     isModalOpen: boolean;
+    loading:boolean
+    error: string | null;
 }
 
 const initialState: AuthState = {
-    isAuthenticated: false,
-    accessToken: null,
-    refreshToken: null,
-    error: null,
+    user: null,
     isModalOpen: false,
+    error: null,
+    loading: false
 };
+
+
+interface LoginResponseDTO {
+    accessToken: string, 
+    refreshToken: string,
+    username: string,
+    role: string
+}
 
 export const loginUser = createAsyncThunk(
     'auth/loginUser',
     async (user: LoginDTO, { rejectWithValue, dispatch }) => {
         try {
             const response = await login(user);
+            
             localStorage.setItem('accessToken', response.accessToken);
             localStorage.setItem('refreshToken', response.refreshToken);
            
-            return response;
+            const decodedToken: DecodedToken | null = response.accessToken ? jwtDecode<DecodedToken>(response.accessToken) : null;
+
+            const decodedUsername = decodedToken?.["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"] ?? 'User';
+            const decodedRole = decodedToken?.["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
+            
+            
+            if( decodedRole !== 'AppAdmin') {
+                throw new Error('Unauthorized');
+            }
+            
+            return {
+                accessToken: response.accessToken,
+                refreshToken: response.refreshToken,
+                username: decodedUsername,
+                role: decodedRole,
+            };
+
         } catch (error) {
-            return rejectWithValue('Login failed');
+            return rejectWithValue(`Login failed: ${error?.toString()}`);
         }
     }
 );
@@ -43,27 +66,38 @@ const authSlice = createSlice({
         clearError(state) {
             state.error = null;
           },
-        logout(state) {
-            state.isAuthenticated = false;
-            state.accessToken = null;
-            state.refreshToken = null;
+        logout: function (state) {
+            if (state.user != null) {
+            state.user.isAuthenticated = false;
+            state.user.accessToken = null;
+            state.user.refreshToken = null;
             state.error = null;
             localStorage.removeItem('accessToken');
             localStorage.removeItem('refreshToken');
+            }
         }
     },
     extraReducers: (builder) => {
-        builder
-            .addCase(loginUser.fulfilled, (state, action) => {
-                state.isAuthenticated = true;
-                state.accessToken = action.payload.accessToken;
-                state.refreshToken = action.payload.refreshToken;
-                state.error = null;
+        builder 
+            .addCase(loginUser.pending, (state) => {
+                state.loading = true; 
+                state.error = null; 
+            })
+            .addCase(loginUser.fulfilled, (state, action: PayloadAction<LoginResponseDTO>) => {
+                state.user = { 
+                    isAuthenticated: true,
+                    accessToken: action.payload.accessToken,
+                    refreshToken: action.payload.refreshToken,
+                    role: action.payload.role,
+                    username: action.payload.username,
+                };
+                state.loading = false; 
             })
             .addCase(loginUser.rejected, (state, action) => {
-                state.isAuthenticated = false;
-                state.error = action.payload as string;
-            })
+                state.loading = false; 
+                state.user = null; 
+                state.error = action.payload as string; 
+            });
     }
 });
 
