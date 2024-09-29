@@ -1,34 +1,35 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ProductData.DTO;
 using ProductRepo.Interfaces;
 using ProductService.İnterfaces;
 
 namespace ProductApiService.Controllers;
 
+[Authorize(Policy = "AdminPolicy")]
+[Route("api/admin/products")]
 [ApiController]
-public class ProductsController : ControllerBase
+public class AdminProductsController : ControllerBase
 {
     private readonly IProductService _productService;
-
-    public ProductsController( IProductService productService)
+    public AdminProductsController( IProductService productService)
     {
         _productService = productService;
     }
 
-    [HttpGet("Products/All/{page}/{pagesize}")]
+    [HttpGet("all/{page}/{pagesize}")]
     public async Task<IActionResult> GetAllProductsAsync(int page, int pagesize)
     {
         return Ok(await _productService.GetAllPaginatedProductsAsync(page, pagesize));
     }
 
-    [HttpGet("Products/{categoryId}/{page}/{pagesize}")]
+    [HttpGet("all/{categoryId}/{page}/{pagesize}")]
     public async Task<IActionResult> GetAllPaginatedProductsAsync(int page,int pagesize, int categoryId)
     {
-
         return Ok(await _productService.GetAllPaginatedProductsByCategoryAsync(page, pagesize, categoryId));
     }
 
-    [HttpPost("Product/Add")]
+    [HttpPost("add")]
     public async Task<IActionResult> AddNewProductAsync([FromBody] AddProductDTO productDto, CancellationToken cancellationToken)
     {
         var res = await _productService.AddNewProductAsync(productDto, cancellationToken);
@@ -36,7 +37,7 @@ public class ProductsController : ControllerBase
         return Ok(res);
     }
 
-    [HttpPost("Image/Add")]
+    [HttpPost("image/add")]
     public async Task<IActionResult> UploadImageAsync([FromForm] IFormFile file, CancellationToken cancellationToken)
     {
         var res = await _productService.UploadImageAsync(file, cancellationToken);

@@ -23,7 +23,6 @@ interface LoginResponseDTO {
     accessToken: string, 
     refreshToken: string,
     username: string,
-    role: string
 }
 
 export const loginUser = createAsyncThunk(
@@ -34,22 +33,11 @@ export const loginUser = createAsyncThunk(
             
             localStorage.setItem('accessToken', response.accessToken);
             localStorage.setItem('refreshToken', response.refreshToken);
-           
-            const decodedToken: DecodedToken | null = response.accessToken ? jwtDecode<DecodedToken>(response.accessToken) : null;
-
-            const decodedUsername = decodedToken?.["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"] ?? 'User';
-            const decodedRole = decodedToken?.["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
-            
-            
-            if( decodedRole !== 'AppAdmin') {
-                throw new Error('Unauthorized');
-            }
             
             return {
                 accessToken: response.accessToken,
                 refreshToken: response.refreshToken,
-                username: decodedUsername,
-                role: decodedRole,
+                username: response.username,
             };
 
         } catch (error) {
@@ -88,7 +76,6 @@ const authSlice = createSlice({
                     isAuthenticated: true,
                     accessToken: action.payload.accessToken,
                     refreshToken: action.payload.refreshToken,
-                    role: action.payload.role,
                     username: action.payload.username,
                 };
                 state.loading = false; 

@@ -3,6 +3,12 @@ export interface LoginDTO {
     password: string
 }
 
+export interface LoginResponseDTO {
+    username: string,
+    accessToken: string,
+    refreshToken: string
+}
+
 export interface RegisterDTO {
     username: string,
     password: string,
@@ -22,7 +28,7 @@ export enum UserRoles {
 }
 
 export interface DecodedToken {
-    [key: string]: any; 
+    [key: string]: any;
 
 }
 
@@ -31,5 +37,4 @@ export interface UserData {
     isAuthenticated: boolean;
     accessToken: string | null;
     refreshToken: string | null;
-    role: string;
 }

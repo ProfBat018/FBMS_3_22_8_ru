@@ -9,6 +9,9 @@ using ProductRepo.Interfaces;
 
 namespace ProductsApiService.Controllers;
 
+
+
+[Route("api/admin/categories")]
 [ApiController]
 public class CategoryController : ControllerBase
 {
@@ -21,7 +24,7 @@ public class CategoryController : ControllerBase
         _mapper = MappingConfiguration.InitializeConfig();
     }
 
-    [HttpGet("Category/All")]
+    [HttpGet("all")]
     public async Task<IActionResult> GetAllCategoriesAsync()
     {
         var res = await _unitOfWork.CategoryRepository.GetAllAsync();

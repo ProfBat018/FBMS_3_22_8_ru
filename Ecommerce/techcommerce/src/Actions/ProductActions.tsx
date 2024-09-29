@@ -15,10 +15,10 @@ export const GetAllProducts = (categoryId: number, searchData: ProductSearchDTO 
         };
     }
 
-    let url = `http://localhost:5040/Products/${categoryId}/${searchData.page}/${searchData.pageSize}`;
+    let url = `http://localhost:5040/api/user/products/all/${categoryId}/${searchData.page}/${searchData.pageSize}`;
     
     if (categoryId == 0) {
-        url = `http://localhost:5040/Products/All/${searchData.page}/${searchData.pageSize}`;
+        url = `http://localhost:5040/api/user/products/all/${searchData.page}/${searchData.pageSize}`;
     }
 
     const { data, error, isLoading } = useSWR<PaginatedListDTO<ProductDTO>>(url, fetcher);

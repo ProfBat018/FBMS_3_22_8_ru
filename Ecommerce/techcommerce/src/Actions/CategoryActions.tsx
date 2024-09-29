@@ -6,7 +6,7 @@ import {CategoryDTO, HierarchicalCategory} from "../Models/CategoryDTOs";
 const fetcher = (url: string) => axios.get(url).then(res => res.data);
 
 export const GetAllCategories = async (): Promise<CategoryDTO[]> => {
-    const response = await fetch('http://localhost:5040/Category/All');
+    const response = await fetch('http://localhost:5040/api/admin/categories/all');
     if (!response.ok) {
         throw new Error('Failed to fetch categories');
     }

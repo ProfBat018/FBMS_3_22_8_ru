@@ -31,7 +31,6 @@ const Auth: React.FC<{ onLogin: () => void }> = ({ onLogin }) => {
     useEffect(() => {
         if (user) {
             console.log(user.username);
-            console.log(user.role);
             onLogin();
         }
     }, [user, onLogin]);

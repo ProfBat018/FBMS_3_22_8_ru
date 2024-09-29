@@ -7,6 +7,7 @@ import CategoriesAdd from './pages/CategoriesAdd';
 import UsersAll from './pages/UsersAll';
 import UsersAdd from './pages/UsersAdd';
 import React from "react";
+import Products from "./pages/Products";
 
 const routes = [
     {
@@ -15,6 +16,7 @@ const routes = [
         children: [
             {
                 path: "Products",
+                element: <Products/>,
                 children: [
                     {path: "All", element: <ProductsAll/>},
                     {path: "Add", element: <ProductsAdd/>}

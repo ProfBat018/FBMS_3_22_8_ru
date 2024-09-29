@@ -25,11 +25,15 @@ public class AuthService : IAuthService
         this.blackListService = blackListService;
     }
 
-    public async Task<AccessInfoDTO> LoginUserAsync(LoginDTO user)
+    public async Task<AccessInfo_DTO> LoginUserAsync(LoginDTO user)
     {
         try
         {
             var foundUser = await context.Users.FirstOrDefaultAsync(u => u.Username == user.Username);
+
+            var userRole = await context.UserRoles
+                .Include(r => r.AppRole)
+                .FirstOrDefaultAsync(r => r.UserId == foundUser.Id);
 
             if (foundUser == null)
             {
@@ -41,14 +45,16 @@ public class AuthService : IAuthService
                 throw new MyAuthException(AuthErrorTypes.InvalidCredentials, "Invalid credentials");
             }
 
-            var tokenData = new AccessInfoDTO(
+            var tokenData = new AccessInfo_DTO(
+                foundUser.Username,
                 await tokenService.GenerateTokenAsync(foundUser),
                 await tokenService.GenerateRefreshTokenAsync(),
+                userRole.AppRole.Name,
                 DateTime.Now.AddDays(1)
             );
 
-            foundUser.RefreshToken = tokenData.RefreshToken;
-            foundUser.RefreshTokenExpiryTime = tokenData.RefreshTokenExpireTime;
+            foundUser.RefreshToken = tokenData.refreshToken;
+            foundUser.RefreshTokenExpiryTime = tokenData.refreshTokenExpireTime;
 
             await context.SaveChangesAsync();
 
@@ -78,7 +84,7 @@ public class AuthService : IAuthService
         blackListService.AddTokenToBlackList(userTokenInfo.AccessToken);
     }
 
-    public async Task<AccessInfoDTO> RefreshTokenAsync(TokenDTO userAccessData)
+    public async Task<AccessInfo_DTO> RefreshTokenAsync(TokenDTO userAccessData)
     {
         if (userAccessData is null)
             throw new MyAuthException(AuthErrorTypes.InvalidRequest, "Invalid client request");
@@ -92,6 +98,10 @@ public class AuthService : IAuthService
 
         var user = context.Users.FirstOrDefault(u => u.Username == username);
 
+        var userRole = await context.UserRoles
+            .Include(r => r.AppRole)
+            .FirstOrDefaultAsync(r => r.UserId == user.Id);
+        
         if (user == null || user.RefreshToken != refreshToken || user.RefreshTokenExpiryTime <= DateTime.Now)
             throw new MyAuthException(AuthErrorTypes.InvalidRequest, "Invalid client request");
 
@@ -103,9 +113,11 @@ public class AuthService : IAuthService
 
         await context.SaveChangesAsync();
 
-        return new AccessInfoDTO(
+        return new AccessInfo_DTO(
+            username,
             newAccessToken,
             newRefreshToken,
+            userRole.AppRole.Name,
             user.RefreshTokenExpiryTime);
     }
 

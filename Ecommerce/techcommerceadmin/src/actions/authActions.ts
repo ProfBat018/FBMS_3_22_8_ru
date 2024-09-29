@@ -1,7 +1,5 @@
-
 import axios, {AxiosResponse} from 'axios';
-import {LoginDTO, RegisterDTO, TokenDTO} from "../models/auth.dto";
-
+import {LoginDTO, LoginResponseDTO, RegisterDTO, TokenDTO} from "../models/auth.dto";
 
 export interface JwtPayload {
     iss?: string;
@@ -24,7 +22,7 @@ export const login = async (user: LoginDTO) => {
     const url = 'http://localhost:5046/api/v1/Auth/Login';
     
     try {
-        const response: AxiosResponse<TokenDTO> = await axios.post(url, user);
+        const response: AxiosResponse<LoginResponseDTO> = await axios.post(url, user);
 
         return response.data;
     } catch (error) {

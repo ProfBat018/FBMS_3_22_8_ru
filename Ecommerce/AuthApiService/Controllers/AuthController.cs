@@ -1,5 +1,7 @@
 ﻿using Asp.Versioning;
+using AuthData.Configs;
 using AuthData.DTO;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -17,16 +19,20 @@ public class AuthController : ControllerBase
     private readonly LoginUserValidator loginValidator;
     private readonly RegisterUserValidator registerValidator;
     private readonly IAuthService authService;
+    private readonly IAdminRequestService _adminRequestService;
+
 
 
     public AuthController(LoginUserValidator loginValidator, RegisterUserValidator registerValidator,
-        IAuthService authService)
+        IAuthService authService, IAdminRequestService adminRequestService)
     {
         this.loginValidator = loginValidator;
         this.registerValidator = registerValidator;
         this.authService = authService;
+        _adminRequestService = adminRequestService;
     }
 
+    [AllowAnonymous]
     [HttpPost("Login")]
     public async Task<IActionResult> LoginAsync([FromBody] LoginDTO user)
     {
@@ -40,9 +46,13 @@ public class AuthController : ControllerBase
 
         var res = await authService.LoginUserAsync(user);
 
-        return Ok(res);
+        var resToReturn = await _adminRequestService.CheckRequestAsync(res, HttpContext);
+
+        return Ok(resToReturn);
+
     }
 
+    [AllowAnonymous]
     [HttpPost("Register")]
     public async Task<IActionResult> RegisterAsync([FromBody] RegisterDTO user)
     {
@@ -53,10 +63,12 @@ public class AuthController : ControllerBase
         }
 
         var res = await authService.RegisterUserAsync(user);
-        return Ok(res);
+        
+        return Ok(new PostResponse("Registration comleted"));
     }
 
 
+    [Authorize]
     [HttpPost("Refresh")]
     public async Task<IActionResult> RefreshTokenAsync(TokenDTO refresh)
     {

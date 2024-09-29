@@ -4,13 +4,24 @@ export interface ProductDTO {
     imageUrl: string,
     description: string,
     price: number
-};  
+};
+
+export interface ImageResponseDTO {
+    message: string;  // Ссылка на загруженное изображение
+    code: number;     // Код ответа (например, 200 для успешного запроса)
+}
+
+export interface AddProductRequestDTO {
+    name: string,
+    imagePath: string,
+    description: string,
+    price: number
+}
 
 export interface ProductsRequestDTO {
     page: number,
     pageSize: number
 }
-
 
 export interface ProductsResponseDTO {
     items: ProductDTO[];

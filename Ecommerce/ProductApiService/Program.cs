@@ -1,48 +1,17 @@
-﻿using Microsoft.EntityFrameworkCore;
-using ProductData.Contexts;
-using ProductRepo.Interfaces;
-using ProductRepository.Classes;
-using ProductService.Classes;
-using ProductService.İnterfaces;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 
-var builder = WebApplication.CreateBuilder(args);
-
-
-builder.Services.AddCors(options =>
+public class Program
 {
-    options.AddDefaultPolicy(builder =>
+    public static void Main(string[] args)
     {
-        builder.AllowAnyOrigin()
-            .AllowAnyMethod()
-            .AllowAnyHeader();
-    });
-});
+        CreateHostBuilder(args).Build().Run();
+    }
 
-
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
-builder.Services.AddControllers();
-
-builder.Services.AddDbContext<ProductContext>(ops => 
-    ops.UseSqlServer(builder.Configuration.GetConnectionString("StepEcommerce16")));
-
-builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-builder.Services.AddScoped<IProductService, ProductService.Classes.ProductService>();
-
-var app = builder.Build();
-
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    public static IHostBuilder CreateHostBuilder(string[] args) =>
+        Host.CreateDefaultBuilder(args)
+            .ConfigureWebHostDefaults(webBuilder =>
+            {
+                webBuilder.UseStartup<Startup>();
+            });
 }
-
-app.UseCors();
-
-app.MapControllers();
-
-app.UseHttpsRedirection();
-
-app.Run();
-

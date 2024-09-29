@@ -1,45 +1,49 @@
-import React, {ChangeEvent, useEffect, useState} from 'react';
-import DataTable, {TableColumn} from 'react-data-table-component';
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../store/store";
-import { fetchProducts, setPage, setPageSize } from '../store/productsSlice';
-import { productColumns } from '../components/data/productColumns';
-import {filterProducts} from "../actions/tableActions";
-import '../components/css/dataTable.css'
+import React, { ChangeEvent, useState } from 'react';
+import DataTable from 'react-data-table-component';
+import { useProducts } from '../hooks/useProducts';
+import '../components/css/dataTable.css';
+import { productColumns } from "../components/data/productColumns";
 
-const ProductsAll = () => {     
-    const dispatch: AppDispatch = useDispatch();
-    const { products, loading, pageNumber, pageSize } = useSelector((state: RootState) => state.products);
-    const [searchTerm, setSearchTerm] = useState('');
 
-    useEffect(() => {
-        dispatch(fetchProducts({ page: pageNumber, pageSize }));
-    }, [dispatch, pageNumber, pageSize]);
+const ProductsAll: React.FC = () => {
     
-    const filteredProducts = filterProducts(products, searchTerm);
+    const [pageNumber, setPageNumber] = useState<number>(1);
+    const [pageSize, setPageSizeState] = useState<number>(10);
+
+    const {
+        products,
+        totalCount,
+        totalPages,
+        hasPreviousPage,
+        hasNextPage,
+        loading,
+        error
+    } = useProducts({ page: pageNumber, pageSize });
+
+    const handlePageChange = (page: number) => {
+        setPageNumber(page);
+    };
+
+    const handlePageSizeChange = (size: number) => {
+        setPageSizeState(size);
+    };
+
+    if (loading) return <div>Loading...</div>;
+    if (error) return <div>Error loading products: {error.message}</div>;
 
     return (
         <div>
-            <div className="search-container">
-                <input
-                    type="text"
-                    placeholder="Search all parameters..."
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    className="search-input"
-                />
-            </div>
             <DataTable
                 className={'dataTable'}
                 title="Products"
                 columns={productColumns}
-                data={filteredProducts}
-                progressPending={loading}
+                data={products}
                 pagination
                 paginationServer
-                    paginationTotalRows={filteredProducts.length}
-                onChangePage={(page) => dispatch(setPage(page))}
-                onChangeRowsPerPage={(rowsPerPage) => dispatch(setPageSize(rowsPerPage))}
+                paginationDefaultPage={pageNumber}
+                paginationTotalRows={totalCount}
+                onChangePage={handlePageChange}
+                onChangeRowsPerPage={handlePageSizeChange}
                 noDataComponent="No products available"
             />
         </div>

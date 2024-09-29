@@ -17,7 +17,6 @@ using UserService.Validators;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Настройка сервисов
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(builder =>
@@ -102,17 +101,19 @@ builder.Services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwa
 builder.Services.AddScoped<LoginUserValidator>();
 builder.Services.AddScoped<RegisterUserValidator>();
 
-builder.Services.AddTransient<ITokenService, TokenService>();
-builder.Services.AddTransient<IAuthService, AuthService>();
-builder.Services.AddTransient<IAccountService, AccountService>();
-builder.Services.AddTransient<IRoleService, RoleService>();
 
+builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IAccountService, AccountService>();
+builder.Services.AddScoped<IRoleService, RoleService>();
+builder.Services.AddScoped<IAdminRequestService, AdminRequestService>();
 builder.Services.AddScoped<IBlackListService, BlackListService>();
 builder.Services.AddScoped<JwtSessionMiddleware>();
 builder.Services.AddScoped<GlobalExceptionsMiddleware>();
 builder.Services.AddSingleton<IEmailSender, EmailSender>();
 
 var app = builder.Build();
+
 
 app.UseCors();
 
