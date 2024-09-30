@@ -1,5 +1,5 @@
 import useSWR from 'swr';
-import { CategoryDTO, HierarchicalCategory } from "../models/categories.dto";
+import { CategoryDTO, HierarchicalCategory, categories } from "../models/categories.dto";
 
 const fetcher = async (url: string) => {
     const token = localStorage.getItem('accessToken');
@@ -18,11 +18,9 @@ const fetcher = async (url: string) => {
     return response.json();
 };
 
-// Функция для преобразования категорий в иерархическую структуру
 export const transformCategories = (categories: CategoryDTO[]): HierarchicalCategory[] => {
     const categoryMap = new Map<number, HierarchicalCategory>();
 
-    // Создаем пустые категории в карте, используя id
     categories.forEach((category) => {
         categoryMap.set(category.id, {
             id: category.id,
@@ -31,7 +29,6 @@ export const transformCategories = (categories: CategoryDTO[]): HierarchicalCate
         });
     });
 
-    // Заполняем иерархию подкатегорий
     categories.forEach((category) => {
         const cat = categoryMap.get(category.id);
         if (category.parentCategoryId) {
@@ -42,7 +39,6 @@ export const transformCategories = (categories: CategoryDTO[]): HierarchicalCate
         }
     });
 
-    // Создаем итоговый массив корневых категорий
     return Array.from(categoryMap.values()).filter(cat => cat.subcategories.length > 0);
 };
 

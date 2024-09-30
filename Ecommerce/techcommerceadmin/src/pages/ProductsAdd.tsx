@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { AddProductRequestDTO } from '../models/product.dto';
 import { useCategories, transformCategories } from '../hooks/useCategories';
 import {addNewProduct} from "../actions/productActions";
@@ -12,11 +12,25 @@ const ProductsAdd: React.FC = () => {
         description: '',
         price: 0
     });
-    const [imageFile, setImageFile] = useState<File | null>(null); // Изменяем тип состояния для файла
+    const [imageFile, setImageFile] = useState<File | null>(null); 
     const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
     const [selectedSubcategory, setSelectedSubcategory] = useState<number | null>(null);
     const [selectedModel, setSelectedModel] = useState<number | null>(null);
     const [loadingOverlay, setLoadingOverlay] = useState(false);
+
+
+    useEffect(() => {
+        if (selectedCategory) {
+            console.log(selectedCategory);
+        }
+        if (selectedSubcategory) {
+            console.log(selectedSubcategory);
+        }
+        if  (selectedModel) {
+            console.log(selectedModel);
+        }
+
+    }, [selectedCategory, selectedSubcategory, selectedModel]);
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
@@ -30,7 +44,7 @@ const ProductsAdd: React.FC = () => {
     };
 
     const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        console.log(selectedCategory);  
+        
         setSelectedCategory(Number(e.target.value));
         setSelectedSubcategory(null);
         setSelectedModel(null);

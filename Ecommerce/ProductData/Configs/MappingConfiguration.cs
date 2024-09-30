@@ -26,7 +26,7 @@ public class MappingConfiguration
 
 
             cfg.CreateMap<Product, AddProductDTO>()
-               .ConstructUsing(src => new AddProductDTO(src.Name, src.ImageUrl, src.Description, src.Price)).ReverseMap();
+               .ConstructUsing(src => new AddProductDTO(src.Name, src.ImageUrl, src.Description, src.Price, null)).ReverseMap();
 
 
             cfg.CreateMap<Product, ProductDTO>()

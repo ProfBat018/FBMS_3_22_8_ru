@@ -4,9 +4,11 @@ import { loginUser, clearError } from "../store/authSlice";
 import { openModal } from '../store/modalSlice';
 import { AppDispatch, RootState } from '../store/store';
 import ForgotPassword from './ForgotPassword';
+import { useAuth } from '../hooks/useAuth'; // Import the context
 import '../components/css/authStyle.css';
+import { LoginResponseDTO } from '../models/auth.dto';
 
-const Auth: React.FC<{ onLogin: () => void }> = ({ onLogin }) => {
+const Auth: React.FC = () => {
     const usernameRef = useRef<HTMLInputElement>(null);
     const passwordRef = useRef<HTMLInputElement>(null);
     const dispatch = useDispatch<AppDispatch>();
@@ -14,26 +16,28 @@ const Auth: React.FC<{ onLogin: () => void }> = ({ onLogin }) => {
     const modalContent = useSelector((state: RootState) => state.modal.modalContent);
     const { user, loading, error, isModalOpen } = useSelector((state: RootState) => state.auth);
 
+    const { login } = useAuth(); // Get the login function from the context
+
     const handleLogin = async () => {
         const username = usernameRef.current?.value || '';
         const password = passwordRef.current?.value || '';
 
-        
         const res = await dispatch(loginUser({ username, password }));
         
-        if (res.meta.requestStatus === 'rejected') {
-            console.log(res.payload); 
+        
+        if (res.meta.requestStatus === 'fulfilled') {
+            const loginResponse: LoginResponseDTO = res.payload as LoginResponseDTO;
+            login(loginResponse.accessToken); // Pass the token to login function
         } else {
-            onLogin();
+            console.log(res.payload || 'Login failed');
         }
     };
 
     useEffect(() => {
-        if (user) {
-            console.log(user.username);
-            onLogin();
+        if (user?.accessToken) {
+            login(user.accessToken); // Call login if user exists with a valid token
         }
-    }, [user, onLogin]);
+    }, [user, login]);
 
     return (
         <div className="flex items-center justify-center min-h-screen bg-gray-900 p-4">

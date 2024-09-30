@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, PayloadAction, TaskRejected } from '@reduxjs/toolkit';
 import {DecodedToken, LoginDTO, RegisterDTO, UserData} from "../models/auth.dto";
 import { login} from '../actions/authActions';
 import {jwtDecode} from "jwt-decode";
@@ -25,23 +25,22 @@ interface LoginResponseDTO {
     username: string,
 }
 
-export const loginUser = createAsyncThunk(
+export const loginUser = createAsyncThunk<LoginResponseDTO, LoginDTO, { rejectValue: string }>(
     'auth/loginUser',
-    async (user: LoginDTO, { rejectWithValue, dispatch }) => {
+    async (user: LoginDTO, { rejectWithValue }) => {
         try {
             const response = await login(user);
-            
+
             localStorage.setItem('accessToken', response.accessToken);
             localStorage.setItem('refreshToken', response.refreshToken);
-            
+
             return {
                 accessToken: response.accessToken,
                 refreshToken: response.refreshToken,
                 username: response.username,
             };
-
         } catch (error) {
-            return rejectWithValue(`Login failed: ${error?.toString()}`);
+            return rejectWithValue(`Login failed: ${error instanceof Error ? error.message : String(error)}`);
         }
     }
 );

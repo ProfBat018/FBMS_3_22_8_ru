@@ -28,4 +28,4 @@ public class UserProductsController : ControllerBase
 
         return Ok(await _productService.GetAllPaginatedProductsByCategoryAsync(page, pagesize, categoryId));
     }
-}
+}   

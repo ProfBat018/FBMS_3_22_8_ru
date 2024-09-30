@@ -15,7 +15,7 @@ namespace ProductRepo.Interfaces;
         // GetAllSync(1, 12, x => x.color == "red")
         Task<PaginatedList<T>> GetAllPaginatedAsync(int pageNumber, int pageSize, Expression<Func<T, bool>> filter = null, string includeProperties = null);
         Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>> filter = null, string includeProperties = null);
-        Task AddAsync(T entity);
+        Task<T> AddAsync(T entity);
         void Remove(T entity);
         void RemoveRange(IEnumerable<T> entity);
     }

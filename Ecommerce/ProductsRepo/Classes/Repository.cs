@@ -24,9 +24,11 @@ public class Repository<T> : IRepository<T> where T: class
     }
 
 
-    public async Task AddAsync(T entity)
+    public async Task<T> AddAsync(T entity)
     {
         await contextSet.AddAsync(entity);
+
+        return entity;
     }
 
     // GetAllAsync(x => x.Color == "red", "Orders, Warehouse");

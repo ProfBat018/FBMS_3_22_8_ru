@@ -25,9 +25,10 @@ public class Startup
         {
             options.AddDefaultPolicy(builder =>
             {
-                builder.AllowAnyOrigin()
+                builder.WithOrigins("http://localhost:3001", "http://localhost:3000", "http://localhost:5040")
                        .AllowAnyMethod()
-                       .AllowAnyHeader();
+                       .AllowAnyHeader()
+                       .AllowCredentials();
             });
         });
 

@@ -45,7 +45,18 @@ public class ProductService : IProductService
             var product = _mapper.Map<Product>(newProduct);
             product.ImageUrl = newProduct.imageUrl;
             
-            await _unitOfWork.ProductRepository.AddAsync(product);
+            var addedProduct = await _unitOfWork.ProductRepository.AddAsync(product);
+
+            foreach (var item in newProduct.categoryIds)
+            {
+                var productCategory = new ProductCategory()
+                {
+                    ProductId = addedProduct.ProductId,
+                    CategoryId = item
+                };
+
+                await _unitOfWork.ProductCategoryRepository.AddAsync(productCategory);
+            }
 
             await _unitOfWork.SaveAsync();
             return new PostResponse("product added", 200);
@@ -66,7 +77,9 @@ public class ProductService : IProductService
                 return new PostResponse("No file uploaded", 400);
             }
 
-            BlobClient blobClient = _containerClient.GetBlobClient(file.FileName);
+            var fileExtension = Path.GetExtension(file.FileName);
+            var newFileName = Guid.NewGuid().ToString() + fileExtension;
+            BlobClient blobClient = _containerClient.GetBlobClient(newFileName);
 
             using var stream = file.OpenReadStream();
 
@@ -74,29 +87,28 @@ public class ProductService : IProductService
             {
                 HttpHeaders = new BlobHttpHeaders
                 {
-                    ContentType = file.ContentType ?? "application/octet-stream" // Установите значение по умолчанию, если ContentType отсутствует
+                    ContentType = file.ContentType ?? "application/octet-stream"
                 }
             };
 
             var uploadTask = blobClient.UploadAsync(stream, ops, cancellationToken);
 
-            // Таймаут для задачи загрузки
             if (await Task.WhenAny(uploadTask, Task.Delay(TimeSpan.FromSeconds(15), cancellationToken)) == uploadTask)
             {
-                await uploadTask; // Ожидаем завершения задачи
+                await uploadTask;
                 return new PostResponse(blobClient.Uri.ToString(), 200);
             }
             else
-            {   
+            {
                 return new PostResponse("Request timed out", 408);
             }
         }
         catch (Exception e)
         {
-            // Логируйте исключение или возвращайте соответствующий ответ
             return new PostResponse($"Error uploading file: {e.Message}", 500);
         }
     }
+
 
 
     public async Task<PaginatedList<ProductDTO>> GetAllPaginatedProductsAsync(int page, int pagesize)

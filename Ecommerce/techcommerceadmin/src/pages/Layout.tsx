@@ -1,18 +1,14 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Auth from './Auth';
 import Main from './Main';
+import { useAuth } from '../hooks/useAuth';
 
 const Layout = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-
-  const onLogin = () => {
-    setIsAuthenticated(true);
-  };
-
+  const { isAuthenticated } = useAuth();
 
   return (
     <div>
-      {isAuthenticated ? <Main/> : <Auth onLogin={onLogin} />}
+      {isAuthenticated ? <Main /> : <Auth />}
     </div>
   );
 };
