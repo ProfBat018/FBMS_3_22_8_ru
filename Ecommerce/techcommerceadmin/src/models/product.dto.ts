@@ -15,7 +15,8 @@ export interface AddProductRequestDTO {
     name: string,
     imagePath: string,
     description: string,
-    price: number
+    price: number,
+    categoryIds: Array<number>
 }
 
 export interface ProductsRequestDTO {

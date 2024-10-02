@@ -4,7 +4,7 @@ import { loginUser, clearError } from "../store/authSlice";
 import { openModal } from '../store/modalSlice';
 import { AppDispatch, RootState } from '../store/store';
 import ForgotPassword from './ForgotPassword';
-import { useAuth } from '../hooks/useAuth'; // Import the context
+import { useAuth } from '../hooks/useAuth'; 
 import '../components/css/authStyle.css';
 import { LoginResponseDTO } from '../models/auth.dto';
 
@@ -16,7 +16,7 @@ const Auth: React.FC = () => {
     const modalContent = useSelector((state: RootState) => state.modal.modalContent);
     const { user, loading, error, isModalOpen } = useSelector((state: RootState) => state.auth);
 
-    const { login } = useAuth(); // Get the login function from the context
+    const { login } = useAuth(); 
 
     const handleLogin = async () => {
         const username = usernameRef.current?.value || '';
@@ -27,17 +27,11 @@ const Auth: React.FC = () => {
         
         if (res.meta.requestStatus === 'fulfilled') {
             const loginResponse: LoginResponseDTO = res.payload as LoginResponseDTO;
-            login(loginResponse.accessToken); // Pass the token to login function
+            login(loginResponse.accessToken); 
         } else {
             console.log(res.payload || 'Login failed');
         }
     };
-
-    useEffect(() => {
-        if (user?.accessToken) {
-            login(user.accessToken); // Call login if user exists with a valid token
-        }
-    }, [user, login]);
 
     return (
         <div className="flex items-center justify-center min-h-screen bg-gray-900 p-4">

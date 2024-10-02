@@ -10,5 +10,5 @@ public interface IProductService
     public Task<PaginatedList<ProductDTO>> GetAllPaginatedProductsByCategoryAsync(int page, int pagesize, int categoryId);
     public Task<PostResponse> AddNewProductAsync(AddProductDTO newProduct, CancellationToken cancellationToken);
     public Task<PostResponse> UploadImageAsync(IFormFile file, CancellationToken cancellationToken);
-
+    public Task LinkProductToCategories(string productName, int[] categoryIds);
 }

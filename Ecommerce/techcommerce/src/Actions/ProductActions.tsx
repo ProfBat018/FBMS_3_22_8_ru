@@ -21,6 +21,8 @@ export const GetAllProducts = (categoryId: number, searchData: ProductSearchDTO 
         url = `http://localhost:5040/api/user/products/all/${searchData.page}/${searchData.pageSize}`;
     }
 
+    console.log(url);
+        
     const { data, error, isLoading } = useSWR<PaginatedListDTO<ProductDTO>>(url, fetcher);
 
     return {

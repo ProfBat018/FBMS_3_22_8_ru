@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import { Link } from "react-router-dom";
+import {useAuth} from "../hooks/useAuth";
 
 interface NavbarProps {
     categories: {
@@ -11,13 +12,17 @@ interface NavbarProps {
 const Navbar: React.FC<NavbarProps> = ({ categories }) => {
     const [dropdownOpen, setDropdownOpen] = useState<string | null>(null);
     const [userMenuOpen, setUserMenuOpen] = useState(false);
-
+    
+    const { logout } = useAuth();
+    
     const toggleDropdown = (category: string) => {
         setDropdownOpen(dropdownOpen === category ? null : category);
     };
 
+
+    
     const handleLogout = () => {
-        console.log('Logged out');
+        logout()
     };
 
     return (

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 
@@ -8,7 +8,21 @@ interface TextEditorProps {
 }
 
 const TextEditor: React.FC<TextEditorProps> = ({ value, onChange }) => {
-    return <ReactQuill value={value} onChange={onChange} />;
+    const quillRef = useRef<ReactQuill | null>(null);
+
+    useEffect(() => {
+        if (quillRef.current) {
+            const editor = quillRef.current.getEditor();
+        }
+    }, []);
+
+    return (
+        <ReactQuill
+            ref={quillRef}
+            value={value}
+            onChange={onChange}
+        />
+    );
 };
 
 export default TextEditor;

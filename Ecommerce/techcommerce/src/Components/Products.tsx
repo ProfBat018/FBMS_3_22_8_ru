@@ -12,7 +12,11 @@ const Products = () => {
     
     const { products: fetchedProducts, isLoading, isError } = GetAllProducts(categoryId, { page: currentPage, pageSize });
         
+    useEffect(() => {
+        console.log(fetchedProducts) 
+    }, [fetchedProducts]);
 
+    
     if (isLoading) {
         return (
             <div className="flex justify-center items-center h-64">

@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { AddProductRequestDTO } from '../models/product.dto';
 import { useCategories, transformCategories } from '../hooks/useCategories';
-import {addNewProduct} from "../actions/productActions";
-import TextEditor from '../components/TextEditor'; 
+import { addNewProduct } from '../actions/productActions';
+import TextEditor from '../components/TextEditor';
 
 const ProductsAdd: React.FC = () => {
     const { categories, loading, error } = useCategories();
@@ -10,14 +10,17 @@ const ProductsAdd: React.FC = () => {
         name: '',
         imagePath: '',
         description: '',
-        price: 0
+        price: 0,
+        categoryIds: []
     });
-    const [imageFile, setImageFile] = useState<File | null>(null); 
+    const [imageFile, setImageFile] = useState<File | null>(null);
     const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
     const [selectedSubcategory, setSelectedSubcategory] = useState<number | null>(null);
     const [selectedModel, setSelectedModel] = useState<number | null>(null);
     const [loadingOverlay, setLoadingOverlay] = useState(false);
 
+    // Используем useRef для текстового редактора
+    const descriptionRef = useRef<string>('');
 
     useEffect(() => {
         if (selectedCategory) {
@@ -26,10 +29,9 @@ const ProductsAdd: React.FC = () => {
         if (selectedSubcategory) {
             console.log(selectedSubcategory);
         }
-        if  (selectedModel) {
+        if (selectedModel) {
             console.log(selectedModel);
         }
-
     }, [selectedCategory, selectedSubcategory, selectedModel]);
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -39,12 +41,11 @@ const ProductsAdd: React.FC = () => {
 
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files) {
-            setImageFile(e.target.files[0]); 
+            setImageFile(e.target.files[0]);
         }
     };
 
     const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        
         setSelectedCategory(Number(e.target.value));
         setSelectedSubcategory(null);
         setSelectedModel(null);
@@ -76,6 +77,19 @@ const ProductsAdd: React.FC = () => {
 
         setLoadingOverlay(true);
         try {
+            if (selectedCategory) {
+                formData.categoryIds.push(selectedCategory);
+            }
+            if (selectedSubcategory) {
+                formData.categoryIds.push(selectedSubcategory);
+            }
+            if (selectedModel) {
+                formData.categoryIds.push(selectedModel);
+            }
+
+            // Используем значение из useRef для описания продукта
+            formData.description = descriptionRef.current;
+
             await addNewProduct(formData, imageFile); // Передаем объект и файл изображения
             alert('Продукт успешно добавлен!');
         } catch (error: any) {
@@ -124,7 +138,7 @@ const ProductsAdd: React.FC = () => {
                         type="file"
                         id="imagePath"
                         name="imagePath"
-                        onChange={handleImageChange} // Обновлено здесь
+                        onChange={handleImageChange}
                         required
                         className="border border-gray-300 rounded p-2 w-full"
                     />
@@ -132,8 +146,10 @@ const ProductsAdd: React.FC = () => {
                 <div>
                     <label className="block mb-1" htmlFor="description">Описание продукта:</label>
                     <TextEditor
-                        value={formData.description}
-                        onChange={(value: string) => setFormData({ ...formData, description: value })}
+                        value={descriptionRef.current}
+                        onChange={(value: string) => {
+                            descriptionRef.current = value; // Обновляем значение в useRef
+                        }}
                     />
                 </div>
                 <div>
