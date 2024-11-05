@@ -1,14 +1,16 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import axios from "axios";
+import {LoginResponseDTO} from "../models/auth.dto";
 
 interface AuthContextProps {
   isAuthenticated: boolean;
-  login: (token: string) => void;
+  login: (username: string, password: string) => Promise<LoginResponseDTO>;
   logout: () => void;
 }
 
 const AuthContext = createContext<AuthContextProps>({
   isAuthenticated: false,
-  login: () => {},
+  login: async () => ({ username: '', password: '' }),
   logout: () => {},
 });
 
@@ -16,35 +18,23 @@ export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
-  const [initialLoad, setInitialLoad] = useState<boolean>(true);
+  const login = async (username: string, password: string): Promise<LoginResponseDTO> => {
+    const response = await axios.post<LoginResponseDTO>('https://localhost:7227/api/v1/auth/login', { username, password }, { withCredentials: true });
 
-
-  useEffect(() => {
-    const token = localStorage.getItem('accessToken');
-    if (token) {
-      setIsAuthenticated(true);
-    }
-    setInitialLoad(false);
-  }, []);
-
-  const login = (token: string) => {
-
-    localStorage.setItem('accessToken', token);
+    if (response.status == 200) {
     setIsAuthenticated(true);
+    }
+
+    return response.data;
   };
 
   const logout = () => {
-
-    localStorage.removeItem('accessToken');
     setIsAuthenticated(false);
   };
 
   useEffect(() => {
   }, [isAuthenticated]);
-
-  if (initialLoad) {
-    return null; 
-  }
+  
 
   return (
       <AuthContext.Provider value={{ isAuthenticated, login, logout }}>

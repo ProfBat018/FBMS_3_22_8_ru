@@ -1,4 +1,6 @@
-﻿using Asp.Versioning;
+﻿using System.Net;
+using System.Reflection.Metadata.Ecma335;
+using Asp.Versioning;
 using AuthData.Configs;
 using AuthData.DTO;
 using AutoMapper;
@@ -19,17 +21,16 @@ public class AuthController : ControllerBase
     private readonly LoginUserValidator loginValidator;
     private readonly RegisterUserValidator registerValidator;
     private readonly IAuthService authService;
-    private readonly IAdminRequestService _adminRequestService;
+
 
 
 
     public AuthController(LoginUserValidator loginValidator, RegisterUserValidator registerValidator,
-        IAuthService authService, IAdminRequestService adminRequestService)
+        IAuthService authService)
     {
         this.loginValidator = loginValidator;
         this.registerValidator = registerValidator;
         this.authService = authService;
-        _adminRequestService = adminRequestService;
     }
 
     [AllowAnonymous]
@@ -45,11 +46,12 @@ public class AuthController : ControllerBase
         }
 
         var res = await authService.LoginUserAsync(user);
+        
 
-        var resToReturn = await _adminRequestService.CheckRequestAsync(res, HttpContext);
-
-        return Ok(resToReturn);
-
+        Response.Cookies.Append("accessToken", res.accessToken);
+        Response.Cookies.Append("refreshToken", res.refreshToken);
+        
+        return Ok(new LoginResponse_DTO(res.userName));
     }
 
     [AllowAnonymous]
@@ -67,12 +69,11 @@ public class AuthController : ControllerBase
         return Ok(new PostResponse("Registration comleted"));
     }
 
-
-    [Authorize]
+    
     [HttpPost("Refresh")]
-    public async Task<IActionResult> RefreshTokenAsync(TokenDTO refresh)
+    public async Task<IActionResult> RefreshTokenAsync(TokenDTO tokenDto)
     {
-        var newToken = await authService.RefreshTokenAsync(refresh);
+        var newToken = await authService.RefreshTokenAsync(tokenDto);
 
         if (newToken is null)
             return BadRequest("Invalid token");
@@ -83,9 +84,19 @@ public class AuthController : ControllerBase
 
     [Authorize]
     [HttpPost("Logout")]
-    public async Task<IActionResult> LogoutAsync(TokenDTO logout)
+    public async Task<IActionResult> LogoutAsync()
     {
-        await authService.LogOutAsync(logout);
-        return Ok("Logged out successfully");
+        if (!Request.Cookies.ContainsKey("accessToken") && !Request.Cookies.ContainsKey("refreshToken"))
+        {
+            return Ok(new PostResponse("Please log in for logging out", 404));
+        }
+        
+        var logoutInfo = new TokenDTO(Request.Cookies["accessToken"], Request.Cookies["refreshToken"]);
+        await authService.LogOutAsync(logoutInfo);
+        
+        Response.Cookies.Delete("accessToken");
+        Response.Cookies.Delete("refreshToken");
+        
+        return Ok(new PostResponse("Logged out successfully", 200));
     }
 }

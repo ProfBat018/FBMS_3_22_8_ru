@@ -1,12 +1,11 @@
 import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { loginUser, clearError } from "../store/authSlice";
 import { openModal } from '../store/modalSlice';
 import { AppDispatch, RootState } from '../store/store';
 import ForgotPassword from './ForgotPassword';
-import { useAuth } from '../hooks/useAuth'; 
+import { useAuth } from '../hooks/useAuth';
 import '../components/css/authStyle.css';
-import { LoginResponseDTO } from '../models/auth.dto';
+import { clearError, loginUser } from '../store/authSlice'; // Импортируйте действие логина
 
 const Auth: React.FC = () => {
     const usernameRef = useRef<HTMLInputElement>(null);
@@ -14,23 +13,15 @@ const Auth: React.FC = () => {
     const dispatch = useDispatch<AppDispatch>();
 
     const modalContent = useSelector((state: RootState) => state.modal.modalContent);
-    const { user, loading, error, isModalOpen } = useSelector((state: RootState) => state.auth);
+    const { loading, error, isModalOpen } = useSelector((state: RootState) => state.auth);
 
-    const { login } = useAuth(); 
+    const { login } = useAuth();
 
     const handleLogin = async () => {
         const username = usernameRef.current?.value || '';
         const password = passwordRef.current?.value || '';
-
-        const res = await dispatch(loginUser({ username, password }));
         
-        
-        if (res.meta.requestStatus === 'fulfilled') {
-            const loginResponse: LoginResponseDTO = res.payload as LoginResponseDTO;
-            login(loginResponse.accessToken); 
-        } else {
-            console.log(res.payload || 'Login failed');
-        }
+        login(username, password);
     };
 
     return (

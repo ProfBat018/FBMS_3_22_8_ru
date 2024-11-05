@@ -1,5 +1,4 @@
-﻿
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using AuthData.Contexts;
@@ -11,7 +10,6 @@ using UserService.Interfaces;
 using static BCrypt.Net.BCrypt;
 
 namespace UserService.Classes;
-
 
 public class AuthService : IAuthService
 {
@@ -80,7 +78,7 @@ public class AuthService : IAuthService
         user.RefreshToken = null;
         user.RefreshTokenExpiryTime = DateTime.Now;
         await context.SaveChangesAsync();
-
+        
         blackListService.AddTokenToBlackList(userTokenInfo.AccessToken);
     }
 

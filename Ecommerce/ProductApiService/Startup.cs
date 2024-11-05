@@ -17,10 +17,8 @@ public class Startup
         _configuration = configuration;
     }
 
-
     public void ConfigureServices(IServiceCollection services)
     {
-
         services.AddCors(options =>
         {
             options.AddDefaultPolicy(builder =>
@@ -31,7 +29,6 @@ public class Startup
                        .AllowCredentials();
             });
         });
-
 
         services.AddAuthentication(options =>
         {
@@ -52,8 +49,21 @@ public class Startup
                 ValidAudience = _configuration["Jwt:Audience"],
                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]))
             };
-        });
 
+            // Опция для извлечения JWT из cookie
+            options.Events = new JwtBearerEvents
+            {
+                OnMessageReceived = context =>
+                {
+                    // Проверяем, если заголовок Authorization не установлен
+                    if (context.Request.Cookies.TryGetValue("accessToken", out var token))
+                    {
+                        context.Token = token; // Устанавливаем токен из cookie
+                    }
+                    return Task.CompletedTask;
+                }
+            };
+        });
 
         services.AddAuthorization(options =>
         {
@@ -63,7 +73,6 @@ public class Startup
             options.AddPolicy("UserPolicy", policy =>
                 policy.RequireRole("AppUser", "AppAdmin"));
         });
-
 
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen(options =>
@@ -92,18 +101,14 @@ public class Startup
             });
         });
 
-
         services.AddDbContext<ProductContext>(options =>
             options.UseSqlServer(_configuration.GetConnectionString("StepEcommerce16")));
-
 
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<IProductService, ProductService.Classes.ProductService>();
 
-
         services.AddControllers();
     }
-
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
@@ -114,24 +119,18 @@ public class Startup
             app.UseSwaggerUI();
         }
 
-
         app.UseHttpsRedirection();
-
 
         app.UseRouting();
 
-
         app.UseCors();
-
 
         app.UseAuthentication();
         app.UseAuthorization();
-
 
         app.UseEndpoints(endpoints =>
         {
             endpoints.MapControllers();
         });
     }
-
 }

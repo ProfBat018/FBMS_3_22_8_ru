@@ -1,50 +1,32 @@
-import { createSlice, createAsyncThunk, PayloadAction, TaskRejected } from '@reduxjs/toolkit';
-import {DecodedToken, LoginDTO, RegisterDTO, UserData} from "../models/auth.dto";
-import { login} from '../actions/authActions';
-import {jwtDecode} from "jwt-decode";
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import axios from 'axios';
 
 
 interface AuthState {
-    user: UserData | null;
     isModalOpen: boolean;
-    loading:boolean
+    loading: boolean;
     error: string | null;
 }
 
 const initialState: AuthState = {
-    user: null,
     isModalOpen: false,
     error: null,
-    loading: false
+    loading: false,
 };
 
-
 interface LoginResponseDTO {
-    accessToken: string, 
-    refreshToken: string,
-    username: string,
+    accessToken: string;
+    refreshToken: string;
+    username: string;
 }
 
-export const loginUser = createAsyncThunk<LoginResponseDTO, LoginDTO, { rejectValue: string }>(
+export const loginUser = createAsyncThunk<LoginResponseDTO, { username: string; password: string }>(
     'auth/loginUser',
-    async (user: LoginDTO, { rejectWithValue }) => {
-        try {
-            const response = await login(user);
-
-            localStorage.setItem('accessToken', response.accessToken);
-            localStorage.setItem('refreshToken', response.refreshToken);
-
-            return {
-                accessToken: response.accessToken,
-                refreshToken: response.refreshToken,
-                username: response.username,
-            };
-        } catch (error) {
-            return rejectWithValue(`Login failed: ${error instanceof Error ? error.message : String(error)}`);
-        }
+    async ({ username, password }) => {
+        const response = await axios.post('https://localhost:7227/api/v1/auth/login', { username, password });
+        return response.data; 
     }
 );
-
 
 const authSlice = createSlice({
     name: 'auth',
@@ -52,40 +34,31 @@ const authSlice = createSlice({
     reducers: {
         clearError(state) {
             state.error = null;
-          },
-        logout: function (state) {
-            if (state.user != null) {
-            state.user.isAuthenticated = false;
-            state.user.accessToken = null;
-            state.user.refreshToken = null;
-            state.error = null;
-            localStorage.removeItem('accessToken');
-            localStorage.removeItem('refreshToken');
-            }
-        }
+        },
+        openModal(state) {
+            state.isModalOpen = true;
+        },
+        closeModal(state) {
+            state.isModalOpen = false;
+        },
     },
     extraReducers: (builder) => {
-        builder 
+        builder
             .addCase(loginUser.pending, (state) => {
-                state.loading = true; 
+                state.loading = true;
                 state.error = null; 
             })
-            .addCase(loginUser.fulfilled, (state, action: PayloadAction<LoginResponseDTO>) => {
-                state.user = { 
-                    isAuthenticated: true,
-                    accessToken: action.payload.accessToken,
-                    refreshToken: action.payload.refreshToken,
-                    username: action.payload.username,
-                };
-                state.loading = false; 
+            .addCase(loginUser.fulfilled, (state, action) => {
+                state.loading = false;
+                state.error = null; 
+                console.log('Login successful:', action.payload);
             })
             .addCase(loginUser.rejected, (state, action) => {
-                state.loading = false; 
-                state.user = null; 
-                state.error = action.payload as string; 
+                state.loading = false;
+                state.error = action.error.message || 'Login failed'; 
             });
-    }
+    },
 });
 
-export const { logout, clearError } = authSlice.actions;
+export const { clearError, openModal, closeModal } = authSlice.actions;
 export default authSlice.reducer;

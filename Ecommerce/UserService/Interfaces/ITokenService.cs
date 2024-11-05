@@ -12,7 +12,6 @@ public interface ITokenService
     public Task<string> GenerateRefreshTokenAsync();
     public ClaimsPrincipal GetPrincipalFromToken(string token, bool validateLifetime = false);
     public Task<string> GenerateEmailTokenAsync(string userId);
-
-    public Task ValidateEmailTokenAsync(string token, string userId);
+    public Task ValidateEmailTokenAsync(string token);
 
 }

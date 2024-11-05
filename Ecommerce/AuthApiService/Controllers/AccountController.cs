@@ -26,12 +26,10 @@ public class AccountController : ControllerBase
     [HttpPost("ResetPassword")]
     public async Task<IActionResult> ResetPasswordAsync([FromBody] ResetPasswordDTO resetRequest)
     {
-        var token = HttpContext.Request.Headers["Authorization"];
-
-        token = token.ToString().Replace("Bearer ", "");
+        var token = HttpContext.Request.Cookies["accessToken"];
 
         await accountService.ResetPaswordAsync(resetRequest, token);
-        return Ok("Recovery link sent to your email");
+        return Ok("Password successfully reseted");
     }
 
 
@@ -39,19 +37,17 @@ public class AccountController : ControllerBase
     [HttpPost("ConfirmEmail")]
     public async Task<IActionResult> ConfirmEmailAsync()
     {
-        var token = HttpContext.Request.Headers["Authorization"];
-
-        token = token.ToString().Replace("Bearer ", "");
+        var token = HttpContext.Request.Cookies["accessToken"];
 
         await accountService.ConfirmEmailAsync(token);
 
-        return Ok();
+        return Ok(new PostResponse("Mail Sent", 200));
     }
 
     [HttpGet("ValidateConfirmation")]
-    public async Task<IActionResult> ValidateConfirmationAsync([FromQuery] string token, [FromQuery] string userId)
+    public async Task<IActionResult> ValidateConfirmationAsync([FromQuery] string token)
     {
-        await tokenService.ValidateEmailTokenAsync(token, userId);
+        await tokenService.ValidateEmailTokenAsync(token);
 
         return Ok("Email confirmed successfully");
     }

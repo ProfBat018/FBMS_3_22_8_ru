@@ -7,7 +7,6 @@ import {log} from "next/dist/server/typescript/utils";
 const Layout = () => {
   const { isAuthenticated } = useAuth();
   
-  
   return (
     <div>
       {isAuthenticated ? <Main /> : <Auth />}

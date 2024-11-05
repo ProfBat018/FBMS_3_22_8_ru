@@ -1,52 +1,57 @@
-import axios, { AxiosResponse } from 'axios';
-import {AddProductRequestDTO, ImageResponseDTO, ProductsRequestDTO, ProductsResponseDTO} from "../models/product.dto";
+import axios from 'axios';
+import { AddProductRequestDTO, ImageResponseDTO, ProductsRequestDTO, ProductsResponseDTO } from "../models/product.dto";
 
+const api = axios.create({
+    baseURL: 'http://localhost:5040/api/admin/products',
+});
 
-export const fetchProductsData = async (url: string): Promise<ProductsResponseDTO> => {
-    const token = localStorage.getItem('accessToken');
+export const fetchProductsData = async (page: number, pageSize: number): Promise<ProductsResponseDTO> => {
     try {
-        const response: AxiosResponse<ProductsResponseDTO> = await axios.get(url, {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        });
+        const response = await api.get(`/all/${page}/${pageSize}`);
         return response.data;
     } catch (error) {
         throw error;
     }
 };
 
-
+export const fetchProductsByCategory = async (categoryId: number, page: number, pageSize: number): Promise<ProductsResponseDTO> => {
+    try {
+        const response = await api.get(`/all/category/${categoryId}/${page}/${pageSize}`);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
 
 export const uploadImageToBlob = async (file: File): Promise<ImageResponseDTO> => {
     const formData = new FormData();
     formData.append('file', file);
 
-    const response = await axios.post('http://localhost:5040/api/admin/products/image/add', formData, {
-        headers: {
-            'Content-Type': 'multipart/form-data',
-            'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
-        }
-    });
+    try {
+        const response = await api.post('/image/add', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
 
-    return response.data as ImageResponseDTO; // Возвращаем данные как ImageResponseDTO
+        return response.data as ImageResponseDTO; 
+    } catch (error) {
+        throw error;
+    }
 };
 
 
 export const addNewProduct = async (productDto: AddProductRequestDTO, file: File): Promise<void> => {
-    const imageResponse = await uploadImageToBlob(file); 
+    const imageResponse = await uploadImageToBlob(file);
 
+    try {
+        const response = await api.post('/add', {
+            ...productDto,
+            imageUrl: imageResponse.message,
+        });
 
-    const token = localStorage.getItem('accessToken');
-
-    const response = await axios.post('http://localhost:5040/api/admin/products/add', {
-        ...productDto,
-        imageUrl: imageResponse.message, 
-    }, {
-        headers: {
-            'Authorization': `Bearer ${token}`
-        }
-    });
-
-    return response.data; 
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
 };

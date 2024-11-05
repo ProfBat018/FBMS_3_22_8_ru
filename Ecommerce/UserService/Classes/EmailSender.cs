@@ -15,10 +15,10 @@ public class EmailSender : IEmailSender
     {
         _configuration = configuration;
       
-        _smtpClient = new SmtpClient(_configuration["Email:Host"])
+        _smtpClient = new SmtpClient(_configuration["MailerSend:Host"])
         {
-            Port = int.Parse(_configuration["Email:Port"]),
-            Credentials = new NetworkCredential(_configuration["Email:Username"], _configuration["Email:Password"]),
+            Port = int.Parse(_configuration["MailerSend:Port"]),
+            Credentials = new NetworkCredential(_configuration["MailerSend:Username"], _configuration["MailerSend:Password"]),
             EnableSsl = true
         };
     }
@@ -29,7 +29,7 @@ public class EmailSender : IEmailSender
     {
         var mailMessage = new MailMessage
         {
-            From = new MailAddress(_configuration["Email:Username"]),
+            From = new MailAddress(_configuration["MailerSend:Username"]),
             Subject = subject,
             Body = message
         };
