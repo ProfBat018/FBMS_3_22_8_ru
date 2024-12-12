@@ -13,6 +13,7 @@ services:
       - my_bridge_network
     depends_on:
       - backend
+  
 
   backend:
     build:
