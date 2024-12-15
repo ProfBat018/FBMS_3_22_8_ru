@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Verification</title>
+    <style>
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #f0f4f8, #e6e9f0);
+            padding: 20px;
+        }
+
+
+        .containerCentre {
+            text-align: center;
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            width: 100%;
+        }
+
+
+        .logoImg {
+            margin-bottom: 20px;
+        }
+
+
+        .confirmedText {
+            font-size: 1.6rem;
+            color: #024455;
+            font-weight: 500;
+            margin-bottom: 10px;
+            text-align: left;
+        }
+
+
+        .subText, .subText2, .subText3 {
+            color: #666666;
+            text-align: left;
+        }
+
+        .subText {
+            font-size: 1rem;
+            margin-bottom: 10px;
+            line-height: 1.5;
+        }
+
+        .subText2 {
+            font-size: 1.1rem;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .subText3 {
+            font-size: 1rem;
+            margin-bottom: 6px;
+            line-height: 1;
+        }
+
+
+        .divider {
+            margin: 20px 0;
+            height: 1px;
+            background-color: #e0e0e0;
+            width: 100%;
+        }
+
+        img {
+            height: 200px;
+        }
+
+        .btnGo {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: #024455;
+            color: #ffffff;
+            font-size: 1rem;
+            font-weight: 500;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .btnGo:hover {
+            background-color: #024455d2;
+        }
+
+
+        .iconContainer {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .icon {
+            font-size: 1.5rem;
+            color: #024455;
+            transition: color 0.3s ease;
+            cursor: pointer;
+            width: 24px;
+            height: 24px;
+        }
+
+        .icon:hover {
+            color: #024455c4;
+        }
+
+        .emailLink, .phoneLink {
+            color: #024455 !important;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+
+        @media (max-width: 600px) {
+            .containerCentre {
+                padding: 30px;
+            }
+
+            .confirmedText {
+                font-size: 1.5rem;
+            }
+
+            .btnGo {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="containerCentre">
+
+        <img class="logoImg" src="https://diplomstorageacc.blob.core.windows.net/images/compressed.png" alt="logo">
+        <h1 class="confirmedText">Dear [name]!</h1>
+        <p class="subText">
+            Please verify your email by clicking below. So you can access all the features of our platform.
+        </p>
+
+        <a href="#" class="btnGo">
+            Verify email
+        </a>
+
+        <div class="divider"></div>
+
+        <p class="subText2">
+            If you have any questions/issues regarding the process, feel free to contact us at
+            <a href="mailto:EF-eCommerce@gmail.com" class="emailLink">EF-eCommerce@gmail.com</a>.
+        </p>
+
+        <p class="subText3">
+            <a href="tel:+994773251018" class="phoneLink">+994(77) 325 10 18</a>
+        </p>
+
+        <p class="subText3">© 2024 EF-eCommerce | Baku, Azerbaijan</p>
+        <p class="subText3">Terms of use | Privacy Policy</p>
+
+        <div class="iconContainer">
+            <i class="fab fa-instagram icon"></i>
+            <i class="fab fa-facebook icon"></i>
+            <i class="fas fa-envelope icon"></i>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
