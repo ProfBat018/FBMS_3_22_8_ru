@@ -154,12 +154,5 @@ public class TokenService : ITokenService
         }
     }
 
-    public string GenerateCSRF()
-    {
-        using var rng = new RNGCryptoServiceProvider();
-
-        byte[] tokenData = new byte[32];
-        rng.GetBytes(tokenData);
-        return Convert.ToBase64String(tokenData);
-    }
+  
 }

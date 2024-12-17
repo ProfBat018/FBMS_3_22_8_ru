@@ -12,6 +12,6 @@ public interface ITokenService
     public ClaimsPrincipal GetPrincipalFromToken(string token, bool validateLifetime = false);
     public Task<string> GenerateEmailTokenAsync(string userId);
     public Task<string> ValidateEmailTokenAsync(string token);
-    public string GenerateCSRF();
+
 
 }

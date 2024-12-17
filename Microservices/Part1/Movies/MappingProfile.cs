@@ -10,20 +10,20 @@ public class MappingProfile : Profile
     {
         CreateMap<SearchByNameResult, Movie>()
             .ConstructUsing(src => new Movie(
-                src.Adult,
-                src.BackdropPath,
-                src.GenreIds,
-                src.Id,
-                src.OriginalLanguage,
-                src.OriginalTitle,
-                src.Overview,
-                src.Popularity,
-                src.PosterPath,
-                src.ReleaseDate,
-                src.Title,
-                src.Video,
-                src.VoteAverage,
-                src.VoteCount
+                src.adult,
+                src.backdrop_path,
+                src.genre_ids,
+                src.id,
+                src.original_language,
+                src.original_title,
+                src.overview,
+                src.popularity,
+                src.poster_path,
+                src.release_date,
+                src.title,
+                src.video,
+                src.vote_average,
+                src.vote_count
             ));
     }
 }

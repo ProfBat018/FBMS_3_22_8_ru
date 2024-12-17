@@ -12,7 +12,7 @@ public class MovieContext : DbContext
         
     }
     
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    protected override void OnModelCreating(ModelBuilder modelBuilder) // Fluent API - Configuration
     {
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(MovieContext).Assembly); // Reflection
     }

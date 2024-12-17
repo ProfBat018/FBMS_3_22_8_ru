@@ -32,6 +32,7 @@ public class MovieService : IMovieService
         var request = new RestRequest("");
         request.AddHeader("accept", "application/json");
         request.AddHeader("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyYTcxYWMxNTc3NzdkZTM3YzIxNTFjY2Q3OTQxZjU1YSIsIm5iZiI6MTY5Nzc4NDY2OS4yMDgsInN1YiI6IjY1MzIyMzVkOWFjNTM1MDg3NzU2MGEzYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.hFRAfYIZ3c589bcPOw8gDGN_fPWT1BZnimjUxlbYa3I");
+       
         var response = await client.GetAsync(request);
 
         if (!response.IsSuccessful)
@@ -41,7 +42,7 @@ public class MovieService : IMovieService
         
         using var memoryStream = new MemoryStream();
         using var writer = new StreamWriter(memoryStream);
-    
+        
         await writer.WriteAsync(response.Content);
         await writer.FlushAsync();
         memoryStream.Position = 0;

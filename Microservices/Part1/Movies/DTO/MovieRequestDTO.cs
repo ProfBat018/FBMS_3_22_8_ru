@@ -1,3 +1,4 @@
 namespace Movies.DTO;
 
-public record MovieRequestDTO();
+public record MovieRequestDTO(string name);
+

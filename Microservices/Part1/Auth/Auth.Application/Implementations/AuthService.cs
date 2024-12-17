@@ -42,13 +42,12 @@ public class AuthService : IAuthService
                 throw new MyAuthException(AuthErrorTypes.InvalidCredentials, "Invalid credentials");
             
 
-            var csrfToken = tokenService.GenerateCSRF();
+           
 
             var tokenData = new AccessInfo_DTO(
                 foundUser.Username,
                 await tokenService.GenerateTokenAsync(foundUser),
                 await tokenService.GenerateRefreshTokenAsync(),
-                csrfToken,
                 userRole.AppRole.Name,
                 DateTime.Now.AddDays(1)
             );
@@ -112,14 +111,12 @@ public class AuthService : IAuthService
         user.RefreshTokenExpiryTime = DateTime.Now.AddDays(1);
 
         await context.SaveChangesAsync();
-
-        var newCSRF = tokenService.GenerateCSRF();
+        
 
         return new AccessInfo_DTO(
             username,
             newAccessToken,
             newRefreshToken,
-            newCSRF,
             userRole.AppRole.Name,
             user.RefreshTokenExpiryTime);
     }

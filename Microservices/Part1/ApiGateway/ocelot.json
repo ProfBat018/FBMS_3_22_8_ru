@@ -1,19 +1,19 @@
 {
   "Routes": [
     {
-      "DownstreamPathTemplate": "/api/auth/{everything}",
+      "DownstreamPathTemplate": "/api/v1/{everything}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
-        { "Host": "authapi.example.com", "Port": 80 }
+        { "Host": "localhost", "Port": 5046 }
       ],
-      "UpstreamPathTemplate": "/auth/{everything}",
-      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ]
+      "UpstreamPathTemplate": "/identity/{everything}",
+      "UpstreamHttpMethod": [ "GET", "POST" ]
     },
     {
       "DownstreamPathTemplate": "/api/movies/{everything}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
-        { "Host": "moviesapi.example.com", "Port": 80 }
+        { "Host": "moviesapi.example.com", "Port": 5050 }
       ],
       "UpstreamPathTemplate": "/movies/{everything}",
       "UpstreamHttpMethod": [ "GET", "POST" ]
@@ -23,4 +23,3 @@
     "BaseUrl": "http://gateway.example.com"
   }
 }
-

@@ -141,7 +141,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<AuthContext>(options =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("StepAuth16"));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultMacAuth"));
 });
 
 

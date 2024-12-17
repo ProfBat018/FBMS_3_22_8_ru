@@ -15,11 +15,15 @@ public class MovieController : ControllerBase
         _movieService = movieService;
     }
     
-    [HttpGet("Movie/{name}")]
-    public async Task<IActionResult> GetMovies(string name)
+    [HttpGet("Movie/{name}/{page=1}")]
+    public async Task<IActionResult> GetMovies(string name, int page=1)
     {
-        
+        var res = await _movieService.GetMovies(name, page);
 
-        return Ok("Movies");
+        if (res == null)
+            throw new Exception("Failed to get movies");
+
+        return Ok(ResponseModel<MovieResponseDTO>.SuccessResponse(res, "Movies retrieved successfully"));
+
     }
 }

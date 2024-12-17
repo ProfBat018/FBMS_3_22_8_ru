@@ -4,17 +4,18 @@ using Movies.Models;
 
 namespace Movies.Contexts.Configs;
 
-public class MovieConfiguration : IEntityTypeConfiguration<Movie>
+// Fluent API, наследую, чтобы с помошью рефлексии применить конфигурацию
+public class MovieConfiguration : IEntityTypeConfiguration<Movie> 
 {
     public void Configure(EntityTypeBuilder<Movie> builder)
     {
         builder.ToTable("Movies");
        
-        builder.HasKey(m => m.Id);
+        builder.HasKey(m => m.Id); // PK
 
-        builder.Property(m => m.Title)
-            .HasMaxLength(255) 
-            .IsRequired(); 
+        builder.Property(m => m.Title) // Column
+            .HasMaxLength(255)  // Max length
+            .IsRequired(); // Not null
 
         builder.Property(m => m.OriginalTitle)
             .HasMaxLength(255);
@@ -31,7 +32,7 @@ public class MovieConfiguration : IEntityTypeConfiguration<Movie>
         builder.Property(m => m.OriginalLanguage)
             .HasMaxLength(10);
 
-        builder.Property(m => m.GenreIds)
+        builder.Property(m => m.GenreIds) // Array преобразование в строку
             .HasConversion(
                 v => string.Join(",", v), 
                 v => v.Split(",", StringSplitOptions.RemoveEmptyEntries)

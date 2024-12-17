@@ -1,23 +1,23 @@
 public record MovieResponseDTO(
-    int Page,
-    SearchByNameResult[] Results,
-    int TotalPages,
-    int TotalResults
+    int page,
+    SearchByNameResult[] results,
+    int total_pages,
+    int total_results
 );
 
 public record SearchByNameResult(
-    bool Adult,
-    string BackdropPath,
-    int[] GenreIds,
-    int Id,
-    string OriginalLanguage,
-    string OriginalTitle,
-    string Overview,
-    double Popularity,
-    string PosterPath,
-    string ReleaseDate,
-    string Title,
-    bool Video,
-    double VoteAverage,
-    int VoteCount
+    bool adult,
+    string backdrop_path,
+    int[] genre_ids,
+    int id,
+    string original_language,
+    string original_title,
+    string overview,
+    double popularity,
+    string poster_path,
+    string release_date,
+    string title,
+    bool video,
+    double vote_average,
+    int vote_count
 );
