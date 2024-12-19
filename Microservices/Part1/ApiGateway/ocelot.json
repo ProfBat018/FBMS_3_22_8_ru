@@ -10,10 +10,10 @@
       "UpstreamHttpMethod": [ "GET", "POST" ]
     },
     {
-      "DownstreamPathTemplate": "/api/movies/{everything}",
+      "DownstreamPathTemplate": "/api/{everything}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
-        { "Host": "moviesapi.example.com", "Port": 5050 }
+        { "Host": "localhost", "Port": 5083 }
       ],
       "UpstreamPathTemplate": "/movies/{everything}",
       "UpstreamHttpMethod": [ "GET", "POST" ]

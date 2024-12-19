@@ -4,6 +4,14 @@ public record MovieResponseDTO(
     int total_pages,
     int total_results
 );
+public record SearchByIdResult(
+    SearchByNameResult[] movie_results,
+    object[] person_results,
+    object[] tv_results,
+    object[] tv_episode_results,
+    object[] tv_season_results
+);
+
 
 public record SearchByNameResult(
     bool adult,
@@ -21,3 +29,5 @@ public record SearchByNameResult(
     double vote_average,
     int vote_count
 );
+
+

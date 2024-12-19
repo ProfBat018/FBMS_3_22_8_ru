@@ -3,7 +3,6 @@ using Asp.Versioning;
 using Auth.Application.DTO;
 using Auth.Application.Validators;
 using Auth.Core.Interfaces;
-using Auth.Presentation.Attributes;
 using Auth.Shared.Exceptions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -90,7 +89,7 @@ public class AuthController : ControllerBase
 
 
     [Authorize]
-    [ValidateCsrfToken]
+  
     [HttpPost("Logout")]
     public async Task<IActionResult> LogoutAsync()
     {

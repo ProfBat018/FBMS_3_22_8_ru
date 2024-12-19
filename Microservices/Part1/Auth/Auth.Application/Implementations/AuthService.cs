@@ -1,5 +1,4 @@
-﻿
-using System.Security.Claims;
+﻿using System.Security.Claims;
 using Auth.Application.DTO;
 using Auth.Core.Interfaces;
 using Auth.Core.Models;
@@ -11,13 +10,14 @@ using static BCrypt.Net.BCrypt;
 
 namespace Auth.Application.Implementations;
 
-
 public class AuthService : IAuthService
 {
     private readonly AuthContext context;
     private readonly ITokenService tokenService;
     private readonly IBlackListService blackListService;
-    public AuthService(AuthContext context, ITokenService tokenService, IBlackListService blackListService, IEmailSender emailSender)
+
+    public AuthService(AuthContext context, ITokenService tokenService, IBlackListService blackListService,
+        IEmailSender emailSender)
     {
         this.context = context;
         this.tokenService = tokenService;
@@ -36,13 +36,11 @@ public class AuthService : IAuthService
 
             if (foundUser == null)
                 throw new MyAuthException(AuthErrorTypes.UserNotFound, "User not found");
-            
+
 
             if (!Verify(user.Password, foundUser.Password))
                 throw new MyAuthException(AuthErrorTypes.InvalidCredentials, "Invalid credentials");
-            
 
-           
 
             var tokenData = new AccessInfo_DTO(
                 foundUser.Username,
@@ -79,7 +77,7 @@ public class AuthService : IAuthService
         user.RefreshToken = null;
         user.RefreshTokenExpiryTime = DateTime.Now;
         await context.SaveChangesAsync();
-        
+
         blackListService.AddTokenToBlackList(userTokenInfo.AccessToken);
     }
 
@@ -100,7 +98,7 @@ public class AuthService : IAuthService
         var userRole = await context.UserRoles
             .Include(r => r.AppRole)
             .FirstOrDefaultAsync(r => r.UserId == user.Id);
-        
+
         if (user == null || user.RefreshToken != refreshToken || user.RefreshTokenExpiryTime <= DateTime.Now)
             throw new MyAuthException(AuthErrorTypes.InvalidRequest, "Invalid client request");
 
@@ -111,7 +109,7 @@ public class AuthService : IAuthService
         user.RefreshTokenExpiryTime = DateTime.Now.AddDays(1);
 
         await context.SaveChangesAsync();
-        
+
 
         return new AccessInfo_DTO(
             username,
@@ -131,11 +129,24 @@ public class AuthService : IAuthService
                 Email = user.Email,
                 Password = HashPassword(user.Password)
             };
-            
-            await context.Users.AddAsync(newUser);
+
+
+            var appRoles = AppRoles.Roles;
+            var rolesInDb = await context.AppRoles.ToListAsync();
+
+
+            foreach (var item in appRoles)
+            {
+                if (rolesInDb.All(x => x.Name != item))
+                {
+                    await context.AppRoles.AddAsync(new AppRole { Name = item });
+                }
+            }
+
+
             await context.SaveChangesAsync();
 
-            var role = await context.AppRoles.Where(x => x.Name == "AppUser").FirstOrDefaultAsync();
+            var role = context.AppRoles.FirstOrDefault(r => r.Name == "AppUser");
 
             var roleToApply = new UserRole()
             {
@@ -143,9 +154,10 @@ public class AuthService : IAuthService
                 UserId = newUser.Id
             };
 
-            context.UserRoles.Add(roleToApply);
+            await context.Users.AddAsync(newUser);
+            await context.UserRoles.AddAsync(roleToApply);
             await context.SaveChangesAsync();
-            
+
             return newUser;
         }
         catch

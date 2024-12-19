@@ -25,5 +25,10 @@ public class MappingProfile : Profile
                 src.vote_average,
                 src.vote_count
             ));
+        
+        CreateMap<SearchByIdResult, Movie>()
+            .ForMember(x => x.Id, opt => opt.MapFrom(src => src.movie_results[0].id))
+            
+            
     }
 }

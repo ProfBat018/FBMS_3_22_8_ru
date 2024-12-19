@@ -2,7 +2,6 @@
 using Asp.Versioning;
 using Auth.Application.DTO;
 using Auth.Core.Interfaces;
-using Auth.Presentation.Attributes;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -23,7 +22,7 @@ public class AccountController : ControllerBase
         this.tokenService = tokenService;
     }
 
-    [ValidateCsrfToken]
+  
     [HttpPost("ResetPassword")]
     public async Task<IActionResult> ResetPasswordAsync([FromBody] ResetPasswordDTO resetRequest)
     {
@@ -33,7 +32,7 @@ public class AccountController : ControllerBase
         return Ok("Password successfully reseted");
     }
 
-    [ValidateCsrfToken]
+  
     [HttpPost("ConfirmEmail")]
     public async Task<IActionResult> ConfirmEmailAsync()
     {

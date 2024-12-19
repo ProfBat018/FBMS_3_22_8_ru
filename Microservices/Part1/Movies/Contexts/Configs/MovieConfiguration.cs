@@ -13,6 +13,9 @@ public class MovieConfiguration : IEntityTypeConfiguration<Movie>
        
         builder.HasKey(m => m.Id); // PK
 
+        builder.Property(m => m.UserId)
+            .IsRequired();
+        
         builder.Property(m => m.Title) // Column
             .HasMaxLength(255)  // Max length
             .IsRequired(); // Not null

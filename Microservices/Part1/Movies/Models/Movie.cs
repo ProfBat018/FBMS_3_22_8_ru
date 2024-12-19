@@ -25,7 +25,8 @@ public class Movie
         VoteAverage = voteAverage;
         VoteCount = voteCount;
     }
-
+    
+    public Guid UserId { get; set; }
     public bool Adult { get; set; }
     public string BackdropPath { get; set; }
     public int[] GenreIds { get; set; }
