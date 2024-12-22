@@ -32,13 +32,13 @@ builder.WebHost.ConfigureKestrel(options =>
     // Настройка для порта 5046 с HTTP/2 для gRPC
     options.Listen(IPAddress.Any, 5046, listenOptions =>
     {
-        listenOptions.Protocols = Microsoft.AspNetCore.Server.Kestrel.Core.HttpProtocols.Http2;
+        listenOptions.Protocols = Microsoft.AspNetCore.Server.Kestrel.Core.HttpProtocols.Http1AndHttp2;
     });
     
     // Если другие порты должны работать с HTTP/1.1
     options.Listen(IPAddress.Any, 5001, listenOptions =>
     {
-        listenOptions.Protocols = Microsoft.AspNetCore.Server.Kestrel.Core.HttpProtocols.Http1; // HTTP/1.1 для других портов
+        listenOptions.Protocols = Microsoft.AspNetCore.Server.Kestrel.Core.HttpProtocols.Http2; // HTTP/1.1 для других портов
     });
 }); 
 
