@@ -1,5 +1,6 @@
 
 using System.IdentityModel.Tokens.Jwt;
+using System.Net;
 using System.Security.Claims;
 using System.Text;
 using Auth.Application.DTO;
@@ -26,6 +27,20 @@ builder.Services.AddHttpClient("Client")
         };
     });
 
+builder.WebHost.ConfigureKestrel(options =>
+{
+    // Настройка для порта 5046 с HTTP/2 для gRPC
+    options.Listen(IPAddress.Any, 5046, listenOptions =>
+    {
+        listenOptions.Protocols = Microsoft.AspNetCore.Server.Kestrel.Core.HttpProtocols.Http2;
+    });
+    
+    // Если другие порты должны работать с HTTP/1.1
+    options.Listen(IPAddress.Any, 5001, listenOptions =>
+    {
+        listenOptions.Protocols = Microsoft.AspNetCore.Server.Kestrel.Core.HttpProtocols.Http1; // HTTP/1.1 для других портов
+    });
+}); 
 
 builder.Services.AddCors(options =>
 {
@@ -126,6 +141,7 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddAuthorization();
 
+builder.Services.AddGrpc();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
@@ -176,6 +192,7 @@ app.UseMiddleware<JwtSessionMiddleware>();
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.MapGrpcService<Auth.Infrastructure.gRPC.UserService>();
 app.MapControllers();
 
 app.Run();

@@ -12,7 +12,7 @@ using Movies.Contexts;
 namespace Movies.Migrations
 {
     [DbContext(typeof(MovieContext))]
-    [Migration("20241219071836_First")]
+    [Migration("20241221094811_First")]
     partial class First
     {
         /// <inheritdoc />
@@ -27,11 +27,9 @@ namespace Movies.Migrations
 
             modelBuilder.Entity("Movies.Models.Movie", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("Adult")
                         .HasColumnType("bit");
@@ -43,6 +41,9 @@ namespace Movies.Migrations
                     b.Property<string>("GenreIds")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("MovieId")
+                        .HasColumnType("int");
 
                     b.Property<string>("OriginalLanguage")
                         .IsRequired()
@@ -75,8 +76,9 @@ namespace Movies.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<bool>("Video")
                         .HasColumnType("bit");
@@ -94,6 +96,10 @@ namespace Movies.Migrations
 
                     b.HasIndex("Title")
                         .HasDatabaseName("IX_Movies_Title");
+
+                    b.HasIndex("Username")
+                        .IsUnique()
+                        .HasDatabaseName("IX_Movies_Username");
 
                     b.ToTable("Movies", (string)null);
                 });

@@ -1,4 +1,6 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
+using Microsoft.Extensions.Options;
 using Movies.Models;
 
 namespace Movies.Contexts;
@@ -11,7 +13,7 @@ public class MovieContext : DbContext
     {
         
     }
-    
+   
     protected override void OnModelCreating(ModelBuilder modelBuilder) // Fluent API - Configuration
     {
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(MovieContext).Assembly); // Reflection

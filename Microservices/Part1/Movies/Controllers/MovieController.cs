@@ -18,7 +18,7 @@ public class MovieController : ControllerBase
         _movieService = movieService;
     }
 
-    
+    [AllowAnonymous]
     [HttpGet("{name}/{page=1}")]
     public async Task<IActionResult> GetMovies(string name, int page=1)
     {
@@ -42,5 +42,18 @@ public class MovieController : ControllerBase
         await _movieService.SaveMovieToCollectionAsync(res, userId);
         
         return Ok(ResponseModel<SearchByIdResult>.SuccessResponse(res, "Movie retrieved successfully"));
+    }
+    
+    [Authorize("AppUserOrAdmin")]
+    [HttpGet("Collection/{page=1}")]
+    public async Task<IActionResult> GetCollection(int page=1)
+    {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        
+        
+        
+        var res = await _movieService.GetCollectionAsync(userId, page);
+
+        return Ok(ResponseModel<PaginatedModel<Movie>>.SuccessResponse(res, "Collection retrieved successfully"));
     }
 }

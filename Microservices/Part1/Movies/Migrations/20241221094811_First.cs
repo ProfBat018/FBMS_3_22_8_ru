@@ -15,12 +15,12 @@ namespace Movies.Migrations
                 name: "Movies",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Username = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Adult = table.Column<bool>(type: "bit", nullable: false),
                     BackdropPath = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     GenreIds = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    MovieId = table.Column<int>(type: "int", nullable: false),
                     OriginalLanguage = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
                     OriginalTitle = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     Overview = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -46,6 +46,12 @@ namespace Movies.Migrations
                 name: "IX_Movies_Title",
                 table: "Movies",
                 column: "Title");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Movies_Username",
+                table: "Movies",
+                column: "Username",
+                unique: true);
         }
 
         /// <inheritdoc />

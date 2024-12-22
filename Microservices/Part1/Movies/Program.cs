@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Movies;
 using Movies.Contexts;
+using Movies.Middlewares;
 using Movies.Services.Classes;
 using Movies.Services.Interfaces;
 
@@ -18,7 +19,6 @@ builder.Services.AddControllers();
 
 builder.Services.AddDbContext<MovieContext>(ops => ops.UseSqlServer(
     builder.Configuration.GetConnectionString("MoviesDb")));
-
 
 builder.Services.AddAuthentication(options =>
 {
@@ -66,9 +66,11 @@ builder.Services.AddAuthorization(options =>
 
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 
-builder.Services.AddScoped<IMovieService, MovieService>();
+builder.Services.AddSingleton<GlobalExceptionMiddleware>();
+builder.Services.AddScoped<IMovieService, MovieService>();  
 
 var app = builder.Build();
+app.UseMiddleware<GlobalExceptionMiddleware>();
 
 app.UseSwagger();
 app.UseSwaggerUI();

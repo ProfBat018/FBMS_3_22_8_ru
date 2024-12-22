@@ -29,5 +29,3 @@ public record SearchByNameResult(
     double vote_average,
     int vote_count
 );
-
-

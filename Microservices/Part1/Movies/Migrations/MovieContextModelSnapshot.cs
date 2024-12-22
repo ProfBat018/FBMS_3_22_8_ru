@@ -24,11 +24,9 @@ namespace Movies.Migrations
 
             modelBuilder.Entity("Movies.Models.Movie", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("Adult")
                         .HasColumnType("bit");
@@ -40,6 +38,9 @@ namespace Movies.Migrations
                     b.Property<string>("GenreIds")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("MovieId")
+                        .HasColumnType("int");
 
                     b.Property<string>("OriginalLanguage")
                         .IsRequired()
@@ -91,6 +92,10 @@ namespace Movies.Migrations
 
                     b.HasIndex("Title")
                         .HasDatabaseName("IX_Movies_Title");
+
+                    b.HasIndex("UserId")
+                        .IsUnique()
+                        .HasDatabaseName("IX_Movies_UserId");
 
                     b.ToTable("Movies", (string)null);
                 });

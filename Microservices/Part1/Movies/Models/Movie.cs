@@ -1,8 +1,9 @@
 using System.ComponentModel.DataAnnotations;
+using Azure.Identity;
 
 namespace Movies.Models;
 
-public class Movie
+public class Movie : IMovieEntity
 {
     public Movie()
     {
@@ -13,7 +14,7 @@ public class Movie
         Adult = adult;
         BackdropPath = backdropPath;
         GenreIds = genreIds;
-        Id = id;
+        MovieId = id;
         OriginalLanguage = originalLanguage;
         OriginalTitle = originalTitle;
         Overview = overview;
@@ -25,12 +26,13 @@ public class Movie
         VoteAverage = voteAverage;
         VoteCount = voteCount;
     }
-    
+
+    public Guid Id { get; set; } = Guid.NewGuid();
     public Guid UserId { get; set; }
     public bool Adult { get; set; }
     public string BackdropPath { get; set; }
     public int[] GenreIds { get; set; }
-    public int Id { get; set; }
+    public int MovieId { get; set; }
     public string OriginalLanguage { get; set; }
     public string OriginalTitle { get; set; }
     public string Overview { get; set; }

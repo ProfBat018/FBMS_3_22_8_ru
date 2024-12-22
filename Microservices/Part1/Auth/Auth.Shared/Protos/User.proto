@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+option csharp_namespace = "Auth.Shared.Protos.GrpcUserService";
+
+service UserService{
+  rpc GetIdByUsername (UserRequest) returns (UserResponse);
+}
+
+
+message UserRequest {
+  string username = 1;
+}
+
+
+message UserResponse {
+  string id = 1;
+}
+
+
+

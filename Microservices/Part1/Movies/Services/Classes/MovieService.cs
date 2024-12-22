@@ -1,5 +1,6 @@
 using System.Text.Json;
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using Movies.Contexts;
 using Movies.DTO;
 using Movies.Models;
@@ -12,9 +13,9 @@ public class MovieService : IMovieService
 {
     private readonly MovieContext _movieContext;
     private readonly IConfiguration _configuration;
-    private readonly Mapper _mapper;
+    private readonly IMapper _mapper;
     
-    public MovieService(MovieContext movieContext, IConfiguration configuration, Mapper mapper)
+    public MovieService(MovieContext movieContext, IConfiguration configuration, IMapper mapper)
     {
         _movieContext = movieContext;
         _configuration = configuration;
@@ -98,18 +99,24 @@ public class MovieService : IMovieService
         throw new Exception("Failed to get movie by id");
     }
 
-    public async Task<bool> SaveMovieToCollectionAsync(SearchByIdResult movie, string userId)
+    public async Task SaveMovieToCollectionAsync(SearchByIdResult movie, string userId)
     {
         
-        var movieToSave = _mapper.Map<SearchByIdResult, Movie>(movie);
+        var movieEntity = _mapper.Map<Movie>(movie);
+        movieEntity.UserId = Guid.Parse(userId);
+        
+        _movieContext.Movies.Add(movieEntity);
 
-        movieToSave.UserId = Guid.Parse(userId);
-        
-        _movieContext.Movies.Add(movieToSave);
-        
         await _movieContext.SaveChangesAsync();
         
-        return true;
+    }
+
+    public async Task<PaginatedModel<Movie>> GetCollectionAsync(string userId, int page)
+    {
+        var movies = _movieContext.Movies.Where(m => m.UserId.ToString() == userId).Skip((page - 1) * 10).Take(10).AsNoTracking();
+        var paginatedMovies = new PaginatedModel<Movie>(await movies.ToListAsync());
+
+        return paginatedMovies;
     }
 
     private async Task<ExternalIdResponseDTO> GetExternalIdsAsync(int id)

@@ -16,6 +16,10 @@
       <PackageReference Include="AutoMapper" Version="13.0.1" />
       <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
       <PackageReference Include="FluentValidation" Version="11.10.0" />
+      <PackageReference Include="Grpc.Tools" Version="2.69.0-pre1">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
       <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="9.0.0-rc.2.24473.5" />
     </ItemGroup>
 
