@@ -13,10 +13,12 @@ var builder = WebApplication.CreateBuilder(args);
 
 
 builder.Services.AddControllers();
+
 builder.Services.AddGrpcClient<UserService.UserServiceClient>(options =>
 {
     options.Address = new Uri(builder.Configuration["gRPC:UserService"]); 
 });
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 

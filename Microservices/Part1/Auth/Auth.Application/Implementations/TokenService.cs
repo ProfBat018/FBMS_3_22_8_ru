@@ -13,7 +13,6 @@ using UserService.Exceptions;
 
 namespace Auth.Application.Implementations;
 
-
 public class TokenService : ITokenService
 {
     private readonly IConfiguration config;
@@ -74,7 +73,7 @@ public class TokenService : ITokenService
 
         var securityToken = new JwtSecurityToken(
             claims: claims,
-            expires: DateTime.UtcNow.AddMinutes(15),
+            expires: DateTime.UtcNow.AddSeconds(5),
             issuer: config.GetSection("Jwt:Issuer").Value,
             audience: config.GetSection("Jwt:Audience").Value,
             signingCredentials: signingCred);
@@ -123,35 +122,26 @@ public class TokenService : ITokenService
             IssuerSigningKey = new SymmetricSecurityKey(key)
         };
 
-        try
+        var principal = tokenHandler.ValidateToken(token, validationParameters, out var validatedToken);
+
+        var Id = principal.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+
+        var user = await _context.Users.FirstOrDefaultAsync(u => u.Id.ToString() == Id);
+
+        if (user == null)
         {
-            var principal = tokenHandler.ValidateToken(token, validationParameters, out var validatedToken);
-
-            var Id = principal.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
-
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id.ToString() == Id);
-
-            if (user == null)
-            {
-                throw new MyAuthException(AuthErrorTypes.UserNotFound, "User not found");
-            }
-
-            if (user.IsEmailConfirmed)
-            {
-                return "Email already confirmed";
-            }
-
-            user.IsEmailConfirmed = true;
-
-            await _context.SaveChangesAsync();
-
-            return "Email confirmed successfully";
+            throw new Exception("User not found");
         }
-        catch
+
+        if (user.IsEmailConfirmed)
         {
-            throw;
+            return "Email already confirmed";
         }
+
+        user.IsEmailConfirmed = true;
+
+        await _context.SaveChangesAsync();
+
+        return "Email confirmed successfully";
     }
-
-  
 }

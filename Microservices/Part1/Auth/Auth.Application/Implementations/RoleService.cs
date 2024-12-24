@@ -23,29 +23,15 @@ public class RoleService : IRoleService
 
     public async Task<IEnumerable<RoleDTO>> GetAllRolesAsync()
     {
-        try
-        {
             var roles = await _context.AppRoles.ToListAsync();
             return _mapper.Map<List<AppRole>, List<RoleDTO>>(roles);
-        }
-        catch
-        {
-            throw;
-        }
     }
 
     public async Task AddNewRoleAsync(RoleDTO role)
     {
-        try
-        {
             var roleToAdd = _mapper.Map<RoleDTO, AppRole>(role);
             await _context.AppRoles.AddAsync(roleToAdd);
             await _context.SaveChangesAsync();
-        }
-        catch
-        {
-            throw;
-        }
     }
 
     public async Task GrantRoleAsync(GrantRoleDTO roleDto)

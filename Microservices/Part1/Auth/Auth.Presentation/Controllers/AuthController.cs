@@ -1,4 +1,5 @@
 ﻿
+using System.ComponentModel.DataAnnotations;
 using Asp.Versioning;
 using Auth.Application.DTO;
 using Auth.Application.Validators;
@@ -40,8 +41,7 @@ public class AuthController : ControllerBase
 
         if (!validationResult.IsValid)
         {
-            throw new MyAuthException(AuthErrorTypes.InvalidCredentials,
-                JsonConvert.SerializeObject(validationResult.Errors, Formatting.Indented));
+            throw new ValidationException(validationResult.Errors[0].ErrorMessage.ToString());
         }
 
         var res = await authService.LoginUserAsync(user);

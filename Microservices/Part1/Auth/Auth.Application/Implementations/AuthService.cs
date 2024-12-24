@@ -1,4 +1,5 @@
-﻿using System.Security.Claims;
+﻿using System.ComponentModel.Design;
+using System.Security.Claims;
 using Auth.Application.DTO;
 using Auth.Core.Interfaces;
 using Auth.Core.Models;
@@ -26,20 +27,19 @@ public class AuthService : IAuthService
 
     public async Task<AccessInfo_DTO> LoginUserAsync(LoginDTO user)
     {
-        try
-        {
             var foundUser = await context.Users.FirstOrDefaultAsync(u => u.Username == user.Username);
+            
+            if (foundUser == null)
+                throw new Exception("User not found");
 
             var userRole = await context.UserRoles
                 .Include(r => r.AppRole)
                 .FirstOrDefaultAsync(r => r.UserId == foundUser.Id);
 
-            if (foundUser == null)
-                throw new MyAuthException(AuthErrorTypes.UserNotFound, "User not found");
 
 
             if (!Verify(user.Password, foundUser.Password))
-                throw new MyAuthException(AuthErrorTypes.InvalidCredentials, "Invalid credentials");
+                throw new Exception( "Invalid credentials");
 
 
             var tokenData = new AccessInfo_DTO(
@@ -56,21 +56,16 @@ public class AuthService : IAuthService
             await context.SaveChangesAsync();
 
             return tokenData;
-        }
-        catch
-        {
-            throw;
-        }
     }
 
     public async Task LogOutAsync(TokenDTO userTokenInfo)
     {
         if (userTokenInfo is null)
-            throw new MyAuthException(AuthErrorTypes.InvalidRequest, "Invalid client request");
+            throw new Exception("Invalid client request");
 
         var principal = tokenService.GetPrincipalFromToken(userTokenInfo.AccessToken);
 
-        var username = principal.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+        var username = principal.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value;
 
         var user = context.Users.FirstOrDefault(u => u.Username == username);
 
@@ -84,14 +79,14 @@ public class AuthService : IAuthService
     public async Task<AccessInfo_DTO> RefreshTokenAsync(TokenDTO userAccessData)
     {
         if (userAccessData is null)
-            throw new MyAuthException(AuthErrorTypes.InvalidRequest, "Invalid client request");
+            throw new Exception( "Invalid client request");
 
         var accessToken = userAccessData.AccessToken;
         var refreshToken = userAccessData.RefreshToken;
 
         var principal = tokenService.GetPrincipalFromToken(accessToken);
 
-        var username = principal.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+        var username = principal.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value;
 
         var user = context.Users.FirstOrDefault(u => u.Username == username);
 
@@ -100,7 +95,7 @@ public class AuthService : IAuthService
             .FirstOrDefaultAsync(r => r.UserId == user.Id);
 
         if (user == null || user.RefreshToken != refreshToken || user.RefreshTokenExpiryTime <= DateTime.Now)
-            throw new MyAuthException(AuthErrorTypes.InvalidRequest, "Invalid client request");
+            throw new Exception("Invalid client request");
 
         var newAccessToken = await tokenService.GenerateTokenAsync(user);
         var newRefreshToken = await tokenService.GenerateRefreshTokenAsync();
@@ -121,8 +116,7 @@ public class AuthService : IAuthService
 
     public async Task<User> RegisterUserAsync(RegisterDTO user)
     {
-        try
-        {
+      
             var newUser = new User
             {
                 Username = user.Username,
@@ -159,10 +153,5 @@ public class AuthService : IAuthService
             await context.SaveChangesAsync();
 
             return newUser;
-        }
-        catch
-        {
-            throw;
-        }
     }
 }

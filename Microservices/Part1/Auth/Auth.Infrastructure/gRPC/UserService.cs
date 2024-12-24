@@ -7,13 +7,12 @@ namespace Auth.Infrastructure.gRPC;
 public class UserService : Shared.Protos.GrpcUserService.UserService.UserServiceBase
 {
     private readonly AuthContext _context;
-
     public UserService(AuthContext context)
     {
         _context = context;
     }
 
-    public override Task<UserResponse> GetIdByUsername(UserRequest request, Grpc.Core.ServerCallContext context)
+    public async override Task<UserResponse> GetIdByUsername(UserRequest request, Grpc.Core.ServerCallContext context)
     {
         var username = request.Username;
         
@@ -23,11 +22,10 @@ public class UserService : Shared.Protos.GrpcUserService.UserService.UserService
         {
                 throw new RpcException(new Status(StatusCode.NotFound, "User not found"));
         }
-        
-        return Task.FromResult(new UserResponse
+
+        return new UserResponse()
         {
             Id = user.Id.ToString()
-        });
-
+        };
     }
 }

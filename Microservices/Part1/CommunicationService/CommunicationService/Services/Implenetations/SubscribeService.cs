@@ -24,7 +24,7 @@ public class SubscribeService : ISubscribeService
         {
             Username = userName
         });
-
+        
         var subscriber = new Subscriber
         {
             SubscriberId = Guid.Parse(userResponse.Id),
