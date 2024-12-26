@@ -4,7 +4,6 @@ using CommunicationService.Services.Interfaces;
 using Grpc.Net.Client;
 using CommunicationService.Protos.GrpcUserService;
 
-
 namespace CommunicationService.Services.Implenetations;
 
 public class SubscribeService : ISubscribeService

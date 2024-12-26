@@ -11,7 +11,6 @@ using Grpc.Net.Client;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
 builder.Services.AddControllers();
 
 builder.Services.AddGrpcClient<UserService.UserServiceClient>(options =>
@@ -65,6 +64,8 @@ builder.Services.AddAuthentication(options =>
 });
 
 builder.Services.AddScoped<ISubscribeService, SubscribeService>();
+
+builder.Services.AddScoped<INotificationService, NotificationService>();
 
 builder.Services.AddAuthorization(options =>
 {
