@@ -1,0 +1,84 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth-service
+  namespace: microservices
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: auth
+  template:
+    metadata:
+      labels:
+        app: auth
+    spec:
+      containers:
+        - name: auth
+          image: nightcall018/kubernetesapp:auth
+          ports:
+            - containerPort: 5002
+          env:
+            - name: ConnectionStrings__DefaultMacAuth
+              valueFrom:
+                secretKeyRef:
+                  name: auth-secrets
+                  key: ConnectionStrings__DefaultMacAuth
+            - name: Jwt__Key
+              valueFrom:
+                secretKeyRef:
+                  name: auth-secrets
+                  key: Jwt__Key
+            - name: Jwt__Issuer
+              valueFrom:
+                secretKeyRef:
+                  name: auth-secrets
+                  key: Jwt__Issuer
+            - name: Jwt__Audience
+              valueFrom:
+                secretKeyRef:
+                  name: auth-secrets
+                  key: Jwt__Audience
+            - name: EmailJwt__Key
+              valueFrom:
+                secretKeyRef:
+                  name: auth-secrets
+                  key: EmailJwt__Key
+            - name: Email__Host
+              valueFrom:
+                secretKeyRef:
+                  name: auth-secrets
+                  key: Email__Host
+            - name: Email__Port
+              valueFrom:
+                secretKeyRef:
+                  name: auth-secrets
+                  key: Email__Port
+            - name: Email__EnableSsl
+              valueFrom:
+                secretKeyRef:
+                  name: auth-secrets
+                  key: Email__EnableSsl
+            - name: Email__Username
+              valueFrom:
+                secretKeyRef:
+                  name: auth-secrets
+                  key: Email__Username
+            - name: Email__Password
+              valueFrom:
+                secretKeyRef:
+                  name: auth-secrets
+                  key: Email__Password
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: auth-service
+  namespace: microservices
+spec:
+  selector:
+    app: auth
+  ports:
+    - protocol: TCP
+      port: 5002
+      targetPort: 5002

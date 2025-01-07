@@ -18,6 +18,8 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Configuration.AddKeyPerFile("/secrets", optional: true);
+
 builder.Services.AddHttpClient("Client")
     .ConfigurePrimaryHttpMessageHandler(() =>
     {
@@ -79,10 +81,10 @@ builder.Services.AddAuthentication(options =>
         ValidateIssuerSigningKey = true,
         ValidateLifetime = true,
         ClockSkew = TimeSpan.Zero,
-        ValidIssuer = builder.Configuration.GetSection("Jwt:Issuer").Value,
-        ValidAudience = builder.Configuration.GetSection("Jwt:Audience").Value,
+        ValidIssuer = builder.Configuration["Jwt:Issuer"],
+        ValidAudience = builder.Configuration["Jwt:Audience"],
         IssuerSigningKey =
-            new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration.GetSection("Jwt:Key").Value))
+            new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
     };
 
     options.Events = new JwtBearerEvents
@@ -157,7 +159,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<AuthContext>(options =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultMacAuth"));
+    options.UseSqlServer(builder.Configuration["DefaultMacAuth"]);
 });
 
 

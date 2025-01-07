@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: communication-service
+  namespace: microservices
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: communication
+  template:
+    metadata:
+      labels:
+        app: communication
+    spec:
+      containers:
+        - name: communication
+          image: nightcall018/kubernetesapp:communication
+          ports:
+            - containerPort: 5003
+          env:
+            - name: ConnectionStrings__CommunicationDb
+              valueFrom:
+                secretKeyRef:
+                  name: communication-secrets
+                  key: ConnectionStrings__CommunicationDb
+            - name: Jwt__Key
+              valueFrom:
+                secretKeyRef:
+                  name: communication-secrets
+                  key: Jwt__Key
+            - name: Jwt__Issuer
+              valueFrom:
+                secretKeyRef:
+                  name: communication-secrets
+                  key: Jwt__Issuer
+            - name: Jwt__Audience
+              valueFrom:
+                secretKeyRef:
+                  name: communication-secrets
+                  key: Jwt__Audience
+            - name: gRPC__UserService
+              valueFrom:
+                secretKeyRef:
+                  name: communication-secrets
+                  key: gRPC__UserService
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: communication-service
+  namespace: microservices
+spec:
+  selector:
+    app: communication
+  ports:
+    - protocol: TCP
+      port: 5003
+      targetPort: 5003

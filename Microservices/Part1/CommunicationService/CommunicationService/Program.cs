@@ -11,6 +11,9 @@ using Grpc.Net.Client;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Configuration.AddKeyPerFile("/secrets", optional: true);
+
+
 builder.Services.AddControllers();
 
 builder.Services.AddGrpcClient<UserService.UserServiceClient>(options =>
@@ -23,7 +26,7 @@ builder.Services.AddSwaggerGen();
 
 
 builder.Services.AddDbContext<CommunicationContext>(ops => ops.UseSqlServer(
-    builder.Configuration.GetConnectionString("CommunicationDb")));
+    builder.Configuration["CommunicationDb"]));
 
 
 builder.Services.AddAuthentication(options =>

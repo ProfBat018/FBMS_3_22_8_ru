@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: movie-service
+  namespace: microservices
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: movie
+  template:
+    metadata:
+      labels:
+        app: movie
+    spec:
+      containers:
+        - name: movie
+          image: nightcall018/kubernetesapp:movie
+          ports:
+            - containerPort: 5004
+          env:
+            - name: ASPNETCORE_URLS
+              value: "http://*:5004"
+            - name: ConnectionStrings__MoviesDb
+              valueFrom:
+                secretKeyRef:
+                  name: movie-secrets
+                  key: ConnectionStrings__MoviesDb
+            - name: Jwt__Key
+              valueFrom:
+                secretKeyRef:
+                  name: movie-secrets
+                  key: Jwt__Key
+            - name: Jwt__Issuer
+              valueFrom:
+                secretKeyRef:
+                  name: movie-secrets
+                  key: Jwt__Issuer
+            - name: Jwt__Audience
+              valueFrom:
+                secretKeyRef:
+                  name: movie-secrets
+                  key: Jwt__Audience
+            - name: TmdbApi__Key
+              valueFrom:
+                secretKeyRef:
+                  name: movie-secrets
+                  key: TmdbApi__Key
+          securityContext:
+            runAsUser: 0
+            allowPrivilegeEscalation: false
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: movie-service
+  namespace: microservices
+spec:
+  selector:
+    app: movie
+  ports:
+    - protocol: TCP
+      port: 5004
+      targetPort: 5004
+      nodePort: 30004
+  type: NodePort

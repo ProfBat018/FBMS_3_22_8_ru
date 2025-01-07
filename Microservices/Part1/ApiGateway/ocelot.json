@@ -4,7 +4,7 @@
       "DownstreamPathTemplate": "/api/v1/{everything}", 
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
-        { "Host": "localhost", "Port": 5046 }
+        { "Host": "localhost", "Port": 5002 }
       ],
       "UpstreamPathTemplate": "/identity/{everything}",
       "UpstreamHttpMethod": [ "GET", "POST" ]
@@ -13,7 +13,7 @@
       "DownstreamPathTemplate": "/api/{everything}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
-        { "Host": "localhost", "Port": 5083 }
+        { "Host": "localhost", "Port": 5004 }
       ],
       "UpstreamPathTemplate": "/movies/{everything}",
       "UpstreamHttpMethod": [ "GET", "POST" ]
