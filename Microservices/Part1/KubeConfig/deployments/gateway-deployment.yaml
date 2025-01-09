@@ -17,27 +17,12 @@ spec:
         - name: api-gateway
           image: nightcall018/kubernetesapp:gateway
           ports:
-            - containerPort: 5001
+            - containerPort: 8080
           volumeMounts:
             - name: config-volume
-              mountPath: /app/config
+              mountPath: /app/ocelot.json
               subPath: ocelot.json
       volumes:
         - name: config-volume
           configMap:
             name: api-gateway-config
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: api-gateway
-  namespace: microservices
-spec:
-  selector:
-    app: api-gateway
-  ports:
-    - protocol: TCP
-      port: 80
-      targetPort: 80
-      nodePort: 30001
-  type: NodePort

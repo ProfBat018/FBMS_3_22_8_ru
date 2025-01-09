@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kube-test-deployment
+  labels:
+    app: kube-test
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kube-test
+  template:
+    metadata:
+      labels:
+        app: kube-test
+    spec:
+      containers:
+        - name: kube-test
+          image: nightcall018/kubernetesapp:test
+          ports:
+            - containerPort: 8080
+            - containerPort: 8081
+          env:
+            - name: ASPNETCORE_ENVIRONMENT
+              value: "Production"

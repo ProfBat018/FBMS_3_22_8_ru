@@ -49,18 +49,3 @@ spec:
           securityContext:
             runAsUser: 0
             allowPrivilegeEscalation: false
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: movie-service
-  namespace: microservices
-spec:
-  selector:
-    app: movie
-  ports:
-    - protocol: TCP
-      port: 5004
-      targetPort: 5004
-      nodePort: 30004
-  type: NodePort

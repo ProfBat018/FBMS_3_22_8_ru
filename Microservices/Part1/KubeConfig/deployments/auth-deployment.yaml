@@ -69,16 +69,3 @@ spec:
                 secretKeyRef:
                   name: auth-secrets
                   key: Email__Password
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: auth-service
-  namespace: microservices
-spec:
-  selector:
-    app: auth
-  ports:
-    - protocol: TCP
-      port: 5002
-      targetPort: 5002
