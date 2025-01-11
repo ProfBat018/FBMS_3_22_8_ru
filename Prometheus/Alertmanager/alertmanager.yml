@@ -1,0 +1,12 @@
+global:
+  resolve_timeout: 5m
+route:
+  receiver: "default"
+receivers:
+  - name: "default"
+    email_configs:
+      - to: "elvin.azim@outlook.com"
+        from: "profbat018@gmail.com"
+        smarthost: "smtp.gmail.com:587"
+        auth_username: "profbat018@gmail.com"
+        auth_password: "zgxmkhtggtjaddid"

@@ -1,5 +1,6 @@
 ﻿
 using System.ComponentModel.DataAnnotations;
+using System.Reflection.Metadata;
 using Asp.Versioning;
 using Auth.Application.DTO;
 using Auth.Application.Validators;
@@ -21,10 +22,7 @@ public class AuthController : ControllerBase
     private readonly LoginUserValidator loginValidator;
     private readonly RegisterUserValidator registerValidator;
     private readonly IAuthService authService;
-
-
-
-
+    
     public AuthController(LoginUserValidator loginValidator, RegisterUserValidator registerValidator,
         IAuthService authService)
     {
