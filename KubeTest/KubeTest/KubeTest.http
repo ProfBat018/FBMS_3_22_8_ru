@@ -1,6 +1,0 @@
-@KubeTest_HostAddress = http://localhost:5226
-
-GET {{KubeTest_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###
