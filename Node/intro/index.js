@@ -53,22 +53,57 @@
 
 // console.log("End");
 
-console.log("Start");
+// console.log("Start");
 
-async function foo() {
-  console.log("Async Foo started...");
+// async function foo() {
+//   console.log("Async Foo started...");
 
-  const fetchRes = await fetch("https://jsonplaceholder.typicode.com/todos/1");
+//   const fetchRes = await fetch("https://jsonplaceholder.typicode.com/todos/1");
 
-  console.log(`Status: ${fetchRes.status}`);
+//   console.log(`Status: ${fetchRes.status}`);
 
-  const json = await fetchRes.json();
+//   const json = await fetchRes.json();
 
-  console.log(`JSON: ${json}`);
+//   console.log(`JSON: ${json}`);
 
-  console.log("Async Foo ended...");
-}
+//   console.log("Async Foo ended...");
+// }
 
-foo();
+// foo();
 
-console.log("End");
+// console.log("End");
+
+// const EventEmitter = require("events");
+
+// var myEmitter = new EventEmitter();
+
+// myEmitter.on("elvin", () => {
+//   console.log("an event occurred!");
+// });
+
+// myEmitter.emit("elvin");
+
+
+// var name = "Elvin";
+
+// var promise = new Promise((resolve, reject) => {
+//   if (name === "Elvin") {
+//     resolve("Hello, Elvin!");
+//   } else {
+//     reject("Who are you?");
+//   }
+// });
+
+// promise.then((response) => {
+//   console.log(`Resolved: ${response}`);
+// }).catch((error) => {
+//   console.log(`Rejected: ${error}`);
+// });
+
+fetch("https://jsonplaceholder.typicode.com/todos/1")
+  .then((response) => response.json())
+  .then((json) => console.log(json))
+  .catch((error) => console.error(error));
+
+
+  

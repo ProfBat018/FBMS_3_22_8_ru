@@ -130,11 +130,11 @@ class MyEmitter extends EventEmitter {}
 
 const myEmitter = new MyEmitter();
 
-myEmitter.on("event", () => {
+myEmitter.on("elvin", () => {
   console.log("an event occurred!");
 });
 
-myEmitter.emit("event");
+myEmitter.emit("elvin");
 ```
 
 ## Event Loop
@@ -154,7 +154,7 @@ myEmitter.emit("event");
 
 `Timers` - это таймеры, которые создаются с помощью функций `setTimeout` и `setInterval`. `Timers` - это асинхронные операции, которые выполняются после задержки.
 
-`Pending Callbacks` - это колбэки, которые ожидают выполнения. `Pending Callbacks` - это асинхронные операции, которые ожидают завершения.
+`Pending Callbacks` - это колбэки, которые ожидают выполнения.
 
 Напоминаю что `Callback` - это функция, которая передается в другую функцию в качестве аргумента и вызывается после завершения асинхронной операции. Вот пример:
 
@@ -199,6 +199,22 @@ fetchRes
 console.log("End");
 ```
 
+```js 
+
+// resolve, reject - это функции, которые передаются в конструктор Promise
+
+const promise = new Promise((resolve, reject) => {
+  setTimeout(() => {
+    resolve("Success!");
+  }, 500);
+
+  setTimeout(() => {
+    reject("Error!");
+  }, 1000);
+});
+
+```
+
 ```js
 console.log("Start");
 
@@ -220,3 +236,35 @@ foo();
 
 console.log("End");
 ```
+
+## setImmediate
+
+`setImmediate` - это функция, которая гарантированно выполнится первым после завершения текущего цикла событий.
+
+```js
+const baz = () => console.log("baz");
+const foo = () => console.log("foo");
+const zoo = () => console.log("zoo");
+const start = () => {
+  console.log("start");
+  setImmediate(baz);
+  new Promise((resolve, reject) => {
+    resolve("bar");
+  }).then((resolve) => {
+    console.log(resolve);
+    process.nextTick(zoo);
+  });
+  process.nextTick(foo);
+};
+start();
+```
+
+## process.nextTick
+
+`process.nextTick` - это функция, которая позволяет выполнить колбэк после завершения текущей операции. `process.nextTick` - это асинхронная операция, которая выполняется после завершения текущей операции. Разница между `process.nextTick` и `setImmediate` заключается в том, что `process.nextTick` выполняется перед выполнением операций ввода-вывода, а `setImmediate` выполняется после выполнения операций ввода-вывода.
+
+```js
+
+const bar = () => console.log("bar");
+
+
