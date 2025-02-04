@@ -1,10 +1,14 @@
+const { Expose } = require("class-transformer");
+
+// @Expose - это декоратор, который позволяет указать,
+// что свойство должно быть включено в процесс сериализации/десериализации.
+
 class UserDTO {
-  constructor(username, email, password, confirmPassword) {
-    this.username = username;
-    this.email = email;
-    this.password = password;
-    this.confirmPassword = confirmPassword;
-  }
+  @Expose()
+  username;
+
+  @Expose()
+  email;
 }
 
 module.exports = { UserDTO };

@@ -1,5 +1,7 @@
 const { validationResult } = require("express-validator");
 const userService = require("../services/userService");
+const { UserDTO } = require("../dtos/userDTO");
+const { plainToInstance } = require("class-transformer");
 
 const getUsers = async (req, res) => {
   try {
@@ -17,10 +19,17 @@ const registerUser = async (req, res) => {
   }
 
   try {
-    const { user, accessToken, refreshToken } = await userService.createUser(
+    const { user } = await userService.createUser(
       req.body
     );
-    res.status(201).json({ user, accessToken, refreshToken });
+
+    const userObject = user.toObject ? user.toObject() : user;
+
+    const userDto = plainToInstance(UserDTO, userObject, {
+      excludeExtraneousValues: true,
+    });
+
+    res.status(201).json({ user: userDto, refreshToken });
   } catch (err) {
     res.status(400).json({ message: err.message });
   }

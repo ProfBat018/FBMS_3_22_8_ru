@@ -1,3 +1,5 @@
+const { UserDTO } = require("../dtos/userDTO");
+
 // Валидация регистрации
 const registerValidation = (req, res, next) => {
   const { username, email, password, confirmPassword } = req.body;

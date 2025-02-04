@@ -1,8 +1,8 @@
 const bcrypt = require("bcryptjs");
 const User = require("../models/userModel");
-const UserDTO = require("../dtos/userDTO");
+const { UserDTO } = require("../dtos/userDTO");
 const { generateAccessToken, generateRefreshToken } = require("../config/jwt");
-const mapper = require("../config/autoMapper");
+const { plainToInstance } = require("class-transformer");
 
 const createUser = async (userData) => {
   const { username, email, password } = userData;
@@ -14,12 +14,12 @@ const createUser = async (userData) => {
   const hashedPassword = await bcrypt.hash(password, salt);
 
   const newUser = new User({ username, email, password: hashedPassword });
-  await newUser.save();
+  await newUser.save(); // Обязательно сохраняем пользователя в БД
 
-  const userDTOs = users.map((user) => AutoMapper.map(user, UserDTO));
+  console.log(newUser.toObject());
 
   return {
-    userDTOs,
+    user: plainToInstance(UserDTO, newUser.toObject()),
   };
 };
 
