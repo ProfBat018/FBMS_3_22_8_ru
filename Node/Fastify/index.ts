@@ -1,13 +1,14 @@
-import fastify from 'fastify'
-import { authRoutes } from './routes/appRoutes.ts'
+import fastify from "fastify";
+import { authRoutes } from "./routes/appRoutes.ts";
+import "dotenv";
 
-const app = fastify({ logger: true })
+const app = fastify({ logger: true });
 
 const appListenOptions = {
-    port: 3000,
-}
-app.register(authRoutes)
+  port: 3000,
+};
+app.register(authRoutes);
 
 app.listen(appListenOptions, () => {
-  console.log('Server listening on http://localhost:3000')
-})
+  console.log("Server listening on http://localhost:3000");
+});

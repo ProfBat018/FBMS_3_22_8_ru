@@ -6,7 +6,7 @@ export const authController = {
   async register(request: FastifyRequest, reply: FastifyReply) {
     const result = RegisterDTO.safeParse(request.body);
     if (!result.success) {
-      return reply.status(400).send({ error: "Invalid input" });
+      return reply.status(400).send({ error: result.error });
     }
 
     const response = await authService.register(result.data);

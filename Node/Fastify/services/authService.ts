@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { PrismaClient } from "@prisma/client/edge";
+import { PrismaClient } from "@prisma/client";
 import type { RegisterDTOType } from "../dtos/authDTOs";
 
 const prisma = new PrismaClient();
@@ -30,5 +30,3 @@ export const authService = {
     return { status: 201, body: { message: "User registered", confirmToken } };
   },
 };
-
-
