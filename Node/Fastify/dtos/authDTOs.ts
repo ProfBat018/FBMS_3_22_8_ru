@@ -30,3 +30,4 @@ export const LoginDTO = z.object({
 });
 
 export type RegisterDTOType = z.infer<typeof RegisterDTO>;
+export type LoginDTOType = z.infer<typeof LoginDTO>;

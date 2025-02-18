@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { z } from "zod";
 
 export const userSchema = z.object({
   id: z.string().optional(),
@@ -7,7 +7,5 @@ export const userSchema = z.object({
   name: z.string().min(2),
   confirmed: z.boolean().default(false),
   createdAt: z.date().optional(),
-  updatedAt: z.date().optional()
+  updatedAt: z.date().optional(),
 });
-
-

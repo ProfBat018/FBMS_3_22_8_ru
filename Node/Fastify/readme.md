@@ -3,6 +3,8 @@
 - Цель изучения разных фреймворков
 - Bun и Fastify
 - Cравнение работы ASP.NET Kestrel и Node.js Express, Fastify
+- MongoDb replica set и принцип работы prisma 
+- Миграции в prisma
 
 ## Цель изучения разных фреймворков
 
@@ -54,3 +56,26 @@ Fastify и Express — это оба HTTP-фреймворки для Node.js, �
 ✅ Предварительная компиляция схем — меньше затрат на парсинг.
 
 ✅ Меньше middleware — быстрее проходит pipeline запроса.
+
+## MongoDb replica set и принцип работы prisma
+
+`MongoDb replica set` — это набор из нескольких серверов MongoDB, которые хранят один и тот же набор данных. Он обеспечивает высокую доступность и отказоустойчивость, а также позволяет масштабировать базу данных.
+
+Мы не можем напрямую подключиться к нашей базе данных из `Prisma`. Мы можем подключиться только к одному серверу. Поэтому нам нужно использовать `MongoDb replica set`. В `MongoDb replica set` есть `primary` сервер и `secondary` сервера. Мы можем подключиться к `primary` серверу и если он упадет, то `secondary` сервера станут `primary`. Именно так работает `Prisma`. 
+
+Для того чтобы создать `MongoDb replica set` нам нужно создать 
+
+```bash
+mongod --replSet rs0 --dbpath ~/mongo-replica/node1 --port 27017 --bind_ip_all --fork --logpath ~/mongo-replica/node1/mongod.log
+```
+
+## Миграции в prisma
+
+`Prisma` позволяет нам создавать миграции. Мы можем создать миграцию с помощью команды 
+
+```bash
+npx prisma migrate dev --name init
+```
+
+
+
