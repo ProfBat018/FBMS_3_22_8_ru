@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Подтверждение почты</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        .button {
+            display: inline-block;
+            padding: 12px 25px;
+            color: #ffffff;
+            background-color: #007bff;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        .button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>Подтверждение регистрации</h2>
+    <p>Здравствуйте, {username}</p>
+    <p>Вы получили это письмо, потому что зарегистрировались на нашем сайте. Пожалуйста, подтвердите свою почту, нажав на кнопку ниже:</p>
+    <p>
+        <a href="{link}" class="button">Подтвердить почту</a>
+    </p>
+    <p>Если вы не регистрировались, просто проигнорируйте это письмо.</p>
+    <p>С уважением,<br>Команда поддержки</p>
+</div>
+</body>
+</html>
