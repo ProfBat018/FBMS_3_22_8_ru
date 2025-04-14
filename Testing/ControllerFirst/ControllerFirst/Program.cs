@@ -21,12 +21,6 @@ builder.Services.AddControllers();
 
 builder.Services.AddFluentValidationAutoValidation();
 
-
-
-// builder.Services.AddValidatorsFromAssemblyContaining<RegisterValidator>();
-
-
-
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddOpenApi();
 
@@ -59,7 +53,7 @@ builder.Services.AddCors(policy =>
     });
 });
 
-builder.Services.AddTransient<AuthContext>();
+// builder.Services.AddTransient<AuthContext>();
 
 // JWT configuration
 
@@ -144,7 +138,7 @@ app.UseAuthorization(); // Подключаю авторизацию
 
 app.UseHttpsRedirection();
 
-
+    
 app.MapControllers();
 app.MapOpenApi();
 app.MapScalarApiReference();
